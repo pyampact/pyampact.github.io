@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>alignmentUtils &mdash; pyAMPACT 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+    <link rel="canonical" href="https://daniel-mckemie.github.io/_modules/alignmentUtils.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            pyAMPACT
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../alignment.html">alignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../alignmentUtils.html">alignmentUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance.html">performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../symbolic.html">symbolic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../symbolicUtils.html">symbolicUtils</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyAMPACT</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">alignmentUtils</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for alignmentUtils</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">alignmentUtils</span>
+<span class="sd">==============</span>
+
+
+<span class="sd">.. autosummary::</span>
+<span class="sd">    :toctree: generated/</span>
+
+<span class="sd">    dp</span>
+<span class="sd">    fill_priormat_gauss</span>
+<span class="sd">    gh</span>
+<span class="sd">    flatTopGaussIdx</span>
+<span class="sd">    g</span>
+<span class="sd">    flatTopGaussian</span>
+<span class="sd">    viterbi_path</span>
+<span class="sd">    mixgauss_prob</span>
+<span class="sd">    fill_trans_mat</span>
+<span class="sd">    orio_simmx</span>
+<span class="sd">    simmx</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">gaussian</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">multivariate_normal</span>
+<span class="kn">from</span> <span class="nn">sklearn.mixture</span> <span class="kn">import</span> <span class="n">GaussianMixture</span>
+
+
+<div class="viewcode-block" id="dp">
+<a class="viewcode-back" href="../generated/alignmentUtils.dp.html#alignmentUtils.dp">[docs]</a>
+<span class="k">def</span> <span class="nf">dp</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Use dynamic programming to find a min-cost path through matrix M.</span>
+<span class="sd">    Return state sequence in p,q</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">r</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="c1"># Initialize cost matrix D</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">c</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="c1"># D[0, :] = np.nan</span>
+    <span class="c1"># D[:, 0] = np.nan</span>
+    <span class="c1"># D[0, 0] = 0</span>
+    <span class="n">D</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">M</span>
+
+    <span class="c1"># Initialize traceback matrix phi</span>
+    <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+
+    <span class="c1"># Dynamic programming loop</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">r</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+            <span class="n">dmax</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">D</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="p">])</span>
+            <span class="n">tb</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">dmax</span> <span class="o">==</span> <span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="k">else</span> <span class="p">(</span><span class="mi">2</span> <span class="k">if</span> <span class="n">dmax</span> <span class="o">==</span> <span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="mi">3</span><span class="p">)</span>
+
+            <span class="c1"># dmax, tb = min([D[i, j], D[i, j + 1], D[i + 1, j]])</span>
+            <span class="n">D</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">D</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">dmax</span>
+            <span class="n">phi</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">tb</span>
+
+    <span class="c1"># Traceback from top left</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">r</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">j</span> <span class="o">=</span> <span class="n">c</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="p">[</span><span class="n">j</span><span class="p">]</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">tb</span> <span class="o">=</span> <span class="n">phi</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">tb</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="n">j</span> <span class="o">=</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">tb</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">tb</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">j</span> <span class="o">=</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid traceback value&quot;</span><span class="p">)</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="n">q</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+
+    <span class="c1"># Strip off the edges of the D matrix before returning</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">D</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="n">c</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>        
+
+    <span class="k">return</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">D</span></div>
+
+
+
+<span class="c1"># Gaussian/Viterbi functions</span>
+<div class="viewcode-block" id="fill_priormat_gauss">
+<a class="viewcode-back" href="../generated/alignmentUtils.fill_priormat_gauss.html#alignmentUtils.fill_priormat_gauss">[docs]</a>
+<span class="k">def</span> <span class="nf">fill_priormat_gauss</span><span class="p">(</span><span class="n">Nobs</span><span class="p">,</span> <span class="n">ons</span><span class="p">,</span> <span class="n">offs</span><span class="p">,</span> <span class="n">Nstates</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates a prior matrix based on the DTW alignment (supplied by the input</span>
+<span class="sd">    variables ons and offs. A rectangular window with half a Gaussian on</span>
+<span class="sd">    each side over the onsets and offsets estimated by the DTW alignment.</span>
+<span class="sd">    </span>
+<span class="sd">    :params Nobs: Number of observations</span>
+<span class="sd">    :params ons: Vector of onset times predicted by DTW alignment</span>
+<span class="sd">    :params offs: Vector of offset times predicted by DTW alignment</span>
+<span class="sd">    :params Nstates: Number of states in the hidden Markov model</span>
+
+<span class="sd">    :return prior: Prior matrix based on DTW alignment</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">Nstates</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">Nstates</span> <span class="o">=</span> <span class="mi">5</span>
+
+    <span class="n">Nnotes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ons</span><span class="p">)</span>
+    <span class="n">prior</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Nnotes</span> <span class="o">*</span> <span class="p">(</span><span class="n">Nstates</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">Nobs</span><span class="p">))</span>
+    <span class="n">frames</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">Nobs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Nnotes</span><span class="p">):</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">Nstates</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">insert</span> <span class="o">=</span> <span class="n">Nstates</span> <span class="o">-</span> <span class="mi">5</span>
+
+        <span class="c1"># Silence</span>
+        <span class="n">prior</span><span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">flatTopGaussian</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">gh</span><span class="p">(</span><span class="n">ons</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">offs</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">frames</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span>
+                                            <span class="n">g</span><span class="p">(</span><span class="n">offs</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">frames</span><span class="p">),</span> <span class="n">g</span><span class="p">(</span><span class="n">ons</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">frames</span><span class="p">),</span> <span class="n">gh</span><span class="p">(</span><span class="n">ons</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">offs</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">frames</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
+    
+        <span class="c1"># Throws Value Error for negative values, both here and in MATLAB</span>
+        <span class="n">prior</span><span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="mi">2</span><span class="p">:</span><span class="n">row</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">insert</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">prior</span><span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:],</span> <span class="p">(</span><span class="n">insert</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+        <span class="c1"># Transient, steady state, transient</span>
+        <span class="n">prior</span><span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">insert</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">flatTopGaussian</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">g</span><span class="p">(</span><span class="n">offs</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">frames</span><span class="p">),</span>
+                                                     <span class="n">gh</span><span class="p">(</span><span class="n">offs</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ons</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">frames</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">),</span>
+                                                     <span class="n">gh</span><span class="p">(</span><span class="n">ons</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">offs</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">frames</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">),</span> <span class="n">g</span><span class="p">(</span><span class="n">offs</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">frames</span><span class="p">))</span>
+        <span class="n">prior</span><span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">insert</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">flatTopGaussian</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">g</span><span class="p">(</span><span class="n">offs</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">frames</span><span class="p">),</span>
+                                                     <span class="n">g</span><span class="p">(</span><span class="n">ons</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">frames</span><span class="p">),</span> <span class="n">g</span><span class="p">(</span><span class="n">offs</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">frames</span><span class="p">),</span> <span class="n">g</span><span class="p">(</span><span class="n">ons</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">frames</span><span class="p">))</span>
+        <span class="n">prior</span><span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">+</span> <span class="n">insert</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">flatTopGaussian</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">g</span><span class="p">(</span><span class="n">ons</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">frames</span><span class="p">),</span>
+                                                     <span class="n">gh</span><span class="p">(</span><span class="n">ons</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">offs</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">frames</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">),</span>
+                                                     <span class="n">gh</span><span class="p">(</span><span class="n">offs</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">ons</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">frames</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">),</span> <span class="n">g</span><span class="p">(</span><span class="n">ons</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">frames</span><span class="p">))</span>
+
+    <span class="c1"># The last silence</span>
+    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">prior</span><span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="mi">5</span> <span class="o">+</span> <span class="n">insert</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">flatTopGaussIdx</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">ons</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">offs</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">offs</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">ons</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">prior</span></div>
+
+
+
+<div class="viewcode-block" id="gh">
+<a class="viewcode-back" href="../generated/alignmentUtils.gh.html#alignmentUtils.gh">[docs]</a>
+<span class="k">def</span> <span class="nf">gh</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">i1</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">i2</span><span class="p">,</span> <span class="n">domain</span><span class="p">,</span> <span class="n">frac</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get an element that is frac fraction of the way between v1(i1) and</span>
+<span class="sd">    v2(i2), but check bounds on both vectors.  Frac of 0 returns v1(i1), </span>
+<span class="sd">    frac of 1 returns v2(i2), frac of 1/2 (the default) returns half way </span>
+<span class="sd">    between them.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x1</span> <span class="o">=</span> <span class="n">g</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">i1</span><span class="p">,</span> <span class="n">domain</span><span class="p">)</span>
+    <span class="n">x2</span> <span class="o">=</span> <span class="n">g</span><span class="p">(</span><span class="n">v2</span><span class="p">,</span> <span class="n">i2</span><span class="p">,</span> <span class="n">domain</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">frac</span> <span class="o">*</span> <span class="n">x1</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">frac</span><span class="p">)</span> <span class="o">*</span> <span class="n">x2</span><span class="p">)</span></div>
+
+ 
+
+<div class="viewcode-block" id="flatTopGaussIdx">
+<a class="viewcode-back" href="../generated/alignmentUtils.flatTopGaussIdx.html#alignmentUtils.flatTopGaussIdx">[docs]</a>
+<span class="k">def</span> <span class="nf">flatTopGaussIdx</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">bi1</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">ti1</span><span class="p">,</span> <span class="n">t2</span><span class="p">,</span> <span class="n">ti2</span><span class="p">,</span> <span class="n">b2</span><span class="p">,</span> <span class="n">bi2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a window function that is zeros, going up to 1s with the left</span>
+<span class="sd">    half of a gaussian, then ones, then going back down to zeros with</span>
+<span class="sd">    the right half of another gaussian.  b1(bi1) is the x coordinate 2</span>
+<span class="sd">    stddevs out from the mean, which is at t1(ti1).  t2(ti2) is the x</span>
+<span class="sd">    coordinate of the mean of the second gaussian and b2(bi2) is 2</span>
+<span class="sd">    stddevs out from that.  The points should be in that order.  Vectors</span>
+<span class="sd">    are indexed intelligently, so you don&#39;t have to worry about</span>
+<span class="sd">    overflows or underflows.  X is the set of points over which this is</span>
+<span class="sd">    to be calculated.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">b1</span> <span class="o">=</span> <span class="n">g</span><span class="p">(</span><span class="n">b1</span><span class="p">,</span> <span class="n">bi1</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="n">t1</span> <span class="o">=</span> <span class="n">g</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">ti1</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="n">t2</span> <span class="o">=</span> <span class="n">g</span><span class="p">(</span><span class="n">t2</span><span class="p">,</span> <span class="n">ti2</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="n">b2</span> <span class="o">=</span> <span class="n">g</span><span class="p">(</span><span class="n">b2</span><span class="p">,</span> <span class="n">bi2</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">flatTopGaussian</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">,</span> <span class="n">b2</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="g">
+<a class="viewcode-back" href="../generated/alignmentUtils.g.html#alignmentUtils.g">[docs]</a>
+<span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">domain</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get an element from vec, checking bounds.  Domain is the set of points</span>
+<span class="sd">    that vec is a subset of.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">idx</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">domain</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">idx</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">vec</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">domain</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">vec</span><span class="p">[</span><span class="n">idx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="flatTopGaussian">
+<a class="viewcode-back" href="../generated/alignmentUtils.flatTopGaussian.html#alignmentUtils.flatTopGaussian">[docs]</a>
+<span class="k">def</span> <span class="nf">flatTopGaussian</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">,</span> <span class="n">b2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a window function that is zeros, going up to 1s with the left </span>
+<span class="sd">    half of a gaussian, then ones, then going back down to zeros with the </span>
+<span class="sd">    right half of another gaussian.  b1 is the x coordinate 2 stddevs out </span>
+<span class="sd">    from the mean, which is at t1.  t2 is the x coordinate of the mean of </span>
+<span class="sd">    the second gaussian and b2 is 2 stddevs out from that.  The points </span>
+<span class="sd">    should be in that order.  X is the set of points over which this is </span>
+<span class="sd">    to be calculated.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="n">b1</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">])</span> <span class="o">&gt;</span> <span class="nb">any</span><span class="p">([</span><span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">,</span> <span class="n">b2</span><span class="p">]):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Endpoints are not in order: &#39;</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">,</span> <span class="n">b2</span><span class="p">)</span>
+    
+
+
+    <span class="k">def</span> <span class="nf">custom_normalize</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">arr</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">arr</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">custom_gaussian</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">std</span><span class="p">):</span>
+        <span class="n">win</span> <span class="o">=</span> <span class="n">gaussian</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">std</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">std</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">convolve</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">win</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">custom_gaussian_filter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">b2</span><span class="p">):</span>
+        <span class="n">left_std</span> <span class="o">=</span> <span class="p">(</span><span class="n">t1</span> <span class="o">-</span> <span class="n">b1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">middle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">t2</span> <span class="o">-</span> <span class="n">t1</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">right_std</span> <span class="o">=</span> <span class="p">(</span><span class="n">b2</span> <span class="o">-</span> <span class="n">t2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="n">left</span> <span class="o">=</span> <span class="n">custom_normalize</span><span class="p">(</span><span class="n">custom_gaussian</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">left_std</span><span class="p">))</span>
+        <span class="n">right</span> <span class="o">=</span> <span class="n">custom_normalize</span><span class="p">(</span><span class="n">custom_gaussian</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">right_std</span><span class="p">))</span>
+
+        <span class="n">takeOneOut</span> <span class="o">=</span> <span class="n">t1</span> <span class="o">==</span> <span class="n">t2</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">left</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">t1</span><span class="p">],</span> <span class="n">middle</span><span class="p">,</span> <span class="n">right</span><span class="p">[</span><span class="n">t2</span> <span class="o">+</span> <span class="n">takeOneOut</span><span class="p">:]))</span>
+        <span class="k">return</span> <span class="n">w</span></div>
+
+
+
+<div class="viewcode-block" id="viterbi_path">
+<a class="viewcode-back" href="../generated/alignmentUtils.viterbi_path.html#alignmentUtils.viterbi_path">[docs]</a>
+<span class="k">def</span> <span class="nf">viterbi_path</span><span class="p">(</span><span class="n">prior</span><span class="p">,</span> <span class="n">transmat</span><span class="p">,</span> <span class="n">obslik</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    VITERBI Find the most-probable (Viterbi) path through the HMM state trellis.</span>
+<span class="sd">    path = viterbi(prior, transmat, obslik)</span>
+
+<span class="sd">    </span>
+<span class="sd">    :param prior(i): Pr(Q(1) = i)</span>
+<span class="sd">    :param transmat(i,j): Pr(Q(t+1)=j | Q(t)=i)</span>
+<span class="sd">    :param obslik(i,t): Pr(y(t) | Q(t)=i)</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - path(t): q(t), where q1 ... qT is the argmax of the above expression.</span>
+<span class="sd">        - delta(j,t) = prob. of the best sequence of length t-1 and then going to state j, and O(1:t)</span>
+<span class="sd">        - psi(j,t) = the best predecessor state, given that we ended up in state j at t</span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+    <span class="n">T</span> <span class="o">=</span> <span class="n">obslik</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>    
+    <span class="n">prior</span> <span class="o">=</span> <span class="n">prior</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">Q</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">prior</span><span class="p">)</span>
+
+    <span class="n">scaled</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Q</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span>    
+    <span class="n">psi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Q</span><span class="p">,</span> <span class="n">T</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">scale</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+
+    <span class="n">t</span> <span class="o">=</span> <span class="mi">0</span>
+        
+    <span class="n">delta</span><span class="p">[:,</span> <span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">prior</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span> <span class="o">*</span> <span class="n">obslik</span><span class="p">[:,</span> <span class="n">t</span><span class="p">]</span>        
+
+    <span class="k">if</span> <span class="n">scaled</span><span class="p">:</span>
+        <span class="n">delta</span><span class="p">[:,</span> <span class="n">t</span><span class="p">]</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">delta</span><span class="p">[:,</span> <span class="n">t</span><span class="p">])</span>
+        <span class="n">scale</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">delta</span><span class="p">[:,</span> <span class="n">t</span><span class="p">])</span>
+
+    <span class="n">psi</span><span class="p">[:,</span> <span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>    
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Q</span><span class="p">):</span>            
+            <span class="n">delta</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">delta</span><span class="p">[:,</span> <span class="n">t</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">transmat</span><span class="p">[:,</span> <span class="n">j</span><span class="p">])</span>
+            <span class="n">delta</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">*=</span> <span class="n">obslik</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">scaled</span><span class="p">:</span>
+            <span class="n">delta</span><span class="p">[:,</span> <span class="n">t</span><span class="p">]</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">delta</span><span class="p">[:,</span> <span class="n">t</span><span class="p">])</span>
+            <span class="n">scale</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">delta</span><span class="p">[:,</span> <span class="n">t</span><span class="p">])</span>
+
+    <span class="n">p</span><span class="p">,</span> <span class="n">path</span><span class="p">[</span><span class="n">T</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">delta</span><span class="p">[:,</span> <span class="n">T</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">delta</span><span class="p">[:,</span> <span class="n">T</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">path</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">psi</span><span class="p">[</span><span class="n">path</span><span class="p">[</span><span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">path</span></div>
+
+
+
+<div class="viewcode-block" id="mixgauss_prob">
+<a class="viewcode-back" href="../generated/alignmentUtils.mixgauss_prob.html#alignmentUtils.mixgauss_prob">[docs]</a>
+<span class="k">def</span> <span class="nf">mixgauss_prob</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">means</span><span class="p">,</span> <span class="n">covariances</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Notation: Y is observation, M is mixture component, and both may be conditioned on Q.</span>
+<span class="sd">    If Q does not exist, ignore references to Q=j below.</span>
+<span class="sd">    Alternatively, you may ignore M if this is a conditional Gaussian.</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    :param data(:,t): t&#39;th observation vector     </span>
+<span class="sd">    :param mu(:,k): E[Y(t) | M(t)=k] </span>
+<span class="sd">        or mu(:,j,k) = E[Y(t) | Q(t)=j, M(t)=k]    </span>
+<span class="sd">    :param Sigma(:,:,j,k): Cov[Y(t) | Q(t)=j, M(t)=k]</span>
+<span class="sd">        or there are various faster, special cases:</span>
+<span class="sd">        - Sigma() - scalar, spherical covariance independent of M,Q.</span>
+<span class="sd">        - Sigma(:,:) diag or full, tied params independent of M,Q. </span>
+<span class="sd">        - Sigma(:,:,j) tied params independent of M. </span>
+<span class="sd">    </span>
+<span class="sd">    :param mixmat(k): Pr(M(t)=k) = prior</span>
+<span class="sd">        or mixmat(j,k) = Pr(M(t)=k | Q(t)=j) </span>
+<span class="sd">        Not needed if M is not defined.</span>
+<span class="sd">    </span>
+<span class="sd">    :param unit_norm: - optional; if 1, means data(:,i) AND mu(:,i) each have unit norm (slightly faster)</span>
+<span class="sd">    </span>
+<span class="sd">    :returns:</span>
+<span class="sd">        - B(t) = Pr(y(t)) ||</span>
+<span class="sd">        - B(i,t) = Pr(y(t) | Q(t)=i) </span>
+<span class="sd">        - B2(i,k,t) = Pr(y(t) | Q(t)=i, M(t)=k) </span>
+<span class="sd">    </span>
+<span class="sd">    If the number of mixture components differs depending on Q, just set the trailing</span>
+<span class="sd">    entries of mixmat to 0, e.g., 2 components if Q=1, 3 components if Q=2,</span>
+<span class="sd">    then set mixmat(1,3)=0. In this case, B2(1,3,:)=1.0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Create a Gaussian Mixture Model</span>
+    <span class="n">gmm</span> <span class="o">=</span> <span class="n">GaussianMixture</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># Specify the number of components</span>
+
+    <span class="c1"># Fit the GMM to your data</span>
+    <span class="n">gmm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="c1"># Calculate the probabilities for each data point</span>
+    <span class="n">probs</span> <span class="o">=</span> <span class="n">gmm</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="c1"># print(&#39;probs&#39;, probs)</span>
+
+    <span class="c1"># &#39;probs&#39; now contains the conditional probabilities for each data point and each component.</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">K</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">means</span><span class="p">)</span>    
+    
+
+    <span class="n">covariances</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">5</span><span class="p">)]</span>    
+    <span class="n">likelihood_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">K</span><span class="p">))</span>    
+
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+            <span class="n">likelihood</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">multivariate_normal</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">mean</span><span class="o">=</span><span class="n">means</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">cov</span><span class="o">=</span><span class="n">covariances</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+            <span class="n">likelihood_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">likelihood</span>
+
+    <span class="k">return</span> <span class="n">likelihood_matrix</span></div>
+
+
+
+<span class="c1"># Matrix functions</span>
+<div class="viewcode-block" id="fill_trans_mat">
+<a class="viewcode-back" href="../generated/alignmentUtils.fill_trans_mat.html#alignmentUtils.fill_trans_mat">[docs]</a>
+<span class="k">def</span> <span class="nf">fill_trans_mat</span><span class="p">(</span><span class="n">trans_seed</span><span class="p">,</span> <span class="n">notes</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Makes a transition matrix from a seed transition matrix.  The seed</span>
+<span class="sd">    matrix is composed of the states: steady state, transient, silence,</span>
+<span class="sd">    transient, steady state, but the full transition matrix starts and</span>
+<span class="sd">    ends with silence, so the seed with be chopped up on the ends.</span>
+<span class="sd">    Notes is the number of times to repeat the seed.  Transseed&#39;s first</span>
+<span class="sd">    and last states should be equivalent, as they will be overlapped</span>
+<span class="sd">    with each other.</span>
+<span class="sd">    </span>
+<span class="sd">    :param transseed: Transition matrix seed.</span>
+<span class="sd">    :param notes: Number of notes being aligned.</span>
+<span class="sd">    </span>
+<span class="sd">    :return trans: Transition matrix</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Set up transition matrix</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">trans_seed</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>    
+    <span class="n">trans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">notes</span> <span class="o">*</span> <span class="p">(</span><span class="n">N</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">notes</span> <span class="o">*</span> <span class="p">(</span><span class="n">N</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">Non2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">N</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="c1"># ADDED ONE!</span>
+    
+
+    <span class="c1"># Fill in the first and last parts of the big matrix with the</span>
+    <span class="c1"># appropriate fragments of the seed</span>
+    <span class="n">trans</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">Non2</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">Non2</span><span class="p">]</span> <span class="o">=</span> <span class="n">trans_seed</span><span class="p">[</span><span class="n">Non2</span><span class="p">:,</span> <span class="n">Non2</span><span class="p">:]</span>
+    <span class="c1"># trans[1:Non2, 1:Non2] = trans_seed[Non2:, Non2:] # Changed 0 to 1 here</span>
+    <span class="n">trans</span><span class="p">[</span><span class="o">-</span><span class="n">Non2</span><span class="p">:,</span> <span class="o">-</span><span class="n">Non2</span><span class="p">:]</span> <span class="o">=</span> <span class="n">trans_seed</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">Non2</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">Non2</span><span class="p">]</span>
+
+    <span class="c1"># Fill in the middle parts of the big matrix with the whole seed</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Non2</span><span class="p">,</span> <span class="p">(</span><span class="n">notes</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">N</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">Non2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">N</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">trans</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">N</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">N</span><span class="p">]</span> <span class="o">=</span> <span class="n">trans_seed</span>
+
+    <span class="k">return</span> <span class="n">trans</span></div>
+
+
+
+<div class="viewcode-block" id="orio_simmx">
+<a class="viewcode-back" href="../generated/alignmentUtils.orio_simmx.html#alignmentUtils.orio_simmx">[docs]</a>
+<span class="k">def</span> <span class="nf">orio_simmx</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">D</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate an Orio&amp;Schwartz-style (Peak Structure Distance) similarity</span>
+<span class="sd">    matrix.  M is the binary mask (where each column corresponds</span>
+<span class="sd">    to a row in the output matrix S); D is the regular spectrogram,  </span>
+<span class="sd">    where columns of S correspond to columns of D (spectrogram time</span>
+<span class="sd">    slices).</span>
+<span class="sd">    Each value is the proportion of energy going through the </span>
+<span class="sd">    mask to the total energy of the column of D, thus lies </span>
+<span class="sd">    between 0 (no match) and 1 (mask completely covers energy in D</span>
+<span class="sd">    column).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Calculate the similarities</span>
+    <span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">M</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">D</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+
+    <span class="c1"># Square the elements of D and M</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">D</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="n">M</span><span class="o">**</span><span class="mi">2</span>
+
+    <span class="n">nDc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+    <span class="c1"># Avoid division by zero</span>
+    <span class="n">nDc</span> <span class="o">=</span> <span class="n">nDc</span> <span class="o">+</span> <span class="p">(</span><span class="n">nDc</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># Evaluate one row at a time</span>
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="n">S</span><span class="p">[</span><span class="n">r</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">M</span><span class="p">[:,</span> <span class="n">r</span><span class="p">],</span> <span class="n">D</span><span class="p">))</span> <span class="o">/</span> <span class="n">nDc</span>
+
+    <span class="k">return</span> <span class="n">S</span></div>
+
+
+
+<div class="viewcode-block" id="simmx">
+<a class="viewcode-back" href="../generated/alignmentUtils.simmx.html#alignmentUtils.simmx">[docs]</a>
+<span class="k">def</span> <span class="nf">simmx</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate a similarity matrix between feature matrices A and B.</span>
+
+<span class="sd">    :param A: The first feature matrix.</span>
+<span class="sd">    :param B: The second feature matrix. If not provided, B will be set to A.</span>
+
+<span class="sd">    :return: The similarity matrix between A and B.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">B</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">B</span> <span class="o">=</span> <span class="n">A</span>
+
+    <span class="c1"># Match array sizes</span>
+    <span class="n">size_diff</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">size_diff</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">A</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">B</span><span class="p">)]</span>
+
+    <span class="n">EA</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">A</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+    <span class="n">EB</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">B</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+
+    <span class="c1"># Avoid division by zero</span>
+    <span class="n">EA</span><span class="p">[</span><span class="n">EA</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">EB</span><span class="p">[</span><span class="n">EB</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="n">M</span> <span class="o">=</span> <span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">B</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">EA</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">@</span> <span class="n">EB</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:])</span>
+
+    <span class="k">return</span> <span class="n">M</span></div>
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, AMPACT Research Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>symbolicUtils.indentMEI &mdash; pyAMPACT 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+    <link rel="canonical" href="https://daniel-mckemie.github.io/generated/symbolicUtils.indentMEI.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="symbolicUtils._kernChordHelper" href="symbolicUtils._kernChordHelper.html" />
+    <link rel="prev" title="symbolicUtils._id_gen" href="symbolicUtils._id_gen.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            pyAMPACT
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../alignment.html">alignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../alignmentUtils.html">alignmentUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance.html">performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../symbolic.html">symbolic</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../symbolicUtils.html">symbolicUtils</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="symbolicUtils._escape_cdata.html">symbolicUtils._escape_cdata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="symbolicUtils.addMEINote.html">symbolicUtils.addMEINote</a></li>
+<li class="toctree-l2"><a class="reference internal" href="symbolicUtils.addTieBreakers.html">symbolicUtils.addTieBreakers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="symbolicUtils.kernClefHelper.html">symbolicUtils.kernClefHelper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="symbolicUtils.combineRests.html">symbolicUtils.combineRests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="symbolicUtils.combineUnisons.html">symbolicUtils.combineUnisons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="symbolicUtils.fromJSON.html">symbolicUtils.fromJSON</a></li>
+<li class="toctree-l2"><a class="reference internal" href="symbolicUtils._id_gen.html">symbolicUtils._id_gen</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">symbolicUtils.indentMEI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#symbolicUtils.indentMEI"><code class="docutils literal notranslate"><span class="pre">indentMEI()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="symbolicUtils._kernChordHelper.html">symbolicUtils._kernChordHelper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="symbolicUtils.kernFooter.html">symbolicUtils.kernFooter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="symbolicUtils.kernHeader.html">symbolicUtils.kernHeader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="symbolicUtils._kernNoteHelper.html">symbolicUtils._kernNoteHelper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="symbolicUtils.kernNRCHelper.html">symbolicUtils.kernNRCHelper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="symbolicUtils.noteRestHelper.html">symbolicUtils.noteRestHelper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="symbolicUtils.remove_namespaces.html">symbolicUtils.remove_namespaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="symbolicUtils.removeTied.html">symbolicUtils.removeTied</a></li>
+<li class="toctree-l2"><a class="reference internal" href="symbolicUtils.snapTo.html">symbolicUtils.snapTo</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyAMPACT</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../symbolicUtils.html">symbolicUtils</a></li>
+      <li class="breadcrumb-item active">symbolicUtils.indentMEI</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/generated/symbolicUtils.indentMEI.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="symbolicutils-indentmei">
+<h1>symbolicUtils.indentMEI<a class="headerlink" href="#symbolicutils-indentmei" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="symbolicUtils.indentMEI">
+<span class="sig-prename descclassname"><span class="pre">symbolicUtils.</span></span><span class="sig-name descname"><span class="pre">indentMEI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indentation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\t'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/symbolicUtils.html#indentMEI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symbolicUtils.indentMEI" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="symbolicUtils._id_gen.html" class="btn btn-neutral float-left" title="symbolicUtils._id_gen" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="symbolicUtils._kernChordHelper.html" class="btn btn-neutral float-right" title="symbolicUtils._kernChordHelper" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, AMPACT Research Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

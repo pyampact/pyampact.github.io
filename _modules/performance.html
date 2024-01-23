@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>performance &mdash; pyAMPACT 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+    <link rel="canonical" href="https://daniel-mckemie.github.io/_modules/performance.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            pyAMPACT
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../alignment.html">alignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../alignmentUtils.html">alignmentUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance.html">performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../symbolic.html">symbolic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../symbolicUtils.html">symbolicUtils</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyAMPACT</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">performance</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for performance</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">performance</span>
+<span class="sd">==============</span>
+
+
+<span class="sd">.. autosummary::</span>
+<span class="sd">    :toctree: generated/</span>
+
+<span class="sd">    estimate_perceptual_parameters</span>
+<span class="sd">    calculate_vibrato</span>
+<span class="sd">    perceived_pitch</span>
+<span class="sd">    get_cent_vals</span>
+<span class="sd">    smooth_note</span>
+<span class="sd">    note_dct</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
+<span class="c1"># from synthtrax import synthtrax</span>
+<span class="kn">from</span> <span class="nn">scipy.fftpack</span> <span class="kn">import</span> <span class="n">dct</span><span class="p">,</span> <span class="n">idct</span>
+
+<div class="viewcode-block" id="estimate_perceptual_parameters">
+<a class="viewcode-back" href="../generated/performance.estimate_perceptual_parameters.html#performance.estimate_perceptual_parameters">[docs]</a>
+<span class="k">def</span> <span class="nf">estimate_perceptual_parameters</span><span class="p">(</span><span class="n">f0_vals</span><span class="p">,</span> <span class="n">pwr_vals</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">SR</span><span class="p">,</span> <span class="n">hop</span><span class="p">,</span> <span class="n">gt_flag</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    NEEDS INFO UPDATED</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Perceived pitch</span>
+    <span class="n">res_ppitch</span> <span class="o">=</span> <span class="n">perceived_pitch</span><span class="p">(</span><span class="n">f0_vals</span><span class="p">,</span> <span class="n">SR</span> <span class="o">/</span> <span class="n">hop</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Jitter</span>
+    <span class="n">tmp_jitter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">f0_vals</span><span class="p">))</span>
+    <span class="n">res_jitter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">tmp_jitter</span><span class="p">)</span>
+
+    <span class="c1"># Vibrato rate and depth</span>
+    <span class="n">mean_f0_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">f0_vals</span><span class="p">)</span>
+    <span class="n">detrended_f0_vals</span> <span class="o">=</span> <span class="n">f0_vals</span> <span class="o">-</span> <span class="n">mean_f0_vals</span>
+    <span class="n">res_vibrato_depth</span><span class="p">,</span> <span class="n">res_vibrato_rate</span> <span class="o">=</span> <span class="n">calculate_vibrato</span><span class="p">(</span><span class="n">detrended_f0_vals</span><span class="p">,</span> <span class="n">SR</span> <span class="o">/</span> <span class="n">hop</span><span class="p">)</span>
+
+    <span class="c1"># Shimmer</span>
+    <span class="n">tmp_shimmer</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">pwr_vals</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">/</span> <span class="n">pwr_vals</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">res_shimmer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tmp_shimmer</span><span class="p">))</span>
+    <span class="n">res_pwr_vals</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">pwr_vals</span><span class="p">)</span>
+    <span class="n">res_f0_vals</span> <span class="o">=</span> <span class="n">f0_vals</span>
+
+    <span class="k">if</span> <span class="n">gt_flag</span><span class="p">:</span>
+        <span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">M</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+    
+    <span class="c1"># res_spec_centroid = np.sum(F * M) / np.sum(M)</span>
+
+    <span class="c1"># Spectral Slope                </span>
+    <span class="n">mu_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>        
+    <span class="n">kmu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="n">M</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span>    
+    <span class="n">M_sqrt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+    <span class="n">M_slope</span> <span class="o">=</span> <span class="n">M_sqrt</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">mu_x</span><span class="p">,</span> <span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>    
+    <span class="n">res_spec_slope</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">kmu</span><span class="p">,</span> <span class="n">M_slope</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">kmu</span><span class="p">,</span> <span class="n">kmu</span><span class="p">)</span>    
+    <span class="n">res_mean_spec_slope</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">res_spec_slope</span><span class="p">)</span>
+
+    
+    <span class="c1"># Spectral Flux    </span>
+    <span class="n">afDeltaX</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">M</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">],</span> <span class="n">M</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">res_spec_flux</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">afDeltaX</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="n">M</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">res_mean_spec_flux</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">res_spec_flux</span><span class="p">)</span>
+    
+
+    <span class="c1"># Spectral Flatness</span>
+    <span class="n">XLog</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">M</span> <span class="o">+</span> <span class="mf">1e-20</span><span class="p">)</span>
+    <span class="n">res_spec_flat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">XLog</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">res_spec_flat</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">res_mean_spec_flat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">res_spec_flat</span><span class="p">)</span>
+
+
+    <span class="n">res</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;ppitch&quot;</span><span class="p">:</span> <span class="n">res_ppitch</span><span class="p">,</span>
+        <span class="s2">&quot;jitter&quot;</span><span class="p">:</span> <span class="n">res_jitter</span><span class="p">,</span>
+        <span class="s2">&quot;vibrato_depth&quot;</span><span class="p">:</span> <span class="n">res_vibrato_depth</span><span class="p">,</span>
+        <span class="s2">&quot;vibrato_rate&quot;</span><span class="p">:</span> <span class="n">res_vibrato_rate</span><span class="p">,</span>
+        <span class="s2">&quot;shimmer&quot;</span><span class="p">:</span> <span class="n">res_shimmer</span><span class="p">,</span>
+        <span class="s2">&quot;pwr_vals&quot;</span><span class="p">:</span> <span class="n">res_pwr_vals</span><span class="p">,</span>
+        <span class="s2">&quot;f0_vals&quot;</span><span class="p">:</span> <span class="n">res_f0_vals</span><span class="p">,</span>        
+        <span class="c1"># &quot;spec_centroid&quot;: res_spec_centroid,</span>
+        <span class="s2">&quot;spec_slope&quot;</span><span class="p">:</span> <span class="n">res_spec_slope</span><span class="p">,</span>
+        <span class="s2">&quot;mean_spec_slope&quot;</span><span class="p">:</span> <span class="n">res_mean_spec_slope</span><span class="p">,</span>
+        <span class="s2">&quot;spec_flux&quot;</span><span class="p">:</span> <span class="n">res_spec_flux</span><span class="p">,</span>
+        <span class="s2">&quot;mean_spec_flux&quot;</span><span class="p">:</span> <span class="n">res_mean_spec_flux</span><span class="p">,</span>
+        <span class="s2">&quot;spec_flat&quot;</span><span class="p">:</span> <span class="n">res_spec_flat</span><span class="p">,</span>
+        <span class="s2">&quot;mean_spec_flat&quot;</span><span class="p">:</span> <span class="n">res_mean_spec_flat</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">res</span></div>
+
+
+
+<div class="viewcode-block" id="calculate_vibrato">
+<a class="viewcode-back" href="../generated/performance.calculate_vibrato.html#performance.calculate_vibrato">[docs]</a>
+<span class="k">def</span> <span class="nf">calculate_vibrato</span><span class="p">(</span><span class="n">note_vals</span><span class="p">,</span> <span class="n">sr</span><span class="p">):</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">note_vals</span><span class="p">)</span>  <span class="c1"># Length of signal</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">note_vals</span><span class="p">)</span> <span class="o">/</span> <span class="n">L</span>  <span class="c1"># Run FFT on normalized note vals</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">L</span><span class="p">)</span> <span class="o">*</span> <span class="n">sr</span> <span class="o">/</span> <span class="n">L</span>  <span class="c1"># Set FFT frequency grid</span>
+
+    <span class="n">vibrato_depth_tmp</span><span class="p">,</span> <span class="n">noteVibratoPos</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">Y</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">Y</span><span class="p">))</span>  <span class="c1"># Find the max value and its position</span>
+    <span class="n">vibrato_depth</span> <span class="o">=</span> <span class="n">vibrato_depth_tmp</span> <span class="o">*</span> <span class="mi">2</span>  <span class="c1"># Multiply the max by 2 to find depth (above and below zero)</span>
+    <span class="n">vibrato_rate</span> <span class="o">=</span> <span class="n">w</span><span class="p">[</span><span class="n">noteVibratoPos</span><span class="p">]</span>  <span class="c1"># Index into FFT frequency grid to find position in Hz</span>
+
+    <span class="k">return</span> <span class="n">vibrato_depth</span><span class="p">,</span> <span class="n">vibrato_rate</span></div>
+
+
+
+<div class="viewcode-block" id="perceived_pitch">
+<a class="viewcode-back" href="../generated/performance.perceived_pitch.html#performance.perceived_pitch">[docs]</a>
+<span class="k">def</span> <span class="nf">perceived_pitch</span><span class="p">(</span><span class="n">f0s</span><span class="p">,</span> <span class="n">sr</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mi">100000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the perceived pitch of a note based on </span>
+<span class="sd">    Gockel, H., B.J.C. Moore,and R.P. Carlyon. 2001. </span>
+<span class="sd">    Influence of rate of change of frequency on the overall </span>
+<span class="sd">    pitch of frequency-modulated Tones. Journal of the </span>
+<span class="sd">    Acoustical Society of America. 109(2):701?12.</span>
+
+<span class="sd">    :param f0s: Vector of fundamental frequency estimates</span>
+<span class="sd">    :param sr: 1/sample rate of the f0 estimates (e.g. the hop rate in Hz of yin)</span>
+<span class="sd">    :param gamma: Sets the relative weighting of quickly changing vs slowly </span>
+<span class="sd">        changing portions of  notes. - a high gamma (e.g., 1000000)  </span>
+<span class="sd">        gives more weight to slowly changing portions.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - res.ons: List of onset times</span>
+<span class="sd">        - res.offs: List of offset times</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Remove NaN values from f0s</span>
+    <span class="n">f0s</span> <span class="o">=</span> <span class="n">f0s</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">f0s</span><span class="p">)]</span>
+    
+    <span class="c1"># Create an index to remove outliers by using the central 80% of the sorted vector</span>
+    <span class="nb">ord</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">f0s</span><span class="p">)</span>
+    <span class="n">ind</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">ord</span><span class="p">)</span><span class="o">*</span><span class="mf">0.1</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">ord</span><span class="p">)</span><span class="o">*</span><span class="mf">0.9</span><span class="p">)]</span>
+
+    <span class="c1"># Calculate the rate of change</span>
+    <span class="n">deriv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">f0s</span><span class="p">)</span> <span class="o">*</span> <span class="n">sr</span><span class="p">,</span> <span class="o">-</span><span class="mi">100</span><span class="p">)</span>        
+            
+    <span class="c1"># Set weights for the quickly changing vs slowly changing portions</span>
+    <span class="c1"># WEIGHTS ARE 0., incorrect!!</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">gamma</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">deriv</span><span class="p">))</span>
+
+    <span class="c1"># But is this?</span>
+    <span class="c1"># weights = np.exp(-gamma / np.abs(deriv))    </span>
+    
+    <span class="c1"># Calculate two versions of the perceived pitch</span>
+    <span class="n">pp1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">f0s</span> <span class="o">*</span> <span class="n">weights</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+    <span class="n">pp2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">f0s</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">*</span> <span class="n">weights</span><span class="p">[</span><span class="n">ind</span><span class="p">])</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="n">ind</span><span class="p">])</span>
+    
+    <span class="k">return</span> <span class="n">pp1</span><span class="p">,</span> <span class="n">pp2</span>    </div>
+
+
+
+<div class="viewcode-block" id="get_cent_vals">
+<a class="viewcode-back" href="../generated/performance.get_cent_vals.html#performance.get_cent_vals">[docs]</a>
+<span class="k">def</span> <span class="nf">get_cent_vals</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">yinres</span><span class="p">,</span> <span class="n">sr</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get cent values (in relation to A, 440 Hz) for each note.</span>
+<span class="sd">    </span>
+<span class="sd">    :param times: Dictionary-like object with &#39;ons&#39; and &#39;offs&#39; representing onset and offset times.</span>
+<span class="sd">    :param yinres: Dictionary-like object with &#39;f0&#39; and &#39;sr&#39;.</span>
+
+<span class="sd">    :return: List of NumPy arrays containing cent values for each note.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">cents</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Index into f0 estimates in YIN structure with onset and offset times</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">[</span><span class="s1">&#39;ons&#39;</span><span class="p">])):</span>
+        <span class="c1"># Define the reference pitch (A4 = 440 Hz)</span>
+        <span class="n">ref_pitch</span> <span class="o">=</span> <span class="mf">440.0</span>
+
+        <span class="n">onset_index</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">times</span><span class="p">[</span><span class="s1">&#39;ons&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="mi">32</span> <span class="o">*</span> <span class="n">sr</span><span class="p">)</span>
+        <span class="n">offset_index</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">times</span><span class="p">[</span><span class="s1">&#39;offs&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="mi">32</span> <span class="o">*</span> <span class="n">sr</span><span class="p">)</span>                        
+
+        <span class="c1"># Example array of frequencies</span>
+        <span class="n">frequencies</span> <span class="o">=</span> <span class="n">yinres</span><span class="p">[</span><span class="s1">&#39;f0&#39;</span><span class="p">][</span><span class="n">onset_index</span><span class="p">:</span><span class="n">offset_index</span><span class="p">]</span>
+
+        <span class="c1"># Calculate the cent values for each frequency</span>
+        <span class="n">cent</span> <span class="o">=</span> <span class="mi">1200</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">frequencies</span> <span class="o">/</span> <span class="n">ref_pitch</span><span class="p">)</span>
+        
+        <span class="c1"># average_cent = np.mean(cent)        </span>
+        
+        <span class="c1"># WITHOUT AVERAGING        </span>
+        <span class="c1"># cents.append(cent)</span>
+
+        <span class="c1"># Check if the array is not empty and contains finite values</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">cent</span><span class="p">)):</span>
+        <span class="c1"># Calculate the mean only if the array is not empty and has finite values</span>
+            <span class="c1"># average_cent = np.nanmean(cent)</span>
+            <span class="c1"># cents.append(average_cent)</span>
+            <span class="n">cents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cent</span><span class="p">)</span>            
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">cents</span>  </div>
+
+
+
+<div class="viewcode-block" id="smooth_note">
+<a class="viewcode-back" href="../generated/performance.smooth_note.html#performance.smooth_note">[docs]</a>
+<span class="k">def</span> <span class="nf">smooth_note</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x_mid</span><span class="p">,</span> <span class="n">y_mid</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate a smoothed trajectory of a note by connecting the</span>
+<span class="sd">    midpoints between peaks and troughs.</span>
+
+<span class="sd">    :param x: Inputted signal.</span>
+<span class="sd">    :param x_mid: Midpoint locations in x axis between peaks and troughs. </span>
+<span class="sd">    :param y_mid: Midpoint locations in y axis between peaks and troughs.</span>
+
+<span class="sd">    :return: Smoothed version of inputted signal x.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Make a note the same size as x</span>
+    <span class="n">smoothed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="c1"># But only populate it with non-zero elements between the x_mid values</span>
+    <span class="n">x_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">x_mid</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">x_mid</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Interpolate the mid points at all of the sample points in the signal</span>
+    <span class="n">interp_func</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">x_mid</span><span class="p">,</span> <span class="n">y_mid</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="s1">&#39;extrapolate&#39;</span><span class="p">)</span>    
+    <span class="n">smoothed</span><span class="p">[</span><span class="n">x_range</span><span class="p">]</span> <span class="o">=</span> <span class="n">interp_func</span><span class="p">(</span><span class="n">x_range</span><span class="p">)</span>        
+    <span class="k">return</span> <span class="n">smoothed</span></div>
+
+
+
+<div class="viewcode-block" id="note_dct">
+<a class="viewcode-back" href="../generated/performance.note_dct.html#performance.note_dct">[docs]</a>
+<span class="k">def</span> <span class="nf">note_dct</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">Ndct</span><span class="p">,</span> <span class="n">sr</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the DCT of a signal and approximate it with the </span>
+<span class="sd">    first Ndct coefficients  x is the signal  Ndct is the number </span>
+<span class="sd">    of DCT coefficients to be calculated sr is the sampling rate </span>
+<span class="sd">    of the signal</span>
+
+<span class="sd">    :param x: Signal to be analyzed.</span>
+<span class="sd">    :param Ndct: Number of DCT coefficients to be calculated.</span>
+<span class="sd">    :param sr: Sampling rate.</span>
+
+<span class="sd">    :returns:    </span>
+<span class="sd">        - coefs: DCT coefficients.</span>
+<span class="sd">        - approx: Reconstruction of X using the Ndct number of DCT coefficients.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Calculate DCT coefficients using librosa&#39;s dct function    </span>
+    <span class="n">coefsTmp</span> <span class="o">=</span> <span class="n">dct</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">coefsTmp</span><span class="p">[</span><span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">coefsTmp</span><span class="p">),</span> <span class="n">Ndct</span><span class="p">):]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># Divide by square root of N so that everything is divided by N instead of</span>
+    <span class="c1"># the square root of N, because it is already divided by the sqrt of N</span>
+    <span class="n">coefs</span> <span class="o">=</span> <span class="n">coefsTmp</span><span class="p">[:</span><span class="nb">min</span><span class="p">(</span><span class="n">Ndct</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">coefsTmp</span><span class="p">))]</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">coefsTmp</span><span class="p">))</span>
+
+    <span class="c1"># The sampling rate divided by the length of the signal is the lowest</span>
+    <span class="c1"># frequency represented by the DCT.  Multiplying by it makes the 1st</span>
+    <span class="c1"># coefficient into cents/second. For curves of constant slope, this makes</span>
+    <span class="c1"># the 1st coefficient approximately independent of the length of the</span>
+    <span class="c1"># signal. Multiplying by that frequency squared makes the 2nd coefficient into</span>
+    <span class="c1"># cents/second^2. For curves of constant 2nd derivative, this makes the 2nd</span>
+    <span class="c1"># coefficient approximately independent of the length of the signal, etc.</span>
+    <span class="c1">#</span>
+    <span class="c1"># For 2nd coefficient, multiple by -1 so that it represents positive slope</span>
+    <span class="n">coefs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">coefs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">*</span> <span class="p">(</span><span class="n">sr</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">**</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">coefs</span><span class="p">))</span>
+    <span class="n">coefs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">coefs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  
+
+    <span class="c1"># reconstruct X using the DCT coefficients</span>
+    <span class="n">approx</span> <span class="o">=</span> <span class="n">idct</span><span class="p">(</span><span class="n">coefsTmp</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="s1">&#39;ortho&#39;</span><span class="p">)</span>    
+
+    
+    <span class="k">return</span> <span class="n">coefs</span><span class="p">,</span> <span class="n">approx</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, AMPACT Research Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
