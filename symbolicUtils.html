@@ -22,8 +22,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="symbolicUtils._escape_cdata" href="generated/symbolicUtils._escape_cdata.html" />
-    <link rel="prev" title="symbolic.Score" href="generated/symbolic.Score.html" /> 
+    <link rel="prev" title="symbolic" href="symbolic.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -49,31 +48,28 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="alignment.html">alignment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="alignmentUtils.html">alignmentUtils</a></li>
 <li class="toctree-l1"><a class="reference internal" href="performance.html">performance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="symbolic.html">symbolic</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">symbolicUtils</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="generated/symbolicUtils._escape_cdata.html">symbolicUtils._escape_cdata</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/symbolicUtils.addMEINote.html">symbolicUtils.addMEINote</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/symbolicUtils.addTieBreakers.html">symbolicUtils.addTieBreakers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/symbolicUtils.kernClefHelper.html">symbolicUtils.kernClefHelper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/symbolicUtils.combineRests.html">symbolicUtils.combineRests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/symbolicUtils.combineUnisons.html">symbolicUtils.combineUnisons</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/symbolicUtils.fromJSON.html">symbolicUtils.fromJSON</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/symbolicUtils._id_gen.html">symbolicUtils._id_gen</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/symbolicUtils.indentMEI.html">symbolicUtils.indentMEI</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/symbolicUtils._kernChordHelper.html">symbolicUtils._kernChordHelper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/symbolicUtils.kernFooter.html">symbolicUtils.kernFooter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/symbolicUtils.kernHeader.html">symbolicUtils.kernHeader</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/symbolicUtils._kernNoteHelper.html">symbolicUtils._kernNoteHelper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/symbolicUtils.kernNRCHelper.html">symbolicUtils.kernNRCHelper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/symbolicUtils.noteRestHelper.html">symbolicUtils.noteRestHelper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/symbolicUtils.remove_namespaces.html">symbolicUtils.remove_namespaces</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/symbolicUtils.removeTied.html">symbolicUtils.removeTied</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/symbolicUtils.snapTo.html">symbolicUtils.snapTo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">symbolicUtils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pyampact.symbolicUtils.addMEINote"><code class="docutils literal notranslate"><span class="pre">addMEINote()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pyampact.symbolicUtils.addTieBreakers"><code class="docutils literal notranslate"><span class="pre">addTieBreakers()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pyampact.symbolicUtils.combineRests"><code class="docutils literal notranslate"><span class="pre">combineRests()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pyampact.symbolicUtils.combineUnisons"><code class="docutils literal notranslate"><span class="pre">combineUnisons()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pyampact.symbolicUtils.fromJSON"><code class="docutils literal notranslate"><span class="pre">fromJSON()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pyampact.symbolicUtils.indentMEI"><code class="docutils literal notranslate"><span class="pre">indentMEI()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pyampact.symbolicUtils.kernClefHelper"><code class="docutils literal notranslate"><span class="pre">kernClefHelper()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pyampact.symbolicUtils.kernFooter"><code class="docutils literal notranslate"><span class="pre">kernFooter()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pyampact.symbolicUtils.kernHeader"><code class="docutils literal notranslate"><span class="pre">kernHeader()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pyampact.symbolicUtils.kernNRCHelper"><code class="docutils literal notranslate"><span class="pre">kernNRCHelper()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pyampact.symbolicUtils.noteRestHelper"><code class="docutils literal notranslate"><span class="pre">noteRestHelper()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pyampact.symbolicUtils.removeTied"><code class="docutils literal notranslate"><span class="pre">removeTied()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pyampact.symbolicUtils.remove_namespaces"><code class="docutils literal notranslate"><span class="pre">remove_namespaces()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pyampact.symbolicUtils.snapTo"><code class="docutils literal notranslate"><span class="pre">snapTo()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -102,75 +98,284 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="symbolicutils">
-<span id="module-symbolicUtils"></span><h1>symbolicUtils<a class="headerlink" href="#symbolicutils" title="Link to this heading"></a></h1>
-<table class="autosummary longtable docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/symbolicUtils._escape_cdata.html#symbolicUtils._escape_cdata" title="symbolicUtils._escape_cdata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_escape_cdata</span></code></a>(text)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/symbolicUtils.addMEINote.html#symbolicUtils.addMEINote" title="symbolicUtils.addMEINote"><code class="xref py py-obj docutils literal notranslate"><span class="pre">addMEINote</span></code></a>(note, parent[, syl])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/symbolicUtils.addTieBreakers.html#symbolicUtils.addTieBreakers" title="symbolicUtils.addTieBreakers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">addTieBreakers</span></code></a>(partList)</p></td>
-<td><p>Add tie-breaker level to index.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/symbolicUtils.kernClefHelper.html#symbolicUtils.kernClefHelper" title="symbolicUtils.kernClefHelper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kernClefHelper</span></code></a>(clef)</p></td>
-<td><p>Parse a music21 clef object into the corresponding humdrum syntax token.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/symbolicUtils.combineRests.html#symbolicUtils.combineRests" title="symbolicUtils.combineRests"><code class="xref py py-obj docutils literal notranslate"><span class="pre">combineRests</span></code></a>(col)</p></td>
-<td><p>Helper function for the <cite>notes</cite> method.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/symbolicUtils.combineUnisons.html#symbolicUtils.combineUnisons" title="symbolicUtils.combineUnisons"><code class="xref py py-obj docutils literal notranslate"><span class="pre">combineUnisons</span></code></a>(col)</p></td>
-<td><p>Helper function for the <cite>notes</cite> method.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/symbolicUtils.fromJSON.html#symbolicUtils.fromJSON" title="symbolicUtils.fromJSON"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fromJSON</span></code></a>(json_path)</p></td>
-<td><p>Load a JSON file into a pandas DataFrame.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/symbolicUtils._id_gen.html#symbolicUtils._id_gen" title="symbolicUtils._id_gen"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_id_gen</span></code></a>([start])</p></td>
-<td><p>Generate a unique ID for each instance of the Score class.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/symbolicUtils.indentMEI.html#symbolicUtils.indentMEI" title="symbolicUtils.indentMEI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">indentMEI</span></code></a>(elem[, indentation, level])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/symbolicUtils._kernChordHelper.html#symbolicUtils._kernChordHelper" title="symbolicUtils._kernChordHelper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_kernChordHelper</span></code></a>(_chord)</p></td>
-<td><p>Parse a music21 chord object into a kern chord token.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/symbolicUtils.kernFooter.html#symbolicUtils.kernFooter" title="symbolicUtils.kernFooter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kernFooter</span></code></a>(fileExtension)</p></td>
-<td><p>Return a string of the kern format footer global comments.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/symbolicUtils.kernHeader.html#symbolicUtils.kernHeader" title="symbolicUtils.kernHeader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kernHeader</span></code></a>(metadata)</p></td>
-<td><p>Return a string of the kern format header global comments.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/symbolicUtils._kernNoteHelper.html#symbolicUtils._kernNoteHelper" title="symbolicUtils._kernNoteHelper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_kernNoteHelper</span></code></a>(_note)</p></td>
-<td><p>Parse a music21 note object into a kern note token.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/symbolicUtils.kernNRCHelper.html#symbolicUtils.kernNRCHelper" title="symbolicUtils.kernNRCHelper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kernNRCHelper</span></code></a>(nrc)</p></td>
-<td><p>Convert a music21 note, rest, or chord object to its corresponding kern token.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/symbolicUtils.noteRestHelper.html#symbolicUtils.noteRestHelper" title="symbolicUtils.noteRestHelper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">noteRestHelper</span></code></a>(nr)</p></td>
-<td><p>Helper function for the <cite>notes</cite> method.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/symbolicUtils.remove_namespaces.html#symbolicUtils.remove_namespaces" title="symbolicUtils.remove_namespaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_namespaces</span></code></a>(doc)</p></td>
-<td><p>Indent an MEI (Music Encoding Initiative) element for better readability.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/symbolicUtils.removeTied.html#symbolicUtils.removeTied" title="symbolicUtils.removeTied"><code class="xref py py-obj docutils literal notranslate"><span class="pre">removeTied</span></code></a>(noteOrRest)</p></td>
-<td><p>Helper function for the <cite>_m21ObjectsNoTies</cite> method.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/symbolicUtils.snapTo.html#symbolicUtils.snapTo" title="symbolicUtils.snapTo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">snapTo</span></code></a>(data[, snap_to, filler, output])</p></td>
-<td><p><p>&quot;</p>
-</p></td>
-</tr>
-</tbody>
-</table>
+  <section id="module-pyampact.symbolicUtils">
+<span id="symbolicutils"></span><h1>symbolicUtils<a class="headerlink" href="#module-pyampact.symbolicUtils" title="Link to this heading"></a></h1>
+<section id="id1">
+<h2>symbolicUtils<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyampact.symbolicUtils.addMEINote">
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolicUtils.</span></span><span class="sig-name descname"><span class="pre">addMEINote</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">note</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">syl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolicUtils.html#addMEINote"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.symbolicUtils.addMEINote" title="Link to this definition"></a></dt>
+<dd><p>Add a note element to an MEI parent element from a music21 note object.</p>
+<p>This function creates a new ‘note’ subelement under the given parent
+element, and sets its attributes based on the properties of the given note.
+It also handles grace notes, accidentals, lyrics, and dynamics if any of
+these are found on the note.</p>
+<p>Parameters:
+note (music21.note.Note): The note to add. The note’s properties (octave,</p>
+<blockquote>
+<div><p>step, id, duration, pitch, lyric, expressions) are used to set the
+attributes of the new MEI element.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>parent (xml.etree.ElementTree.Element): The parent element to which the new</dt><dd><p>‘note’ element will be added.</p>
+</dd>
+<dt>syl (str, optional): A syllable to add to the note as a ‘syl’ element. If</dt><dd><p>not provided, the note’s lyric property is used.</p>
+</dd>
+</dl>
+<p>Returns:
+xml.etree.ElementTree.Element: The new ‘note’ element.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyampact.symbolicUtils.addTieBreakers">
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolicUtils.</span></span><span class="sig-name descname"><span class="pre">addTieBreakers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">partList</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolicUtils.html#addTieBreakers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.symbolicUtils.addTieBreakers" title="Link to this definition"></a></dt>
+<dd><p>Add tie-breaker level to index. Changes parts in partList in place and
+returns None.</p>
+<p>This is particularly useful to disambiguate the order of events that
+happen at the same offset, which is an issue most commonly encountered
+with grace notes since they have no duration. This is needed in several
+<cite>Score</cite> methods because you cannot append multiple pandas series (parts)
+if they have non-unique indices. So this method is needed internally to
+be able to use pd.concat to turn a list of series into a single dataframe
+if any of those series has a repeated value in its index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>partList</strong> – A list of pandas Series, each representing a part in
+the score.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyampact.symbolicUtils.combineRests">
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolicUtils.</span></span><span class="sig-name descname"><span class="pre">combineRests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">col</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolicUtils.html#combineRests"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.symbolicUtils.combineRests" title="Link to this definition"></a></dt>
+<dd><p>Helper function for the <cite>notes</cite> method.</p>
+<p>Combine consecutive rests in a given voice. Non-first consecutive rests
+will be removed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>col</strong> – A pandas Series representing a voice.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The same pandas Series with consecutive rests combined.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyampact.symbolicUtils.combineUnisons">
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolicUtils.</span></span><span class="sig-name descname"><span class="pre">combineUnisons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">col</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolicUtils.html#combineUnisons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.symbolicUtils.combineUnisons" title="Link to this definition"></a></dt>
+<dd><p>Helper function for the <cite>notes</cite> method.</p>
+<p>Combine consecutive unisons in a given voice. Non-first consecutive unisons
+will be removed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>col</strong> – A pandas Series representing a voice.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The same pandas Series with consecutive unisons combined.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyampact.symbolicUtils.fromJSON">
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolicUtils.</span></span><span class="sig-name descname"><span class="pre">fromJSON</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolicUtils.html#fromJSON"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.symbolicUtils.fromJSON" title="Link to this definition"></a></dt>
+<dd><p>Load a JSON or dez file/url into a pandas DataFrame.</p>
+<p>The outermost keys of the JSON object are interpreted as the index values of
+the DataFrame and should be in seconds with decimal places allowed. The
+second-level keys become the columns of the DataFrame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>json_path</strong> – Path to a JSON or dez file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A pandas DataFrame representing the JSON data.</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">jsonCDATA()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">nmats()</span></code></p>
+</div>
+<p class="rubric">Example</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">piece</span> <span class="o">=</span> <span class="n">Score</span><span class="p">(</span><span class="s1">&#39;./test_files/CloseToYou.mei.xml&#39;</span><span class="p">)</span>
+<span class="n">piece</span><span class="o">.</span><span class="n">fromJSON</span><span class="p">(</span><span class="n">json_path</span><span class="o">=</span><span class="s1">&#39;./test_files/CloseToYou.json&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyampact.symbolicUtils.indentMEI">
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolicUtils.</span></span><span class="sig-name descname"><span class="pre">indentMEI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indentation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\t'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolicUtils.html#indentMEI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.symbolicUtils.indentMEI" title="Link to this definition"></a></dt>
+<dd><p>Indent an MEI (Music Encoding Initiative) XML element and its children.</p>
+<p>This function recursively indents an XML element and its children for
+pretty printing. The indentation level is increased for each level of
+depth in the XML tree.</p>
+<p>Parameters:
+elem (xml.etree.ElementTree.Element): The XML element to indent.
+indentation (str, optional): The indentation string to use. Default is a</p>
+<blockquote>
+<div><p>tab character. Use a ‘ ‘ (space) for maximally compact output.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>_level (int, optional): The initial indentation level. This parameter is used</dt><dd><p>internally in recursive calls but should not be set by the user.</p>
+</dd>
+</dl>
+<p>Returns:
+None. The function modifies the XML element in place.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyampact.symbolicUtils.kernClefHelper">
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolicUtils.</span></span><span class="sig-name descname"><span class="pre">kernClefHelper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clef</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolicUtils.html#kernClefHelper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.symbolicUtils.kernClefHelper" title="Link to this definition"></a></dt>
+<dd><p>Parse a music21 clef object into the corresponding humdrum syntax token.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>clef</strong> – A music21 clef object.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A string representing the humdrum syntax token for the clef.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyampact.symbolicUtils.kernFooter">
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolicUtils.</span></span><span class="sig-name descname"><span class="pre">kernFooter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fileExtension</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolicUtils.html#kernFooter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.symbolicUtils.kernFooter" title="Link to this definition"></a></dt>
+<dd><p>Return a string of the kern format footer global comments.</p>
+<p>The footer includes the translation date and other relevant metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A string representing the kern format footer.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyampact.symbolicUtils.kernHeader">
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolicUtils.</span></span><span class="sig-name descname"><span class="pre">kernHeader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolicUtils.html#kernHeader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.symbolicUtils.kernHeader" title="Link to this definition"></a></dt>
+<dd><p>Return a string of the kern format header global comments.</p>
+<p>The header includes the composer and title metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A string representing the kern format header.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyampact.symbolicUtils.kernNRCHelper">
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolicUtils.</span></span><span class="sig-name descname"><span class="pre">kernNRCHelper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nrc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolicUtils.html#kernNRCHelper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.symbolicUtils.kernNRCHelper" title="Link to this definition"></a></dt>
+<dd><p>Convert a music21 note, rest, or chord object to its corresponding kern token.</p>
+<p>This method uses the <cite>_kernNoteHelper</cite> and <cite>_kernChordHelper</cite> methods to
+convert note and chord objects, respectively. Rest objects are converted
+directly in this method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nrc</strong> – A music21 note, rest, or chord object to be converted into a
+kern token.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A string representing the kern token.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyampact.symbolicUtils.noteRestHelper">
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolicUtils.</span></span><span class="sig-name descname"><span class="pre">noteRestHelper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolicUtils.html#noteRestHelper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.symbolicUtils.noteRestHelper" title="Link to this definition"></a></dt>
+<dd><p>Helper function for the <cite>notes</cite> method.</p>
+<p>If the note/rest object <cite>nr</cite> is a rest, return ‘r’. Otherwise, return the
+note’s name with octave.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nr</strong> – A note/rest object.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>‘r’ if <cite>nr</cite> is a rest, otherwise the note’s name with octave.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyampact.symbolicUtils.removeTied">
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolicUtils.</span></span><span class="sig-name descname"><span class="pre">removeTied</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">noteOrRest</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolicUtils.html#removeTied"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.symbolicUtils.removeTied" title="Link to this definition"></a></dt>
+<dd><p>Helper function for the <cite>_m21ObjectsNoTies</cite> method.</p>
+<p>Remove tied notes in a given note or rest. Only the first note in a tied
+group will be kept.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>noteOrRest</strong> – A music21 note or rest object.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.nan if the note is tied and not the first in the group,
+otherwise the original note or rest.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyampact.symbolicUtils.remove_namespaces">
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolicUtils.</span></span><span class="sig-name descname"><span class="pre">remove_namespaces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolicUtils.html#remove_namespaces"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.symbolicUtils.remove_namespaces" title="Link to this definition"></a></dt>
+<dd><p>Indent an MEI (Music Encoding Initiative) element for better readability.</p>
+<p>This function recursively indents an MEI element and its children, improving
+the readability of the MEI XML structure. It modifies the input element in-place.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>elem</strong> – An xml.etree.ElementTree.Element representing the MEI element.</p></li>
+<li><p><strong>level</strong> – An integer representing the current indentation level. Default is 0.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyampact.symbolicUtils.snapTo">
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolicUtils.</span></span><span class="sig-name descname"><span class="pre">snapTo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snap_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'forward'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'array'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolicUtils.html#snapTo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.symbolicUtils.snapTo" title="Link to this definition"></a></dt>
+<dd><p>”
+Takes a <cite>harm</cite>, <cite>harmKeys</cite>, <cite>functions</cite>, <cite>chords</cite>, or <cite>cdata</cite> as <cite>data</cite> and
+the <cite>snap_to</cite> and <cite>filler</cite> parameters as described in the former three’s
+doc strings.</p>
+<p>The passed data is returned in the shape of the snap_to dataframe’s columns,
+and any filling operations are applied. The output will be in the form of a
+1D numpy array unless <cite>output</cite> is changed, in which case a series will be
+returned for harm, harmKeys, functions, and chords data, and a dataframe for
+cdata data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – Can be <cite>harm</cite>, <cite>harmKeys</cite>, <cite>functions</cite>, <cite>chords</cite>, or <cite>cdata</cite>.</p></li>
+<li><p><strong>snap_to</strong> – Described in the docstrings of <cite>harm</cite>, <cite>harmKeys</cite>, and
+<cite>functions</cite>.</p></li>
+<li><p><strong>filler</strong> – Described in the docstrings of <cite>harm</cite>, <cite>harmKeys</cite>, and
+<cite>functions</cite>.</p></li>
+<li><p><strong>output</strong> – If changed, a series will be returned for <cite>harm</cite>, <cite>harmKeys</cite>,
+<cite>functions</cite>, and <cite>chords</cite> data, and a dataframe for <cite>cdata</cite> data. Default
+is a 1D numpy array.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The passed data in the shape of the <cite>snap_to</cite> dataframe’s columns
+with any filling operations applied.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="generated/symbolic.Score.html" class="btn btn-neutral float-left" title="symbolic.Score" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="generated/symbolicUtils._escape_cdata.html" class="btn btn-neutral float-right" title="symbolicUtils._escape_cdata" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="symbolic.html" class="btn btn-neutral float-left" title="symbolic" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

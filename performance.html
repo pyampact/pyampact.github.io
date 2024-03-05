@@ -22,8 +22,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="performance.estimate_perceptual_parameters" href="generated/performance.estimate_perceptual_parameters.html" />
-    <link rel="prev" title="alignmentUtils.simmx" href="generated/alignmentUtils.simmx.html" /> 
+    <link rel="next" title="symbolic" href="symbolic.html" />
+    <link rel="prev" title="alignmentUtils" href="alignmentUtils.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -49,17 +49,14 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="alignment.html">alignment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="alignmentUtils.html">alignmentUtils</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">performance</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="generated/performance.estimate_perceptual_parameters.html">performance.estimate_perceptual_parameters</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/performance.calculate_vibrato.html">performance.calculate_vibrato</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/performance.perceived_pitch.html">performance.perceived_pitch</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/performance.get_cent_vals.html">performance.get_cent_vals</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/performance.smooth_note.html">performance.smooth_note</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/performance.note_dct.html">performance.note_dct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">performance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pyampact.performance.estimate_perceptual_parameters"><code class="docutils literal notranslate"><span class="pre">estimate_perceptual_parameters()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pyampact.performance.perceived_pitch"><code class="docutils literal notranslate"><span class="pre">perceived_pitch()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="symbolic.html">symbolic</a></li>
@@ -90,38 +87,53 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="performance">
-<span id="module-performance"></span><h1>performance<a class="headerlink" href="#performance" title="Link to this heading"></a></h1>
-<table class="autosummary longtable docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/performance.estimate_perceptual_parameters.html#performance.estimate_perceptual_parameters" title="performance.estimate_perceptual_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">estimate_perceptual_parameters</span></code></a>(f0_vals, ...)</p></td>
-<td><p>NEEDS INFO UPDATED</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/performance.calculate_vibrato.html#performance.calculate_vibrato" title="performance.calculate_vibrato"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_vibrato</span></code></a>(note_vals, sr)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/performance.perceived_pitch.html#performance.perceived_pitch" title="performance.perceived_pitch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">perceived_pitch</span></code></a>(f0s, sr[, gamma])</p></td>
-<td><p>Calculate the perceived pitch of a note based on Gockel, H., B.J.C.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/performance.get_cent_vals.html#performance.get_cent_vals" title="performance.get_cent_vals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_cent_vals</span></code></a>(times, yinres, sr)</p></td>
-<td><p>Get cent values (in relation to A, 440 Hz) for each note.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/performance.smooth_note.html#performance.smooth_note" title="performance.smooth_note"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_note</span></code></a>(x, x_mid, y_mid)</p></td>
-<td><p>Generate a smoothed trajectory of a note by connecting the midpoints between peaks and troughs.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/performance.note_dct.html#performance.note_dct" title="performance.note_dct"><code class="xref py py-obj docutils literal notranslate"><span class="pre">note_dct</span></code></a>(x, Ndct, sr)</p></td>
-<td><p>Compute the DCT of a signal and approximate it with the first Ndct coefficients  x is the signal  Ndct is the number of DCT coefficients to be calculated sr is the sampling rate of the signal</p></td>
-</tr>
-</tbody>
-</table>
+  <section id="module-pyampact.performance">
+<span id="performance"></span><h1>performance<a class="headerlink" href="#module-pyampact.performance" title="Link to this heading"></a></h1>
+<section id="id1">
+<h2>performance<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyampact.performance.estimate_perceptual_parameters">
+<span class="sig-prename descclassname"><span class="pre">pyampact.performance.</span></span><span class="sig-name descname"><span class="pre">estimate_perceptual_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f0_vals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pwr_vals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SR</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gt_flag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/performance.html#estimate_perceptual_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.performance.estimate_perceptual_parameters" title="Link to this definition"></a></dt>
+<dd><p>NEEDS INFO UPDATED</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyampact.performance.perceived_pitch">
+<span class="sig-prename descclassname"><span class="pre">pyampact.performance.</span></span><span class="sig-name descname"><span class="pre">perceived_pitch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f0s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/performance.html#perceived_pitch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.performance.perceived_pitch" title="Link to this definition"></a></dt>
+<dd><p>Calculate the perceived pitch of a note based on
+Gockel, H., B.J.C. Moore,and R.P. Carlyon. 2001.
+Influence of rate of change of frequency on the overall
+pitch of frequency-modulated Tones. Journal of the
+Acoustical Society of America. 109(2):701?12.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f0s</strong> – Vector of fundamental frequency estimates</p></li>
+<li><p><strong>sr</strong> – 1/sample rate of the f0 estimates (e.g. the hop rate in Hz of yin)</p></li>
+<li><p><strong>gamma</strong> – Sets the relative weighting of quickly changing vs slowly
+changing portions of  notes. - a high gamma (e.g., 1000000)
+gives more weight to slowly changing portions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>pp1: perceived pitch using the entire vector of f0 estimates</p></li>
+<li><p>pp2: perceived pitch using the central 80% of f0 estimates</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="generated/alignmentUtils.simmx.html" class="btn btn-neutral float-left" title="alignmentUtils.simmx" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="generated/performance.estimate_perceptual_parameters.html" class="btn btn-neutral float-right" title="performance.estimate_perceptual_parameters" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="alignmentUtils.html" class="btn btn-neutral float-left" title="alignmentUtils" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="symbolic.html" class="btn btn-neutral float-right" title="symbolic" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
