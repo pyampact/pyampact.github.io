@@ -8,7 +8,7 @@
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
 
   
-    <link rel="canonical" href="https://daniel-mckemie.github.io/_modules/pyampact/alignment.html" />
+    <link rel="canonical" href="https://pyampact.github.io/_modules/pyampact/alignment.html" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -50,6 +50,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../alignment.html">alignment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../alignmentUtils.html">alignmentUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dataCompilation.html">dataCompilation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../performance.html">performance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../symbolic.html">symbolic</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../symbolicUtils.html">symbolicUtils</a></li>
@@ -122,12 +123,10 @@
     
 <div class="viewcode-block" id="run_alignment">
 <a class="viewcode-back" href="../../alignment.html#pyampact.alignment.run_alignment">[docs]</a>
-<span class="k">def</span> <span class="nf">run_alignment</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">original_sr</span><span class="p">,</span> <span class="n">piece</span><span class="p">,</span> <span class="n">means</span><span class="p">,</span> <span class="n">covars</span><span class="p">,</span> <span class="n">nmat</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">target_sr</span><span class="o">=</span><span class="mi">4000</span><span class="p">,</span> <span class="n">nharm</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">win_ms</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">hop</span><span class="o">=</span><span class="mi">32</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">run_alignment</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">original_sr</span><span class="p">,</span> <span class="n">piece</span><span class="p">,</span> <span class="n">nmat</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">target_sr</span><span class="o">=</span><span class="mi">4000</span><span class="p">,</span> <span class="n">nharm</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">win_ms</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">hop</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">showSpec</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;    </span>
-<span class="sd">    Calls the DTW alignment function and refines the results with the HMM</span>
-<span class="sd">    alignment algorithm, with both a basic and modified state spaces (based on the lyrics).</span>
-<span class="sd">    This function returns the results of both the state spaces as well as the YIN analysis</span>
-<span class="sd">    of the specified audio file.</span>
+<span class="sd">    Calls the DTW alignment function.</span>
+
 
 <span class="sd">    :param y: Audio time series</span>
 <span class="sd">    :param original_sr: original sample rate of audio</span>
@@ -139,6 +138,7 @@
 <span class="sd">    :param nharm: Number of harmonics (you need to specify this value)</span>
 <span class="sd">    :param win_ms: Window size in milliseconds (you need to specify this value)</span>
 <span class="sd">    :param hop: Number of samples between successive frames</span>
+<span class="sd">    :param showSpec: Boolean to show the spectrogram</span>
 
 <span class="sd">    :returns: </span>
 <span class="sd">        - align: Dynamic time warping MIDI-audio alignment structure</span>
@@ -162,7 +162,7 @@
     
     <span class="c1"># Run DTW alignment</span>
     <span class="n">align</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">dtw</span><span class="p">,</span> <span class="n">newNmat</span> <span class="o">=</span> <span class="n">run_DTW_alignment</span><span class="p">(</span>
-        <span class="n">y</span><span class="p">,</span> <span class="n">original_sr</span><span class="p">,</span> <span class="n">piece</span><span class="p">,</span> <span class="mf">0.025</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">target_sr</span><span class="p">,</span> <span class="n">nharm</span><span class="p">,</span> <span class="n">win_ms</span><span class="p">,</span> <span class="n">nmat</span><span class="p">)</span>   
+        <span class="n">y</span><span class="p">,</span> <span class="n">original_sr</span><span class="p">,</span> <span class="n">piece</span><span class="p">,</span> <span class="mf">0.050</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">target_sr</span><span class="p">,</span> <span class="n">nharm</span><span class="p">,</span> <span class="n">win_ms</span><span class="p">,</span> <span class="n">hop</span><span class="p">,</span> <span class="n">nmat</span><span class="p">,</span> <span class="n">showSpec</span><span class="p">)</span>   
     
     <span class="n">nmat</span> <span class="o">=</span> <span class="n">newNmat</span>
     <span class="k">return</span> <span class="n">align</span><span class="p">,</span> <span class="n">dtw</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">nmat</span></div>
@@ -173,7 +173,7 @@
 
 <div class="viewcode-block" id="run_DTW_alignment">
 <a class="viewcode-back" href="../../alignment.html#pyampact.alignment.run_DTW_alignment">[docs]</a>
-<span class="k">def</span> <span class="nf">run_DTW_alignment</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">original_sr</span><span class="p">,</span> <span class="n">piece</span><span class="p">,</span> <span class="n">tres</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">target_sr</span><span class="p">,</span> <span class="n">nharm</span><span class="p">,</span> <span class="n">win_ms</span><span class="p">,</span> <span class="n">nmat</span><span class="p">):</span>    
+<span class="k">def</span> <span class="nf">run_DTW_alignment</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">original_sr</span><span class="p">,</span> <span class="n">piece</span><span class="p">,</span> <span class="n">tres</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">target_sr</span><span class="p">,</span> <span class="n">nharm</span><span class="p">,</span> <span class="n">win_ms</span><span class="p">,</span> <span class="n">hop</span><span class="p">,</span> <span class="n">nmat</span><span class="p">,</span> <span class="n">showSpec</span><span class="p">):</span>    
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Perform a dynamic time warping alignment between specified audio and MIDI files.</span>
 
@@ -188,6 +188,7 @@
 <span class="sd">    :param target_sr: Target sample rate (you need to specify this value)</span>
 <span class="sd">    :param nharm: Number of harmonics (you need to specify this value)</span>
 <span class="sd">    :param win_ms: Window size in milliseconds (you need to specify this value)</span>
+<span class="sd">    :param showSpec: Boolean to show the spectrogram</span>
 
 <span class="sd">    :returns:</span>
 <span class="sd">        - align: Dynamic time warping MIDI-audio alignment structure</span>
@@ -207,7 +208,7 @@
     
     
     <span class="n">m</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">N</span> <span class="o">=</span> <span class="n">align_midi_wav</span><span class="p">(</span>
-        <span class="n">piece</span><span class="p">,</span> <span class="n">WF</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">original_sr</span><span class="p">,</span> <span class="n">TH</span><span class="o">=</span><span class="n">tres</span><span class="p">,</span> <span class="n">ST</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">tsr</span><span class="o">=</span><span class="n">target_sr</span><span class="p">,</span> <span class="n">nhar</span><span class="o">=</span><span class="n">nharm</span><span class="p">,</span> <span class="n">wms</span><span class="o">=</span><span class="n">win_ms</span><span class="p">)</span>
+        <span class="n">piece</span><span class="p">,</span> <span class="n">WF</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">original_sr</span><span class="p">,</span> <span class="n">TH</span><span class="o">=</span><span class="n">tres</span><span class="p">,</span> <span class="n">ST</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">tsr</span><span class="o">=</span><span class="n">target_sr</span><span class="p">,</span> <span class="n">nhar</span><span class="o">=</span><span class="n">nharm</span><span class="p">,</span> <span class="n">hop</span><span class="o">=</span><span class="n">hop</span><span class="p">,</span> <span class="n">wms</span><span class="o">=</span><span class="n">win_ms</span><span class="p">,</span> <span class="n">showSpec</span><span class="o">=</span><span class="n">showSpec</span><span class="p">)</span>
     
     <span class="n">dtw</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="n">m</span><span class="p">,</span>
@@ -221,12 +222,6 @@
     
     <span class="n">spec</span> <span class="o">=</span> <span class="n">dtw</span><span class="p">[</span><span class="s1">&#39;D&#39;</span><span class="p">]</span>
     
-    <span class="c1"># print(&#39;alignment.py line 137&#39;)</span>
-    <span class="c1"># print(&#39;Size of M&#39;, M.shape)</span>
-    <span class="c1"># print(&#39;Size of D&#39;, spec.shape)</span>
-    
-    <span class="c1"># np.savetxt(&#39;./output_files/spec_runDWTAlignment.csv&#39;, spec, delimiter=&#39;,&#39;)</span>
-    <span class="c1"># sys.exit()</span>
     
     <span class="c1"># Iterate through each key-value pair (dataframe) in the nmat dictionary</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">df</span> <span class="ow">in</span> <span class="n">nmat</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -283,7 +278,7 @@
 
 <div class="viewcode-block" id="align_midi_wav">
 <a class="viewcode-back" href="../../alignment.html#pyampact.alignment.align_midi_wav">[docs]</a>
-<span class="k">def</span> <span class="nf">align_midi_wav</span><span class="p">(</span><span class="n">piece</span><span class="p">,</span> <span class="n">WF</span><span class="p">,</span> <span class="n">sr</span><span class="p">,</span> <span class="n">TH</span><span class="p">,</span> <span class="n">ST</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">tsr</span><span class="p">,</span> <span class="n">nhar</span><span class="p">,</span> <span class="n">wms</span><span class="p">,</span> <span class="n">showSpec</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>    
+<span class="k">def</span> <span class="nf">align_midi_wav</span><span class="p">(</span><span class="n">piece</span><span class="p">,</span> <span class="n">WF</span><span class="p">,</span> <span class="n">sr</span><span class="p">,</span> <span class="n">TH</span><span class="p">,</span> <span class="n">ST</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">tsr</span><span class="p">,</span> <span class="n">nhar</span><span class="p">,</span> <span class="n">wms</span><span class="p">,</span> <span class="n">hop</span><span class="p">,</span> <span class="n">showSpec</span><span class="p">):</span>    
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Align a midi file to a wav file using the &quot;peak structure</span>
 <span class="sd">    distance&quot; of Orio et al. that use the MIDI notes to build </span>
@@ -293,6 +288,7 @@
 <span class="sd">    :param WF: Audio time series of file</span>
 <span class="sd">    :param TH: is the time step resolution (default 0.050)</span>
 <span class="sd">    :param ST: is the similarity type: 0 (default) is triangle inequality</span>
+<span class="sd">    :param showSpec: Boolean to show the spectrogram</span>
 
 <span class="sd">    :returns:</span>
 <span class="sd">        - m: Is the map s.t. M(:,m)          </span>
@@ -303,48 +299,46 @@
 <span class="sd">        - N: Is Orio-style &quot;peak structure distance&quot;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
         
-    <span class="n">pianoRoll</span> <span class="o">=</span> <span class="n">piece</span><span class="o">.</span><span class="n">pianoRoll</span><span class="p">()</span>      
+    <span class="n">pianoRoll</span> <span class="o">=</span> <span class="n">piece</span><span class="o">.</span><span class="n">pianoRoll</span><span class="p">()</span>
 
     <span class="c1"># Construct N</span>
     <span class="n">sampled_grid</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">pianoRoll</span><span class="p">:</span>
         <span class="n">sampled_grid</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
-    
-    <span class="n">N</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sampled_grid</span><span class="p">)</span>        
 
-        
-    <span class="c1"># Calculate spectrogram    </span>
-    <span class="n">fft_len</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">wms</span><span class="o">/</span><span class="mi">1000</span><span class="o">*</span><span class="n">tsr</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>    
-    <span class="n">ovlp</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">fft_len</span> <span class="o">-</span> <span class="n">TH</span><span class="o">*</span><span class="n">tsr</span><span class="p">)</span>     
+    <span class="n">N</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sampled_grid</span><span class="p">)</span>
+
+
+    <span class="c1"># Calculate spectrogram</span>
+    <span class="n">fft_len</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">wms</span><span class="o">/</span><span class="mi">1000</span><span class="o">*</span><span class="n">tsr</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">WF</span><span class="p">,</span> <span class="n">orig_sr</span><span class="o">=</span><span class="n">sr</span><span class="p">,</span> <span class="n">target_sr</span><span class="o">=</span><span class="n">tsr</span><span class="p">)</span>
-    
-    <span class="c1"># print(fft_len)</span>
-    <span class="c1"># print(tsr)</span>
-    <span class="c1"># print(TH)</span>
-    <span class="c1"># print(ovlp)</span>
-    <span class="c1"># Compute spectrogram    </span>
-    <span class="n">freqs</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">Sxx</span> <span class="o">=</span> <span class="n">spectrogram</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="n">tsr</span><span class="p">,</span> <span class="n">nperseg</span><span class="o">=</span><span class="n">fft_len</span><span class="p">,</span> <span class="n">noverlap</span><span class="o">=</span><span class="n">ovlp</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="s1">&#39;hann&#39;</span><span class="p">)</span>
-    <span class="c1"># Access the magnitude spectrogram (D)</span>
-    <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Sxx</span><span class="p">)</span>
 
-    
+
+    <span class="c1"># Compute spectrogram</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">librosa</span><span class="o">.</span><span class="n">stft</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">n_fft</span><span class="o">=</span><span class="n">fft_len</span><span class="p">,</span> <span class="n">hop_length</span><span class="o">=</span><span class="n">hop</span><span class="p">))</span>
+    <span class="n">times</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">times_like</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">,</span> <span class="n">hop_length</span><span class="o">=</span><span class="n">hop</span><span class="p">)</span>
+    <span class="n">freqs</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">fft_frequencies</span><span class="p">(</span><span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">,</span> <span class="n">n_fft</span><span class="o">=</span><span class="n">fft_len</span><span class="p">)</span>
+
+
     <span class="k">if</span> <span class="n">showSpec</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="n">alignment_visualiser</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">freqs</span><span class="p">)</span>
-    
-    <span class="n">M</span> <span class="o">=</span> <span class="n">piece</span><span class="o">.</span><span class="n">mask</span><span class="p">(</span><span class="n">sample_rate</span><span class="o">=</span><span class="n">tsr</span><span class="p">,</span> <span class="n">num_harmonics</span><span class="o">=</span><span class="n">nhar</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">winms</span><span class="o">=</span><span class="n">wms</span><span class="p">)</span>        
-        
+        <span class="n">alignment_visualiser</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">showSpec</span><span class="o">=</span><span class="n">showSpec</span><span class="p">)</span>
 
-    <span class="c1"># Calculate the peak-structure-distance similarity matrix    </span>
+    <span class="n">M</span> <span class="o">=</span> <span class="n">piece</span><span class="o">.</span><span class="n">mask</span><span class="p">(</span><span class="n">sample_rate</span><span class="o">=</span><span class="n">tsr</span><span class="p">,</span> <span class="n">num_harmonics</span><span class="o">=</span><span class="n">nhar</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">winms</span><span class="o">=</span><span class="n">wms</span><span class="p">)</span>
+
+
+    <span class="c1"># Calculate the peak-structure-distance similarity matrix</span>
     <span class="k">if</span> <span class="n">ST</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">S</span> <span class="o">=</span> <span class="n">orio_simmx</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">S</span> <span class="o">=</span> <span class="n">simmx</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
-    
+
     <span class="c1"># Ensure no NaNs (only going to happen with simmx)</span>
     <span class="n">S</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">S</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
-   
+
+
     <span class="c1"># Do the DP search</span>
-    <span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">D_dp</span> <span class="o">=</span> <span class="n">dp</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">S</span><span class="p">)</span> 
+    <span class="c1">#p, q, D_dp = dpmod(1 - S)</span>
+    <span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">D_dp</span> <span class="o">=</span> <span class="n">dp</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">S</span><span class="p">)</span>
 
     <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
@@ -360,7 +354,7 @@
 
 <div class="viewcode-block" id="alignment_visualiser">
 <a class="viewcode-back" href="../../alignment.html#pyampact.alignment.alignment_visualiser">[docs]</a>
-<span class="k">def</span> <span class="nf">alignment_visualiser</span><span class="p">(</span><span class="n">audio_spec</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">freqs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fig</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">showSpec</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>    
+<span class="k">def</span> <span class="nf">alignment_visualiser</span><span class="p">(</span><span class="n">audio_spec</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">freqs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fig</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">showSpec</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>    
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;    </span>
 <span class="sd">    Plots a gross DTW alignment overlaid with the fine alignment</span>
 <span class="sd">    resulting from the HMM aligner on the output of YIN.  Trace(1,:)</span>
@@ -378,14 +372,15 @@
     
     
     <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">freqs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="n">showSpec</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">audio_spec</span><span class="p">),</span> <span class="n">shading</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">audio_spec</span><span class="p">)))</span>  <span class="c1"># Use vmax to set the color scale</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">audio_spec</span><span class="p">)),</span> <span class="n">shading</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">)</span>  <span class="c1"># Convert complex to real and take the magnitude</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency (Hz)&#39;</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time (s)&#39;</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Alignment Spectrogram&#39;</span><span class="p">)</span>    
         <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Power/Frequency (dB/Hz)&#39;</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;To show spectrogram, make sure to provide freqs/times and set showSpec=True&quot;</span><span class="p">)</span></div>
+        <span class="c1"># print(&quot;To show spectrogram, make sure to provide freqs/times matrices and set showSpec=True&quot;)</span>
+        <span class="k">return</span></div>
 
     
     
@@ -465,7 +460,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2023, AMPACT Research Team.</p>
+    <p>&#169; Copyright 2024, AMPACT Research Team.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

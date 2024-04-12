@@ -8,7 +8,7 @@
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
 
   
-    <link rel="canonical" href="https://daniel-mckemie.github.io/_modules/pyampact/symbolicUtils.html" />
+    <link rel="canonical" href="https://pyampact.github.io/_modules/pyampact/symbolicUtils.html" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -50,6 +50,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../alignment.html">alignment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../alignmentUtils.html">alignmentUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dataCompilation.html">dataCompilation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../performance.html">performance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../symbolic.html">symbolic</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../symbolicUtils.html">symbolicUtils</a></li>
@@ -453,7 +454,8 @@
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_data</span><span class="p">:</span>
             <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_data</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">json_path</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">json_path</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.dez&#39;</span><span class="p">))</span> <span class="ow">or</span> <span class="n">json_path</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.dez&#39;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="p">((</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">json_path</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">json_path</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.dez&#39;</span><span class="p">))</span>
+        <span class="ow">or</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">json_path</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">json_path</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.dez&#39;</span><span class="p">))):</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_records</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">])</span>
         <span class="k">if</span> <span class="s1">&#39;start&#39;</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
             <span class="n">df</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
@@ -713,22 +715,22 @@
 <a class="viewcode-back" href="../../symbolicUtils.html#pyampact.symbolicUtils.snapTo">[docs]</a>
 <span class="k">def</span> <span class="nf">snapTo</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">snap_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filler</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;</span>
-<span class="sd">    Takes a `harm`, `harmKeys`, `functions`, `chords`, or `cdata` as `data` and</span>
+<span class="sd">    Takes a `harm`, `keys`, `functions`, `chords`, or `cdata` as `data` and</span>
 <span class="sd">    the `snap_to` and `filler` parameters as described in the former three&#39;s </span>
 <span class="sd">    doc strings.</span>
 
 <span class="sd">    The passed data is returned in the shape of the snap_to dataframe&#39;s columns,</span>
 <span class="sd">    and any filling operations are applied. The output will be in the form of a </span>
 <span class="sd">    1D numpy array unless `output` is changed, in which case a series will be </span>
-<span class="sd">    returned for harm, harmKeys, functions, and chords data, and a dataframe for </span>
+<span class="sd">    returned for harm, keys, functions, and chords data, and a dataframe for </span>
 <span class="sd">    cdata data.</span>
 
-<span class="sd">    :param data: Can be `harm`, `harmKeys`, `functions`, `chords`, or `cdata`.</span>
-<span class="sd">    :param snap_to: Described in the docstrings of `harm`, `harmKeys`, and </span>
+<span class="sd">    :param data: Can be `harm`, `keys`, `functions`, `chords`, or `cdata`.</span>
+<span class="sd">    :param snap_to: Described in the docstrings of `harm`, `keys`, and </span>
 <span class="sd">        `functions`.</span>
-<span class="sd">    :param filler: Described in the docstrings of `harm`, `harmKeys`, and </span>
+<span class="sd">    :param filler: Described in the docstrings of `harm`, `keys`, and </span>
 <span class="sd">        `functions`.</span>
-<span class="sd">    :param output: If changed, a series will be returned for `harm`, `harmKeys`, </span>
+<span class="sd">    :param output: If changed, a series will be returned for `harm`, `keys`, </span>
 <span class="sd">        `functions`, and `chords` data, and a dataframe for `cdata` data. Default </span>
 <span class="sd">        is a 1D numpy array.</span>
 <span class="sd">    :return: The passed data in the shape of the `snap_to` dataframe&#39;s columns </span>
@@ -742,13 +744,15 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">_data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">snap_to</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">_data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">is_unique</span><span class="p">:</span>
+            <span class="n">_data</span> <span class="o">=</span> <span class="n">_data</span><span class="p">[</span><span class="o">~</span><span class="n">_data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">duplicated</span><span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="s1">&#39;last&#39;</span><span class="p">)]</span>
         <span class="n">_data</span> <span class="o">=</span> <span class="n">_data</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">snap_to</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">filler</span> <span class="o">!=</span> <span class="s1">&#39;.&#39;</span><span class="p">:</span>
         <span class="n">_data</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filler</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">filler</span> <span class="o">=</span> <span class="n">filler</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">filler</span> <span class="o">==</span> <span class="s1">&#39;forward&#39;</span><span class="p">:</span>
-            <span class="n">_data</span><span class="o">.</span><span class="n">ffill</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">_data</span> <span class="o">=</span> <span class="n">_data</span><span class="o">.</span><span class="n">infer_objects</span><span class="p">(</span><span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">filler</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">,</span> <span class="s1">&#39;drop&#39;</span><span class="p">):</span>
                 <span class="n">_data</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -770,7 +774,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2023, AMPACT Research Team.</p>
+    <p>&#169; Copyright 2024, AMPACT Research Team.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

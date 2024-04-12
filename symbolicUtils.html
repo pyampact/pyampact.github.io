@@ -9,7 +9,7 @@
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
   
-    <link rel="canonical" href="https://daniel-mckemie.github.io/symbolicUtils.html" />
+    <link rel="canonical" href="https://pyampact.github.io/symbolicUtils.html" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -52,6 +52,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="alignment.html">alignment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="alignmentUtils.html">alignmentUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataCompilation.html">dataCompilation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="performance.html">performance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="symbolic.html">symbolic</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">symbolicUtils</a><ul>
@@ -341,23 +342,23 @@ the readability of the MEI XML structure. It modifies the input element in-place
 <dt class="sig sig-object py" id="pyampact.symbolicUtils.snapTo">
 <span class="sig-prename descclassname"><span class="pre">pyampact.symbolicUtils.</span></span><span class="sig-name descname"><span class="pre">snapTo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snap_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'forward'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'array'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolicUtils.html#snapTo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.symbolicUtils.snapTo" title="Link to this definition"></a></dt>
 <dd><p>”
-Takes a <cite>harm</cite>, <cite>harmKeys</cite>, <cite>functions</cite>, <cite>chords</cite>, or <cite>cdata</cite> as <cite>data</cite> and
+Takes a <cite>harm</cite>, <cite>keys</cite>, <cite>functions</cite>, <cite>chords</cite>, or <cite>cdata</cite> as <cite>data</cite> and
 the <cite>snap_to</cite> and <cite>filler</cite> parameters as described in the former three’s
 doc strings.</p>
 <p>The passed data is returned in the shape of the snap_to dataframe’s columns,
 and any filling operations are applied. The output will be in the form of a
 1D numpy array unless <cite>output</cite> is changed, in which case a series will be
-returned for harm, harmKeys, functions, and chords data, and a dataframe for
+returned for harm, keys, functions, and chords data, and a dataframe for
 cdata data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> – Can be <cite>harm</cite>, <cite>harmKeys</cite>, <cite>functions</cite>, <cite>chords</cite>, or <cite>cdata</cite>.</p></li>
-<li><p><strong>snap_to</strong> – Described in the docstrings of <cite>harm</cite>, <cite>harmKeys</cite>, and
+<li><p><strong>data</strong> – Can be <cite>harm</cite>, <cite>keys</cite>, <cite>functions</cite>, <cite>chords</cite>, or <cite>cdata</cite>.</p></li>
+<li><p><strong>snap_to</strong> – Described in the docstrings of <cite>harm</cite>, <cite>keys</cite>, and
 <cite>functions</cite>.</p></li>
-<li><p><strong>filler</strong> – Described in the docstrings of <cite>harm</cite>, <cite>harmKeys</cite>, and
+<li><p><strong>filler</strong> – Described in the docstrings of <cite>harm</cite>, <cite>keys</cite>, and
 <cite>functions</cite>.</p></li>
-<li><p><strong>output</strong> – If changed, a series will be returned for <cite>harm</cite>, <cite>harmKeys</cite>,
+<li><p><strong>output</strong> – If changed, a series will be returned for <cite>harm</cite>, <cite>keys</cite>,
 <cite>functions</cite>, and <cite>chords</cite> data, and a dataframe for <cite>cdata</cite> data. Default
 is a 1D numpy array.</p></li>
 </ul>
@@ -381,7 +382,7 @@ with any filling operations applied.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2023, AMPACT Research Team.</p>
+    <p>&#169; Copyright 2024, AMPACT Research Team.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

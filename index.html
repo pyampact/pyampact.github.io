@@ -9,7 +9,7 @@
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
   
-    <link rel="canonical" href="https://daniel-mckemie.github.io/index.html" />
+    <link rel="canonical" href="https://pyampact.github.io/index.html" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -52,6 +52,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="alignment.html">alignment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="alignmentUtils.html">alignmentUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataCompilation.html">dataCompilation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="performance.html">performance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="symbolic.html">symbolic</a></li>
 <li class="toctree-l1"><a class="reference internal" href="symbolicUtils.html">symbolicUtils</a></li>
@@ -83,7 +84,19 @@
              
   <section id="pyampact">
 <h1>pyAMPACT<a class="headerlink" href="#pyampact" title="Link to this heading"></a></h1>
-<p><cite>pyAMPACT</cite> is a python package for XYZ…</p>
+<p><cite>pyAMPACT</cite> (Python-based Automatic Music Performance Analysis and Comparison
+Toolkit) is a python package thatlinks symbolic and audio music representations
+to facilitate score-informed estimation of performance data in audio as well as
+general linking of symbolic and audio music representations with a variety of
+annotations. pyAMPACT  can read a range of symbolic formats and can output
+note-linked audio descriptors/performance data into MEI and Humdrum kern files.
+The audio analysis uses score alignment to calculate time-frequency regions of
+importance for each note in the symbolic representation from which to estimate
+a range of parameters. These include tuning-, dynamics-, and timbre-related
+performance descriptors, while timing-related information is available from
+the score alignment. Beyond performance data estimation, pyAMPACT also
+facilitates multi-modal investigations through its robust infrastructure for
+linking symbolic representations and annotations to audio.</p>
 <section id="welcome-to-pyampact-s-documentation">
 <h2>Welcome to pyAMPACT’s documentation!<a class="headerlink" href="#welcome-to-pyampact-s-documentation" title="Link to this heading"></a></h2>
 <div class="toctree-wrapper compound">
@@ -97,6 +110,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="alignment.html">alignment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="alignmentUtils.html">alignmentUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataCompilation.html">dataCompilation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="performance.html">performance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="symbolic.html">symbolic</a></li>
 <li class="toctree-l1"><a class="reference internal" href="symbolicUtils.html">symbolicUtils</a></li>
@@ -123,7 +137,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2023, AMPACT Research Team.</p>
+    <p>&#169; Copyright 2024, AMPACT Research Team.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

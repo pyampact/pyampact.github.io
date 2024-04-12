@@ -9,7 +9,7 @@
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
   
-    <link rel="canonical" href="https://daniel-mckemie.github.io/alignmentUtils.html" />
+    <link rel="canonical" href="https://pyampact.github.io/alignmentUtils.html" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -22,7 +22,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="performance" href="performance.html" />
+    <link rel="next" title="dataCompilation" href="dataCompilation.html" />
     <link rel="prev" title="alignment" href="alignment.html" /> 
 </head>
 
@@ -55,6 +55,8 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">alignmentUtils</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#id1">alignmentUtils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pyampact.alignmentUtils.dp"><code class="docutils literal notranslate"><span class="pre">dp()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pyampact.alignmentUtils.f0_est_weighted_sum"><code class="docutils literal notranslate"><span class="pre">f0_est_weighted_sum()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pyampact.alignmentUtils.f0_est_weighted_sum_spec"><code class="docutils literal notranslate"><span class="pre">f0_est_weighted_sum_spec()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pyampact.alignmentUtils.fill_priormat_gauss"><code class="docutils literal notranslate"><span class="pre">fill_priormat_gauss()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pyampact.alignmentUtils.fill_trans_mat"><code class="docutils literal notranslate"><span class="pre">fill_trans_mat()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pyampact.alignmentUtils.flatTopGaussIdx"><code class="docutils literal notranslate"><span class="pre">flatTopGaussIdx()</span></code></a></li>
@@ -62,12 +64,12 @@
 <li class="toctree-l2"><a class="reference internal" href="#pyampact.alignmentUtils.g"><code class="docutils literal notranslate"><span class="pre">g()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pyampact.alignmentUtils.gh"><code class="docutils literal notranslate"><span class="pre">gh()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pyampact.alignmentUtils.maptimes"><code class="docutils literal notranslate"><span class="pre">maptimes()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#pyampact.alignmentUtils.mixgauss_prob"><code class="docutils literal notranslate"><span class="pre">mixgauss_prob()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pyampact.alignmentUtils.orio_simmx"><code class="docutils literal notranslate"><span class="pre">orio_simmx()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pyampact.alignmentUtils.simmx"><code class="docutils literal notranslate"><span class="pre">simmx()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pyampact.alignmentUtils.viterbi_path"><code class="docutils literal notranslate"><span class="pre">viterbi_path()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="dataCompilation.html">dataCompilation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="performance.html">performance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="symbolic.html">symbolic</a></li>
 <li class="toctree-l1"><a class="reference internal" href="symbolicUtils.html">symbolicUtils</a></li>
@@ -106,7 +108,64 @@
 <dt class="sig sig-object py" id="pyampact.alignmentUtils.dp">
 <span class="sig-prename descclassname"><span class="pre">pyampact.alignmentUtils.</span></span><span class="sig-name descname"><span class="pre">dp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignmentUtils.html#dp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignmentUtils.dp" title="Link to this definition"></a></dt>
 <dd><p>Use dynamic programming to find a min-cost path through matrix M.
-Return state sequence in p,q</p>
+Return state sequence in p,q.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>M</strong> – 2D numpy array, the input matrix.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing three elements:
+- p: List, the sequence of row indices for the min-cost path.
+- q: List, the sequence of column indices for the min-cost path.
+- D: 2D numpy array, the cost matrix.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyampact.alignmentUtils.f0_est_weighted_sum">
+<span class="sig-prename descclassname"><span class="pre">pyampact.alignmentUtils.</span></span><span class="sig-name descname"><span class="pre">f0_est_weighted_sum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f0i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fMax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fThresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignmentUtils.html#f0_est_weighted_sum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignmentUtils.f0_est_weighted_sum" title="Link to this definition"></a></dt>
+<dd><p>Calculate F0, power, and spectrum for an inputted spectral representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – FxT matrix of complex spectrogram values.</p></li>
+<li><p><strong>f</strong> – FxT matrix of frequencies of each of those spectrogram values.</p></li>
+<li><p><strong>f0i</strong> – 1xT vector of initial estimates of f0 for each time.</p></li>
+<li><p><strong>fMax</strong> – Maximum frequency to consider in weighted sum.</p></li>
+<li><p><strong>fThresh</strong> – Maximum distance in Hz from each harmonic to consider.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing three elements:
+- f0: Vector of estimated f0s from noteStart_s to noteEnd_s.
+- p: Vector of corresponding “powers” from f0EstWeightedSum.
+- strips: Estimated spectrum for each partial.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyampact.alignmentUtils.f0_est_weighted_sum_spec">
+<span class="sig-prename descclassname"><span class="pre">pyampact.alignmentUtils.</span></span><span class="sig-name descname"><span class="pre">f0_est_weighted_sum_spec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noteStart_s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noteEnd_s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">midiNote</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">useIf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignmentUtils.html#f0_est_weighted_sum_spec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignmentUtils.f0_est_weighted_sum_spec" title="Link to this definition"></a></dt>
+<dd><p>Calculate F0, power, and spectrum for a single note.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fileName</strong> – Name of wav file to analyze.</p></li>
+<li><p><strong>noteStart_s</strong> – Start position (in seconds) of note to analyze.</p></li>
+<li><p><strong>noteEnd_s</strong> – End position (in seconds) of note to analyze.</p></li>
+<li><p><strong>noteMidi</strong> – Midi note number of note to analyze.</p></li>
+<li><p><strong>useIf</strong> – If true, use instantaneous frequency, else spectrogram frequencies.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing three elements:
+- f0: Vector of estimated f0s from noteStart_s to noteEnd_s.
+- p: Vector of corresponding “powers” from f0EstWeightedSum.
+- M: Estimated spectrum.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -147,7 +206,7 @@ with each other.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>transseed</strong> – Transition matrix seed.</p></li>
+<li><p><strong>trans_seed</strong> – Transition matrix seed.</p></li>
 <li><p><strong>notes</strong> – Number of notes being aligned.</p></li>
 </ul>
 </dd>
@@ -162,13 +221,27 @@ with each other.</p>
 <span class="sig-prename descclassname"><span class="pre">pyampact.alignmentUtils.</span></span><span class="sig-name descname"><span class="pre">flatTopGaussIdx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bi1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ti1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ti2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bi2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignmentUtils.html#flatTopGaussIdx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignmentUtils.flatTopGaussIdx" title="Link to this definition"></a></dt>
 <dd><p>Create a window function that is zeros, going up to 1s with the left
 half of a gaussian, then ones, then going back down to zeros with
-the right half of another gaussian.  b1(bi1) is the x coordinate 2
-stddevs out from the mean, which is at t1(ti1).  t2(ti2) is the x
-coordinate of the mean of the second gaussian and b2(bi2) is 2
-stddevs out from that.  The points should be in that order.  Vectors
-are indexed intelligently, so you don’t have to worry about
-overflows or underflows.  X is the set of points over which this is
-to be calculated.</p>
+the right half of another gaussian.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – 1D numpy array, the set of points over which this is to be calculated.</p></li>
+<li><p><strong>b1</strong> – Float, the x coordinate 2 stddevs out from the mean of the first gaussian.</p></li>
+<li><p><strong>bi1</strong> – Integer, the index in <cite>b1</cite>.</p></li>
+<li><p><strong>t1</strong> – Float, the x coordinate of the mean of the first gaussian.</p></li>
+<li><p><strong>ti1</strong> – Integer, the index in <cite>t1</cite>.</p></li>
+<li><p><strong>t2</strong> – Float, the x coordinate of the mean of the second gaussian.</p></li>
+<li><p><strong>ti2</strong> – Integer, the index in <cite>t2</cite>.</p></li>
+<li><p><strong>b2</strong> – Float, the x coordinate 2 stddevs out from the mean of the second gaussian.</p></li>
+<li><p><strong>bi2</strong> – Integer, the index in <cite>b2</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>1D numpy array, the window function.</p>
+</dd>
+</dl>
+<p>The points should be in that order. Vectors are indexed intelligently,
+so you don’t have to worry about overflows or underflows.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -176,27 +249,67 @@ to be calculated.</p>
 <span class="sig-prename descclassname"><span class="pre">pyampact.alignmentUtils.</span></span><span class="sig-name descname"><span class="pre">flatTopGaussian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignmentUtils.html#flatTopGaussian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignmentUtils.flatTopGaussian" title="Link to this definition"></a></dt>
 <dd><p>Create a window function that is zeros, going up to 1s with the left
 half of a gaussian, then ones, then going back down to zeros with the
-right half of another gaussian.  b1 is the x coordinate 2 stddevs out
-from the mean, which is at t1.  t2 is the x coordinate of the mean of
-the second gaussian and b2 is 2 stddevs out from that.  The points
-should be in that order.  X is the set of points over which this is
-to be calculated.</p>
+right half of another gaussian.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – 1D numpy array, the set of points over which this is to be calculated.</p></li>
+<li><p><strong>b1</strong> – Float, the x coordinate 2 stddevs out from the mean of the first gaussian.</p></li>
+<li><p><strong>t1</strong> – Float, the x coordinate of the mean of the first gaussian.</p></li>
+<li><p><strong>t2</strong> – Float, the x coordinate of the mean of the second gaussian.</p></li>
+<li><p><strong>b2</strong> – Float, the x coordinate 2 stddevs out from the mean of the second gaussian.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>1D numpy array, the window function.</p>
+</dd>
+</dl>
+<p>The points should be in that order. If any of [b1, t1, t2] &gt; any of [t1, t2, b2],
+a message ‘Endpoints are not in order: b1, t1, t2, b2’ will be printed.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyampact.alignmentUtils.g">
 <span class="sig-prename descclassname"><span class="pre">pyampact.alignmentUtils.</span></span><span class="sig-name descname"><span class="pre">g</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignmentUtils.html#g"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignmentUtils.g" title="Link to this definition"></a></dt>
-<dd><p>Get an element from vec, checking bounds.  Domain is the set of points
-that vec is a subset of.</p>
+<dd><p>Get an element from <cite>vec</cite>, checking bounds. <cite>Domain</cite> is the set of points
+that <cite>vec</cite> is a subset of.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vec</strong> – 1D numpy array, the input vector.</p></li>
+<li><p><strong>idx</strong> – Integer, the index in <cite>vec</cite>.</p></li>
+<li><p><strong>domain</strong> – 1D numpy array, the set of points that <cite>vec</cite> is a subset of.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The element from <cite>vec</cite> at index <cite>idx</cite> if <cite>idx</cite> is within the bounds of <cite>vec</cite>,
+otherwise the first element of <cite>domain</cite> if <cite>idx</cite> is less than 1,
+or the last element of <cite>domain</cite> if <cite>idx</cite> is greater than the length of <cite>vec</cite>.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyampact.alignmentUtils.gh">
 <span class="sig-prename descclassname"><span class="pre">pyampact.alignmentUtils.</span></span><span class="sig-name descname"><span class="pre">gh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frac</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignmentUtils.html#gh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignmentUtils.gh" title="Link to this definition"></a></dt>
-<dd><p>Get an element that is frac fraction of the way between v1(i1) and
-v2(i2), but check bounds on both vectors.  Frac of 0 returns v1(i1),
-frac of 1 returns v2(i2), frac of 1/2 (the default) returns half way
-between them.</p>
+<dd><p>Get an element that is <cite>frac</cite> fraction of the way between <cite>v1[i1]</cite> and <cite>v2[i2]</cite>,
+but check bounds on both vectors. <cite>frac</cite> of 0 returns <cite>v1[i1]</cite>, <cite>frac</cite> of 1 returns <cite>v2[i2]</cite>,
+<cite>frac</cite> of 0.5 (the default) returns halfway between them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>v1</strong> – 1D numpy array, the first vector.</p></li>
+<li><p><strong>i1</strong> – Integer, the index in <cite>v1</cite>.</p></li>
+<li><p><strong>v2</strong> – 1D numpy array, the second vector.</p></li>
+<li><p><strong>i2</strong> – Integer, the index in <cite>v2</cite>.</p></li>
+<li><p><strong>domain</strong> – Domain to check bounds on both vectors.</p></li>
+<li><p><strong>frac</strong> – Float, the fraction of the way between <cite>v1[i1]</cite> and <cite>v2[i2]</cite>. Default is 0.5.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer, the element that is <cite>frac</cite> fraction of the way between <cite>v1[i1]</cite> and <cite>v2[i2]</cite>.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -204,63 +317,35 @@ between them.</p>
 <span class="sig-prename descclassname"><span class="pre">pyampact.alignmentUtils.</span></span><span class="sig-name descname"><span class="pre">maptimes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outtime</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignmentUtils.html#maptimes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignmentUtils.maptimes" title="Link to this definition"></a></dt>
 <dd><p>Map the times in t according to the mapping that each point
 in intime corresponds to that value in outtime.</p>
-<p>Parameters:
-- t: 1D numpy array, input times
-- intime: 1D numpy array, input time points
-- outtime: 1D numpy array, output time points</p>
-<p>Returns:
-- u: 2D numpy array, mapped times</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyampact.alignmentUtils.mixgauss_prob">
-<span class="sig-prename descclassname"><span class="pre">pyampact.alignmentUtils.</span></span><span class="sig-name descname"><span class="pre">mixgauss_prob</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">means</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">covariances</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignmentUtils.html#mixgauss_prob"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignmentUtils.mixgauss_prob" title="Link to this definition"></a></dt>
-<dd><p>Notation: Y is observation, M is mixture component, and both may be conditioned on Q.
-If Q does not exist, ignore references to Q=j below.
-Alternatively, you may ignore M if this is a conditional Gaussian.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong><strong>(</strong><strong>:</strong><strong>,</strong><strong>t</strong><strong>)</strong> – t’th observation vector</p></li>
-<li><p><strong>mu</strong><strong>(</strong><strong>:</strong><strong>,</strong><strong>k</strong><strong>)</strong> – E[Y(t) | M(t)=k]
-or mu(:,j,k) = E[Y(t) | Q(t)=j, M(t)=k]</p></li>
-<li><p><strong>Sigma</strong><strong>(</strong><strong>:</strong><strong>,</strong><strong>:</strong><strong>,</strong><strong>j</strong><strong>,</strong><strong>k</strong><strong>)</strong> – Cov[Y(t) | Q(t)=j, M(t)=k]
-or there are various faster, special cases:
-- Sigma() - scalar, spherical covariance independent of M,Q.
-- Sigma(:,:) diag or full, tied params independent of M,Q.
-- Sigma(:,:,j) tied params independent of M.</p></li>
-<li><p><strong>mixmat</strong><strong>(</strong><strong>k</strong><strong>)</strong> – Pr(M(t)=k) = prior
-or mixmat(j,k) = Pr(M(t)=k | Q(t)=j)
-Not needed if M is not defined.</p></li>
-<li><p><strong>unit_norm</strong> – <ul>
-<li><p>optional; if 1, means data(:,i) AND mu(:,i) each have unit norm (slightly faster)</p></li>
-</ul>
-</p></li>
+<li><p><strong>t</strong> – 1D numpy array, input times.</p></li>
+<li><p><strong>intime</strong> – 1D numpy array, input time points.</p></li>
+<li><p><strong>outtime</strong> – 1D numpy array, output time points.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p>B(t) = Pr(y(t)) ||</p></li>
-<li><p>B(i,t) = Pr(y(t) | Q(t)=i)</p></li>
-<li><p>B2(i,k,t) = Pr(y(t) | Q(t)=i, M(t)=k)</p></li>
-</ul>
-</p>
+<dd class="field-even"><p>u, a 2D numpy array of mapped times.</p>
 </dd>
 </dl>
-<p>If the number of mixture components differs depending on Q, just set the trailing
-entries of mixmat to 0, e.g., 2 components if Q=1, 3 components if Q=2,
-then set mixmat(1,3)=0. In this case, B2(1,3,:)=1.0.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyampact.alignmentUtils.orio_simmx">
 <span class="sig-prename descclassname"><span class="pre">pyampact.alignmentUtils.</span></span><span class="sig-name descname"><span class="pre">orio_simmx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignmentUtils.html#orio_simmx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignmentUtils.orio_simmx" title="Link to this definition"></a></dt>
-<dd><p>Calculate an Orio&amp;Schwartz-style (Peak Structure Distance) similarity matrix</p>
-<p>Parameters:
-- M: Binary mask where each column corresponds to a row in the output matrix S
-- D: Regular spectrogram, where columns of S correspond to columns of D</p>
-<p>Returns:
-- S: Similarity matrix</p>
+<dd><p>Calculate an Orio&amp;Schwartz-style (Peak Structure Distance) similarity matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>M</strong> – Binary mask where each column corresponds to a row in the output matrix S.</p></li>
+<li><p><strong>D</strong> – Regular spectrogram, where columns of S correspond to columns of D.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>S, the similarity matrix.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -311,13 +396,13 @@ path = viterbi(prior, transmat, obslik)</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="alignment.html" class="btn btn-neutral float-left" title="alignment" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="performance.html" class="btn btn-neutral float-right" title="performance" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="dataCompilation.html" class="btn btn-neutral float-right" title="dataCompilation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2023, AMPACT Research Team.</p>
+    <p>&#169; Copyright 2024, AMPACT Research Team.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

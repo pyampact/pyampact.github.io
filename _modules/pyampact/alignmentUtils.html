@@ -8,7 +8,7 @@
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
 
   
-    <link rel="canonical" href="https://daniel-mckemie.github.io/_modules/pyampact/alignmentUtils.html" />
+    <link rel="canonical" href="https://pyampact.github.io/_modules/pyampact/alignmentUtils.html" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -50,6 +50,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../alignment.html">alignment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../alignmentUtils.html">alignmentUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dataCompilation.html">dataCompilation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../performance.html">performance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../symbolic.html">symbolic</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../symbolicUtils.html">symbolicUtils</a></li>
@@ -101,11 +102,14 @@
 <span class="sd">    simmx</span>
 <span class="sd">    maptimes</span>
 <span class="sd">    calculate_f0_est</span>
+<span class="sd">    f0_est_weighted_sum</span>
+<span class="sd">    f0_est_weighted_sum_spec</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">librosa</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">gaussian</span>
 <span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">multivariate_normal</span>
@@ -126,7 +130,9 @@
     <span class="s2">&quot;orio_simmx&quot;</span><span class="p">,</span>
     <span class="s2">&quot;simmx&quot;</span><span class="p">,</span>
     <span class="s2">&quot;maptimes&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;calculate_f0_est&quot;</span>
+    <span class="s2">&quot;calculate_f0_est&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;f0_est_weighted_sum&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;f0_est_weighted_sum_spec&quot;</span>
 <span class="p">]</span>
 
 
@@ -135,91 +141,57 @@
 <span class="k">def</span> <span class="nf">dp</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Use dynamic programming to find a min-cost path through matrix M.</span>
-<span class="sd">    Return state sequence in p,q</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-    
+<span class="sd">    Return state sequence in p,q.</span>
+
+<span class="sd">    :param M: 2D numpy array, the input matrix.</span>
+
+<span class="sd">    :return: A tuple containing three elements:</span>
+<span class="sd">        - p: List, the sequence of row indices for the min-cost path.</span>
+<span class="sd">        - q: List, the sequence of column indices for the min-cost path.</span>
+<span class="sd">        - D: 2D numpy array, the cost matrix.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
     <span class="n">r</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">shape</span>
-    
+
     <span class="c1"># Initialize cost matrix D</span>
     <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">c</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="n">D</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-    <span class="n">D</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">D</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>  <span class="c1"># Use np.inf instead of np.nan for proper comparison</span>
+    <span class="n">D</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
     <span class="n">D</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">D</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">M</span>
 
-    <span class="c1"># Initialize traceback matrix phi </span>
-    <span class="c1"># phi = np.zeros((r, c), dtype=int)</span>
-
-    <span class="c1"># Old way...</span>
-    <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">r</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">traceback</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">c</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
 
     <span class="c1"># Dynamic programming loop</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">r</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
-            <span class="n">dmax</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">D</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">dmax</span> <span class="o">==</span> <span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]:</span>
-                <span class="n">tb</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">elif</span> <span class="n">dmax</span> <span class="o">==</span> <span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]:</span>
-                <span class="n">tb</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">min_cost</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">D</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">D</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">min_cost</span> <span class="o">==</span> <span class="n">D</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="p">]:</span>
+                <span class="n">direction</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># Move upward</span>
+            <span class="k">elif</span> <span class="n">min_cost</span> <span class="o">==</span> <span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]:</span>
+                <span class="n">direction</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># Move leftward</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">tb</span> <span class="o">=</span> <span class="mi">2</span>
+                <span class="n">direction</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Move diagonally</span>
 
-            <span class="n">D</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">D</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">dmax</span>
-            <span class="n">phi</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">tb</span>
-    
+            <span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">min_cost</span>
+            <span class="n">traceback</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">direction</span>
+
     <span class="c1"># Traceback from bottom right</span>
-    <span class="n">i</span> <span class="o">=</span> <span class="n">r</span>
-    <span class="n">j</span> <span class="o">=</span> <span class="n">c</span>
-    <span class="n">p</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">q</span> <span class="o">=</span> <span class="p">[]</span>
-    
-    <span class="c1"># while i &gt; 1 or j &gt; 1:  # Ensure both i and j are greater than 1</span>
-    <span class="c1">#     p.insert(0, i - 1)</span>
-    <span class="c1">#     q.insert(0, j - 1 + (c - len(set(q))))  # Adjust the starting value of q        </span>
-    <span class="c1">#     tb = phi[i, j]</span>
-    <span class="c1">#     if tb == 0:</span>
-    <span class="c1">#         i = i - 1</span>
-    <span class="c1">#         j = j - 1</span>
-    <span class="c1">#     elif tb == 2:</span>
-    <span class="c1">#         i = i - 1</span>
-    <span class="c1">#     elif tb == 3:</span>
-    <span class="c1">#         j = j - 1</span>
-    <span class="c1">#     else:</span>
-    <span class="c1">#         raise ValueError(&quot;Invalid traceback value&quot;)</span>
-    
-    <span class="c1"># Old way...</span>
-    <span class="k">while</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">tb</span> <span class="o">=</span> <span class="n">phi</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">tb</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span>
-            <span class="n">j</span> <span class="o">=</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span>
-        <span class="k">elif</span> <span class="n">tb</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span>
-        <span class="k">elif</span> <span class="n">tb</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="n">j</span> <span class="o">=</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">r</span><span class="p">,</span> <span class="n">c</span>
+    <span class="n">p</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># Adjust for 0-based indexing</span>
+        <span class="n">direction</span> <span class="o">=</span> <span class="n">traceback</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="n">j</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">direction</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">-=</span> <span class="mi">1</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid traceback value&quot;</span><span class="p">)</span>
-        <span class="n">p</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
-        <span class="n">q</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+            <span class="n">j</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Adjust for 0-based indexing</span>
+        <span class="n">q</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Adjust for 0-based indexing</span>
 
-    <span class="c1"># Strip off the edges of the D matrix before returning</span>
-    <span class="n">D</span> <span class="o">=</span> <span class="n">D</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="n">c</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>            
-    <span class="c1"># print(p)</span>
-    <span class="c1"># print(q)</span>
-    <span class="c1"># sys.exit()</span>
-
-    <span class="c1"># Calculate the shift value to start q from 0</span>
-    <span class="n">shift_value</span> <span class="o">=</span> <span class="o">-</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-    <span class="c1"># Shift the values of q</span>
-    <span class="n">q_shifted</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span> <span class="o">+</span> <span class="n">shift_value</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">q</span><span class="p">]</span>
-
-    <span class="c1"># Ensure q_shifted ends with the last value of q</span>
-    <span class="n">q_shifted</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">q_shifted</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
-        
-    <span class="k">return</span> <span class="n">p</span><span class="p">,</span> <span class="n">q_shifted</span><span class="p">,</span> <span class="n">D</span></div>
-
+    <span class="k">return</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">D</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">1</span><span class="p">:]</span>  <span class="c1"># Return the corrected sequences and the trimmed D matrix</span></div>
 
 
 
@@ -279,10 +251,18 @@
 <a class="viewcode-back" href="../../alignmentUtils.html#pyampact.alignmentUtils.gh">[docs]</a>
 <span class="k">def</span> <span class="nf">gh</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">i1</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">i2</span><span class="p">,</span> <span class="n">domain</span><span class="p">,</span> <span class="n">frac</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Get an element that is frac fraction of the way between v1(i1) and</span>
-<span class="sd">    v2(i2), but check bounds on both vectors.  Frac of 0 returns v1(i1), </span>
-<span class="sd">    frac of 1 returns v2(i2), frac of 1/2 (the default) returns half way </span>
-<span class="sd">    between them.</span>
+<span class="sd">    Get an element that is `frac` fraction of the way between `v1[i1]` and `v2[i2]`, </span>
+<span class="sd">    but check bounds on both vectors. `frac` of 0 returns `v1[i1]`, `frac` of 1 returns `v2[i2]`, </span>
+<span class="sd">    `frac` of 0.5 (the default) returns halfway between them.</span>
+
+<span class="sd">    :param v1: 1D numpy array, the first vector.</span>
+<span class="sd">    :param i1: Integer, the index in `v1`.</span>
+<span class="sd">    :param v2: 1D numpy array, the second vector.</span>
+<span class="sd">    :param i2: Integer, the index in `v2`.</span>
+<span class="sd">    :param domain: Domain to check bounds on both vectors.</span>
+<span class="sd">    :param frac: Float, the fraction of the way between `v1[i1]` and `v2[i2]`. Default is 0.5.</span>
+
+<span class="sd">    :return: Integer, the element that is `frac` fraction of the way between `v1[i1]` and `v2[i2]`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">x1</span> <span class="o">=</span> <span class="n">g</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">i1</span><span class="p">,</span> <span class="n">domain</span><span class="p">)</span>
     <span class="n">x2</span> <span class="o">=</span> <span class="n">g</span><span class="p">(</span><span class="n">v2</span><span class="p">,</span> <span class="n">i2</span><span class="p">,</span> <span class="n">domain</span><span class="p">)</span>
@@ -290,20 +270,28 @@
 
  
 
-
 <div class="viewcode-block" id="flatTopGaussIdx">
 <a class="viewcode-back" href="../../alignmentUtils.html#pyampact.alignmentUtils.flatTopGaussIdx">[docs]</a>
 <span class="k">def</span> <span class="nf">flatTopGaussIdx</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">bi1</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">ti1</span><span class="p">,</span> <span class="n">t2</span><span class="p">,</span> <span class="n">ti2</span><span class="p">,</span> <span class="n">b2</span><span class="p">,</span> <span class="n">bi2</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create a window function that is zeros, going up to 1s with the left</span>
 <span class="sd">    half of a gaussian, then ones, then going back down to zeros with</span>
-<span class="sd">    the right half of another gaussian.  b1(bi1) is the x coordinate 2</span>
-<span class="sd">    stddevs out from the mean, which is at t1(ti1).  t2(ti2) is the x</span>
-<span class="sd">    coordinate of the mean of the second gaussian and b2(bi2) is 2</span>
-<span class="sd">    stddevs out from that.  The points should be in that order.  Vectors</span>
-<span class="sd">    are indexed intelligently, so you don&#39;t have to worry about</span>
-<span class="sd">    overflows or underflows.  X is the set of points over which this is</span>
-<span class="sd">    to be calculated.</span>
+<span class="sd">    the right half of another gaussian.</span>
+
+<span class="sd">    :param x: 1D numpy array, the set of points over which this is to be calculated.</span>
+<span class="sd">    :param b1: Float, the x coordinate 2 stddevs out from the mean of the first gaussian.</span>
+<span class="sd">    :param bi1: Integer, the index in `b1`.</span>
+<span class="sd">    :param t1: Float, the x coordinate of the mean of the first gaussian.</span>
+<span class="sd">    :param ti1: Integer, the index in `t1`.</span>
+<span class="sd">    :param t2: Float, the x coordinate of the mean of the second gaussian.</span>
+<span class="sd">    :param ti2: Integer, the index in `t2`.</span>
+<span class="sd">    :param b2: Float, the x coordinate 2 stddevs out from the mean of the second gaussian.</span>
+<span class="sd">    :param bi2: Integer, the index in `b2`.</span>
+
+<span class="sd">    :return: 1D numpy array, the window function.</span>
+
+<span class="sd">    The points should be in that order. Vectors are indexed intelligently, </span>
+<span class="sd">    so you don&#39;t have to worry about overflows or underflows.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">b1</span> <span class="o">=</span> <span class="n">g</span><span class="p">(</span><span class="n">b1</span><span class="p">,</span> <span class="n">bi1</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
     <span class="n">t1</span> <span class="o">=</span> <span class="n">g</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">ti1</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
@@ -314,13 +302,20 @@
 
 
 
-
 <div class="viewcode-block" id="g">
 <a class="viewcode-back" href="../../alignmentUtils.html#pyampact.alignmentUtils.g">[docs]</a>
 <span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">domain</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Get an element from vec, checking bounds.  Domain is the set of points</span>
-<span class="sd">    that vec is a subset of.</span>
+<span class="sd">    Get an element from `vec`, checking bounds. `Domain` is the set of points</span>
+<span class="sd">    that `vec` is a subset of.</span>
+
+<span class="sd">    :param vec: 1D numpy array, the input vector.</span>
+<span class="sd">    :param idx: Integer, the index in `vec`.</span>
+<span class="sd">    :param domain: 1D numpy array, the set of points that `vec` is a subset of.</span>
+
+<span class="sd">    :return: The element from `vec` at index `idx` if `idx` is within the bounds of `vec`, </span>
+<span class="sd">            otherwise the first element of `domain` if `idx` is less than 1, </span>
+<span class="sd">            or the last element of `domain` if `idx` is greater than the length of `vec`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">idx</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">domain</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -331,18 +326,24 @@
 
 
 
-
 <div class="viewcode-block" id="flatTopGaussian">
 <a class="viewcode-back" href="../../alignmentUtils.html#pyampact.alignmentUtils.flatTopGaussian">[docs]</a>
 <span class="k">def</span> <span class="nf">flatTopGaussian</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">,</span> <span class="n">b2</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create a window function that is zeros, going up to 1s with the left </span>
 <span class="sd">    half of a gaussian, then ones, then going back down to zeros with the </span>
-<span class="sd">    right half of another gaussian.  b1 is the x coordinate 2 stddevs out </span>
-<span class="sd">    from the mean, which is at t1.  t2 is the x coordinate of the mean of </span>
-<span class="sd">    the second gaussian and b2 is 2 stddevs out from that.  The points </span>
-<span class="sd">    should be in that order.  X is the set of points over which this is </span>
-<span class="sd">    to be calculated.</span>
+<span class="sd">    right half of another gaussian. </span>
+
+<span class="sd">    :param x: 1D numpy array, the set of points over which this is to be calculated.</span>
+<span class="sd">    :param b1: Float, the x coordinate 2 stddevs out from the mean of the first gaussian.</span>
+<span class="sd">    :param t1: Float, the x coordinate of the mean of the first gaussian.</span>
+<span class="sd">    :param t2: Float, the x coordinate of the mean of the second gaussian.</span>
+<span class="sd">    :param b2: Float, the x coordinate 2 stddevs out from the mean of the second gaussian.</span>
+
+<span class="sd">    :return: 1D numpy array, the window function.</span>
+
+<span class="sd">    The points should be in that order. If any of [b1, t1, t2] &gt; any of [t1, t2, b2], </span>
+<span class="sd">    a message &#39;Endpoints are not in order: b1, t1, t2, b2&#39; will be printed.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="n">b1</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">])</span> <span class="o">&gt;</span> <span class="nb">any</span><span class="p">([</span><span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">,</span> <span class="n">b2</span><span class="p">]):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Endpoints are not in order: &#39;</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">,</span> <span class="n">b2</span><span class="p">)</span>
@@ -369,7 +370,6 @@
 
 
 
-
 <div class="viewcode-block" id="viterbi_path">
 <a class="viewcode-back" href="../../alignmentUtils.html#pyampact.alignmentUtils.viterbi_path">[docs]</a>
 <span class="k">def</span> <span class="nf">viterbi_path</span><span class="p">(</span><span class="n">prior</span><span class="p">,</span> <span class="n">transmat</span><span class="p">,</span> <span class="n">obslik</span><span class="p">):</span>
@@ -377,7 +377,6 @@
 <span class="sd">    VITERBI Find the most-probable (Viterbi) path through the HMM state trellis.</span>
 <span class="sd">    path = viterbi(prior, transmat, obslik)</span>
 
-<span class="sd">    </span>
 <span class="sd">    :param prior(i): Pr(Q(1) = i)</span>
 <span class="sd">    :param transmat(i,j): Pr(Q(t+1)=j | Q(t)=i)</span>
 <span class="sd">    :param obslik(i,t): Pr(y(t) | Q(t)=i)</span>
@@ -424,39 +423,37 @@
 
 
 
-<div class="viewcode-block" id="mixgauss_prob">
-<a class="viewcode-back" href="../../alignmentUtils.html#pyampact.alignmentUtils.mixgauss_prob">[docs]</a>
 <span class="k">def</span> <span class="nf">mixgauss_prob</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">means</span><span class="p">,</span> <span class="n">covariances</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Notation: Y is observation, M is mixture component, and both may be conditioned on Q.</span>
-<span class="sd">    If Q does not exist, ignore references to Q=j below.</span>
-<span class="sd">    Alternatively, you may ignore M if this is a conditional Gaussian.</span>
-<span class="sd">    </span>
-<span class="sd">    </span>
-<span class="sd">    :param data(:,t): t&#39;th observation vector     </span>
-<span class="sd">    :param mu(:,k): E[Y(t) | M(t)=k] </span>
-<span class="sd">        or mu(:,j,k) = E[Y(t) | Q(t)=j, M(t)=k]    </span>
-<span class="sd">    :param Sigma(:,:,j,k): Cov[Y(t) | Q(t)=j, M(t)=k]</span>
-<span class="sd">        or there are various faster, special cases:</span>
-<span class="sd">        - Sigma() - scalar, spherical covariance independent of M,Q.</span>
-<span class="sd">        - Sigma(:,:) diag or full, tied params independent of M,Q. </span>
-<span class="sd">        - Sigma(:,:,j) tied params independent of M. </span>
-<span class="sd">    </span>
-<span class="sd">    :param mixmat(k): Pr(M(t)=k) = prior</span>
-<span class="sd">        or mixmat(j,k) = Pr(M(t)=k | Q(t)=j) </span>
-<span class="sd">        Not needed if M is not defined.</span>
-<span class="sd">    </span>
-<span class="sd">    :param unit_norm: - optional; if 1, means data(:,i) AND mu(:,i) each have unit norm (slightly faster)</span>
-<span class="sd">    </span>
-<span class="sd">    :returns:</span>
-<span class="sd">        - B(t) = Pr(y(t)) ||</span>
-<span class="sd">        - B(i,t) = Pr(y(t) | Q(t)=i) </span>
-<span class="sd">        - B2(i,k,t) = Pr(y(t) | Q(t)=i, M(t)=k) </span>
-<span class="sd">    </span>
-<span class="sd">    If the number of mixture components differs depending on Q, just set the trailing</span>
-<span class="sd">    entries of mixmat to 0, e.g., 2 components if Q=1, 3 components if Q=2,</span>
-<span class="sd">    then set mixmat(1,3)=0. In this case, B2(1,3,:)=1.0.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># TODO: This docstring no longer corresponds to the function signature.</span>
+    <span class="c1"># &quot;&quot;&quot;</span>
+    <span class="c1"># Notation: Y is observation, M is mixture component, and both may be conditioned on Q.</span>
+    <span class="c1"># If Q does not exist, ignore references to Q=j below.</span>
+    <span class="c1"># Alternatively, you may ignore M if this is a conditional Gaussian.</span>
+
+    <span class="c1"># :param data(:,t): t&#39;th observation vector     </span>
+    <span class="c1"># :param mu(:,k): E[Y(t) | M(t)=k] </span>
+    <span class="c1">#     or mu(:,j,k) = E[Y(t) | Q(t)=j, M(t)=k]    </span>
+    <span class="c1"># :param Sigma(:,:,j,k): Cov[Y(t) | Q(t)=j, M(t)=k]</span>
+    <span class="c1">#     or there are various faster, special cases:</span>
+    <span class="c1">#     - Sigma() - scalar, spherical covariance independent of M,Q.</span>
+    <span class="c1">#     - Sigma(:,:) diag or full, tied params independent of M,Q. </span>
+    <span class="c1">#     - Sigma(:,:,j) tied params independent of M. </span>
+
+    <span class="c1"># :param mixmat(k): Pr(M(t)=k) = prior</span>
+    <span class="c1">#     or mixmat(j,k) = Pr(M(t)=k | Q(t)=j) </span>
+    <span class="c1">#     Not needed if M is not defined.</span>
+
+    <span class="c1"># :param unit_norm: - optional; if 1, means data(:,i) AND mu(:,i) each have unit norm (slightly faster)</span>
+
+    <span class="c1"># :returns:</span>
+    <span class="c1">#     - B(t) = Pr(y(t)) ||</span>
+    <span class="c1">#     - B(i,t) = Pr(y(t) | Q(t)=i) </span>
+    <span class="c1">#     - B2(i,k,t) = Pr(y(t) | Q(t)=i, M(t)=k) </span>
+    
+    <span class="c1"># If the number of mixture components differs depending on Q, just set the trailing</span>
+    <span class="c1"># entries of mixmat to 0, e.g., 2 components if Q=1, 3 components if Q=2,</span>
+    <span class="c1"># then set mixmat(1,3)=0. In this case, B2(1,3,:)=1.0.</span>
+    <span class="c1"># &quot;&quot;&quot;</span>
 
     <span class="c1"># Create a Gaussian Mixture Model</span>
     <span class="n">gmm</span> <span class="o">=</span> <span class="n">GaussianMixture</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># Specify the number of components</span>
@@ -481,8 +478,7 @@
             <span class="n">likelihood</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">multivariate_normal</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">mean</span><span class="o">=</span><span class="n">means</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">cov</span><span class="o">=</span><span class="n">covariances</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
             <span class="n">likelihood_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">likelihood</span>
 
-    <span class="k">return</span> <span class="n">likelihood_matrix</span></div>
-
+    <span class="k">return</span> <span class="n">likelihood_matrix</span>
 
 
 <span class="c1"># Matrix functions</span>
@@ -498,7 +494,7 @@
 <span class="sd">    and last states should be equivalent, as they will be overlapped</span>
 <span class="sd">    with each other.</span>
 <span class="sd">    </span>
-<span class="sd">    :param transseed: Transition matrix seed.</span>
+<span class="sd">    :param trans_seed: Transition matrix seed.</span>
 <span class="sd">    :param notes: Number of notes being aligned.</span>
 <span class="sd">    </span>
 <span class="sd">    :return trans: Transition matrix</span>
@@ -524,20 +520,18 @@
 
 
 
-
 <div class="viewcode-block" id="orio_simmx">
 <a class="viewcode-back" href="../../alignmentUtils.html#pyampact.alignmentUtils.orio_simmx">[docs]</a>
 <span class="k">def</span> <span class="nf">orio_simmx</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">D</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate an Orio&amp;Schwartz-style (Peak Structure Distance) similarity matrix</span>
+<span class="sd">    Calculate an Orio&amp;Schwartz-style (Peak Structure Distance) similarity matrix.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">    - M: Binary mask where each column corresponds to a row in the output matrix S</span>
-<span class="sd">    - D: Regular spectrogram, where columns of S correspond to columns of D</span>
+<span class="sd">    :param M: Binary mask where each column corresponds to a row in the output matrix S.</span>
+<span class="sd">    :param D: Regular spectrogram, where columns of S correspond to columns of D.</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">    - S: Similarity matrix</span>
+<span class="sd">    :return: S, the similarity matrix.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    
     <span class="c1"># Convert to NumPy arrays if input is DataFrame</span>
     <span class="n">M</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">values</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="k">else</span> <span class="n">M</span>
     <span class="n">D</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">values</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="k">else</span> <span class="n">D</span>
@@ -553,14 +547,17 @@
 
     <span class="n">D</span> <span class="o">=</span> <span class="n">D</span><span class="o">**</span><span class="mi">2</span>
     <span class="n">M</span> <span class="o">=</span> <span class="n">M</span><span class="o">**</span><span class="mi">2</span>
+    
 
     <span class="n">nDc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
     <span class="c1"># avoid div 0&#39;s</span>
     <span class="n">nDc</span> <span class="o">=</span> <span class="n">nDc</span> <span class="o">+</span> <span class="p">(</span><span class="n">nDc</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
 
     <span class="c1"># Evaluate one row at a time</span>
-    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
-        <span class="n">S</span><span class="p">[</span><span class="n">r</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">M</span><span class="p">[:,</span> <span class="n">r</span><span class="p">]</span> <span class="o">@</span> <span class="n">D</span><span class="p">)</span> <span class="o">/</span> <span class="n">nDc</span>
+    <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span> <span class="c1"># Suppress imaginary number warnings, for now</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">RuntimeWarning</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">S</span><span class="p">[</span><span class="n">r</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">M</span><span class="p">[:,</span> <span class="n">r</span><span class="p">]</span> <span class="o">@</span> <span class="n">D</span><span class="p">)</span> <span class="o">/</span> <span class="n">nDc</span>
 
     <span class="k">return</span> <span class="n">S</span></div>
 
@@ -589,7 +586,6 @@
 
 
 
-
 <div class="viewcode-block" id="maptimes">
 <a class="viewcode-back" href="../../alignmentUtils.html#pyampact.alignmentUtils.maptimes">[docs]</a>
 <span class="k">def</span> <span class="nf">maptimes</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">intime</span><span class="p">,</span> <span class="n">outtime</span><span class="p">):</span>    
@@ -597,56 +593,31 @@
 <span class="sd">    Map the times in t according to the mapping that each point</span>
 <span class="sd">    in intime corresponds to that value in outtime.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">    - t: 1D numpy array, input times</span>
-<span class="sd">    - intime: 1D numpy array, input time points</span>
-<span class="sd">    - outtime: 1D numpy array, output time points</span>
+<span class="sd">    :param t: 1D numpy array, input times.</span>
+<span class="sd">    :param intime: 1D numpy array, input time points.</span>
+<span class="sd">    :param outtime: 1D numpy array, output time points.</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">    - u: 2D numpy array, mapped times</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    
-    
-    <span class="c1"># tr, tc = t.shape</span>
-    <span class="c1"># t = t.flatten()    </span>
-    <span class="c1"># nt = len(t)</span>
-    <span class="c1"># nr = len(intime)</span>
-    
-    <span class="c1"># # Decidedly faster than outer-product-array way</span>
-    <span class="c1"># u = t.flatten()</span>
-    <span class="c1"># for i in range(nt):</span>
-    <span class="c1">#     idx = np.min([np.argmax(intime &gt; t[i]), len(outtime) - 1])</span>
-    <span class="c1">#     u[i] = outtime[idx]        </span>
-    
-    <span class="c1"># u = np.reshape(u, (tr, tc))</span>
-     
-    <span class="c1"># # print(u)</span>
-    
-    <span class="c1"># return u</span>
+<span class="sd">    :return: u, a 2D numpy array of mapped times.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
 
     <span class="c1"># Gives ons/offs from score</span>
-    <span class="n">tr</span><span class="p">,</span> <span class="n">tc</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">shape</span>
-    <span class="n">t</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># make into a row</span>
-    <span class="n">nt</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-    <span class="n">nr</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">intime</span><span class="p">)</span>
-    
-    <span class="c1"># Decidedly faster than outer-product-array way</span>
-    <span class="n">u</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="n">tr</span><span class="p">,</span> <span class="n">tc</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">shape</span>  <span class="c1"># Get the dimensions of t</span>
+    <span class="n">t_flat</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>  <span class="c1"># Flatten t</span>
+    <span class="n">nt</span> <span class="o">=</span> <span class="n">t_flat</span><span class="o">.</span><span class="n">size</span>  <span class="c1"># Get the total number of elements in t_flat</span>
+    <span class="n">nr</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">intime</span><span class="p">)</span>  <span class="c1"># Get the length of intime</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">t_flat</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># Copy t_flat into u</span>
+
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nt</span><span class="p">):</span>
-        <span class="c1"># Find the index in intime where the value is greater than t[i]</span>
-        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">intime</span> <span class="o">&gt;</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">])</span>
-        
-        <span class="c1"># Ensure that idx is within the bounds of outtime</span>
-        <span class="n">idx</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">outtime</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>        
-        <span class="n">u</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">outtime</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>        
-    
-    <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="p">(</span><span class="n">tr</span><span class="p">,</span> <span class="n">tc</span><span class="p">))</span>  
-    <span class="c1"># print(u)</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">intime</span> <span class="o">&gt;</span> <span class="n">t_flat</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="nb">len</span><span class="p">(</span><span class="n">outtime</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">u</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">outtime</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+    <span class="n">u</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span> <span class="n">tc</span><span class="p">)</span>  <span class="c1"># Reshape u to match the original dimensions of t</span>
+
     <span class="k">return</span> <span class="n">u</span></div>
 
 
     
-
+<span class="c1"># Old function... March 16</span>
 <span class="k">def</span> <span class="nf">calculate_f0_est</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">hop_length</span><span class="p">,</span> <span class="n">win_ms</span><span class="p">,</span> <span class="n">tsr</span><span class="p">):</span>    
             
     <span class="n">y</span><span class="p">,</span> <span class="n">sr</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">tsr</span><span class="p">)</span>
@@ -685,6 +656,142 @@
     <span class="n">time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">new_time_value</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">f0</span><span class="p">,</span> <span class="n">power</span>
+
+
+<span class="c1"># These are the new functions to replace calculate_f0_est</span>
+<div class="viewcode-block" id="f0_est_weighted_sum">
+<a class="viewcode-back" href="../../alignmentUtils.html#pyampact.alignmentUtils.f0_est_weighted_sum">[docs]</a>
+<span class="k">def</span> <span class="nf">f0_est_weighted_sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">f0i</span><span class="p">,</span> <span class="n">fMax</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">fThresh</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate F0, power, and spectrum for an inputted spectral representation.</span>
+
+<span class="sd">    :param x: FxT matrix of complex spectrogram values.</span>
+<span class="sd">    :param f: FxT matrix of frequencies of each of those spectrogram values.</span>
+<span class="sd">    :param f0i: 1xT vector of initial estimates of f0 for each time.</span>
+<span class="sd">    :param fMax: Maximum frequency to consider in weighted sum.</span>
+<span class="sd">    :param fThresh: Maximum distance in Hz from each harmonic to consider.</span>
+
+<span class="sd">    :return: A tuple containing three elements:</span>
+<span class="sd">        - f0: Vector of estimated f0s from noteStart_s to noteEnd_s.</span>
+<span class="sd">        - p: Vector of corresponding &quot;powers&quot; from f0EstWeightedSum.</span>
+<span class="sd">        - strips: Estimated spectrum for each partial.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># if ~exist(&#39;fMax&#39;, &#39;var&#39;) || isempty(fMax), fMax = 5000; end</span>
+    <span class="c1"># if ~exist(&#39;fThresh&#39;, &#39;var&#39;) || isempty(fThresh), fThresh = 2*median(diff(f(:,1))); end</span>
+    <span class="c1"># if fMax is None:</span>
+    <span class="c1">#     fMax = 5000</span>
+
+    <span class="k">if</span> <span class="n">fThresh</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">fThresh</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]))</span>
+
+
+    <span class="n">f</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">f</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">x2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">x2</span><span class="p">)</span>
+    <span class="n">wNum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">x2</span><span class="p">)</span>
+    <span class="n">wDen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">x2</span><span class="p">)</span>
+    <span class="n">maxI</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">fMax</span> <span class="o">/</span> <span class="n">f0i</span><span class="p">[</span><span class="n">f0i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="n">strips</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">maxI</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">f</span> <span class="o">-</span> <span class="p">(</span><span class="n">f0i</span> <span class="o">*</span> <span class="n">i</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">fThresh</span>
+        <span class="n">strip</span> <span class="o">=</span> <span class="n">x2</span> <span class="o">*</span> <span class="n">mask</span>
+        <span class="n">strips</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">strip</span><span class="p">)</span>
+
+        <span class="n">wNum</span> <span class="o">+=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">i</span> <span class="o">*</span> <span class="n">strip</span><span class="c1">#.toarray()</span>
+        <span class="n">wDen</span> <span class="o">+=</span> <span class="n">strip</span><span class="c1">#.toarray()</span>
+
+    <span class="n">wNum</span> <span class="o">*=</span> <span class="p">(</span><span class="n">f</span> <span class="o">&lt;</span> <span class="n">fMax</span><span class="p">)</span>
+    <span class="n">wDen</span> <span class="o">*=</span> <span class="p">(</span><span class="n">f</span> <span class="o">&lt;</span> <span class="n">fMax</span><span class="p">)</span>
+
+    <span class="n">f0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">wNum</span> <span class="o">*</span> <span class="n">f</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">wDen</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="nb">pow</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">wDen</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">f0</span><span class="p">,</span> <span class="nb">pow</span><span class="p">,</span> <span class="n">strips</span></div>
+
+
+
+<div class="viewcode-block" id="f0_est_weighted_sum_spec">
+<a class="viewcode-back" href="../../alignmentUtils.html#pyampact.alignmentUtils.f0_est_weighted_sum_spec">[docs]</a>
+<span class="k">def</span> <span class="nf">f0_est_weighted_sum_spec</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">noteStart_s</span><span class="p">,</span> <span class="n">noteEnd_s</span><span class="p">,</span> <span class="n">midiNote</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sr</span><span class="p">,</span> <span class="n">useIf</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate F0, power, and spectrum for a single note.</span>
+
+<span class="sd">    :param fileName: Name of wav file to analyze.</span>
+<span class="sd">    :param noteStart_s: Start position (in seconds) of note to analyze.</span>
+<span class="sd">    :param noteEnd_s: End position (in seconds) of note to analyze.</span>
+<span class="sd">    :param noteMidi: Midi note number of note to analyze.</span>
+<span class="sd">    :param useIf: If true, use instantaneous frequency, else spectrogram frequencies.</span>
+
+<span class="sd">    :return: A tuple containing three elements:</span>
+<span class="sd">        - f0: Vector of estimated f0s from noteStart_s to noteEnd_s.</span>
+<span class="sd">        - p: Vector of corresponding &quot;powers&quot; from f0EstWeightedSum.</span>
+<span class="sd">        - M: Estimated spectrum.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># Inputs:</span>
+    <span class="c1">#   fileName     name of wav file to analyze</span>
+    <span class="c1">#   noteStart_s  start position (in seconds) of note to analyze</span>
+    <span class="c1">#   noteEnd_s    end position (in seconds) of note to analyze</span>
+    <span class="c1">#   noteMidi     midi note number of note to analyze</span>
+    <span class="c1">#   useIf        if true, use instantaneous frequency, else spectrogram frequencies</span>
+    <span class="c1">#</span>
+    <span class="c1"># Outputs:</span>
+    <span class="c1">#   f0 - vector of estimated f0s from noteStart_s to noteEnd_s</span>
+    <span class="c1">#   p - vector of corresponding &quot;powers&quot; from f0EstWeightedSum</span>
+    <span class="c1">#   M - estimated spectrum</span>
+
+    <span class="c1"># set</span>
+    <span class="n">nIter</span> <span class="o">=</span> <span class="mi">10</span>
+
+    <span class="c1"># set window and hop</span>
+    <span class="n">win_s</span> <span class="o">=</span> <span class="mf">0.064</span>
+    <span class="n">win</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">win_s</span> <span class="o">*</span> <span class="n">sr</span><span class="p">)</span>
+    <span class="n">hop</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">win</span> <span class="o">/</span> <span class="mi">8</span><span class="p">)</span>
+
+    <span class="c1"># load if gram</span>
+    <span class="n">freqs</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">reassigned_spectrogram</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">,</span> <span class="n">hop_length</span><span class="o">=</span><span class="n">hop</span><span class="p">)</span>
+
+   <span class="c1"># indices for indexing into ifgram (D)</span>
+    <span class="n">noteStart_hop</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">noteStart_s</span> <span class="o">*</span> <span class="n">sr</span> <span class="o">/</span> <span class="n">hop</span><span class="p">))</span>
+    <span class="n">noteEnd_hop</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">noteEnd_s</span> <span class="o">*</span> <span class="n">sr</span> <span class="o">/</span> <span class="n">hop</span><span class="p">))</span>
+    <span class="n">inds</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">noteStart_hop</span><span class="p">,</span> <span class="n">noteEnd_hop</span><span class="p">)</span>
+      
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">D</span><span class="p">[:,</span> <span class="n">inds</span><span class="p">])</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">6</span><span class="p">)</span>
+
+    <span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">win</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">sr</span> <span class="o">/</span> <span class="n">win</span>
+
+    <span class="k">if</span> <span class="n">useIf</span><span class="p">:</span>
+        <span class="n">xf</span> <span class="o">=</span> <span class="n">freqs</span><span class="p">[:,</span><span class="n">inds</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">xf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="n">f0i</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">midi_to_hz</span><span class="p">(</span><span class="n">midiNote</span><span class="p">)</span>
+
+    <span class="n">fMax</span> <span class="o">=</span> <span class="mi">5000</span>
+    <span class="n">fThresh</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">xf</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]))</span>
+    
+    <span class="n">f0</span><span class="p">,</span><span class="n">_</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">f0_est_weighted_sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">xf</span><span class="p">,</span> <span class="n">f0i</span><span class="p">,</span> <span class="n">fMax</span><span class="p">,</span> <span class="n">fThresh</span><span class="p">)</span>
+    <span class="c1"># tmp = f0</span>
+    <span class="c1"># for _ in range(nIter):</span>
+    <span class="c1">#     if ~np.isnan(f0).any():</span>
+    <span class="c1">#       f0,_,_ = f0_est_weighted_sum(x, xf, f0)</span>
+    <span class="c1">#       tmp = f0</span>
+    <span class="c1">#     else:</span>
+    <span class="c1">#       f0 = tmp</span>
+
+    <span class="n">_</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">partials</span> <span class="o">=</span> <span class="n">f0_est_weighted_sum</span><span class="p">(</span><span class="n">x</span> <span class="o">**</span> <span class="mi">6</span><span class="p">,</span> <span class="n">xf</span><span class="p">,</span> <span class="n">f0</span><span class="p">,</span><span class="n">sr</span><span class="p">)</span>
+
+
+    <span class="n">M</span> <span class="o">=</span> <span class="n">partials</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">partials</span><span class="p">)):</span>
+        <span class="n">M</span> <span class="o">+=</span> <span class="n">partials</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">inds</span><span class="p">))</span> <span class="o">*</span> <span class="n">win_s</span>
+
+    <span class="k">return</span> <span class="n">f0</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">xf</span></div>
+
 </pre></div>
 
            </div>
@@ -694,7 +801,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2023, AMPACT Research Team.</p>
+    <p>&#169; Copyright 2024, AMPACT Research Team.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

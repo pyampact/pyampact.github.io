@@ -8,7 +8,7 @@
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
 
   
-    <link rel="canonical" href="https://daniel-mckemie.github.io/_modules/pyampact/performance.html" />
+    <link rel="canonical" href="https://pyampact.github.io/_modules/pyampact/performance.html" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -50,6 +50,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../alignment.html">alignment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../alignmentUtils.html">alignmentUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dataCompilation.html">dataCompilation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../performance.html">performance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../symbolic.html">symbolic</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../symbolicUtils.html">symbolicUtils</a></li>
@@ -95,6 +96,7 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">librosa</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;estimate_perceptual_parameters&quot;</span><span class="p">,</span>
@@ -102,16 +104,30 @@
     <span class="s2">&quot;perceived_pitch&quot;</span>
 <span class="p">]</span>
 
+<span class="n">np</span><span class="o">.</span><span class="n">seterr</span><span class="p">(</span><span class="nb">all</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Mean of empty slice.&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">RuntimeWarning</span><span class="p">)</span>
+
 
 <div class="viewcode-block" id="estimate_perceptual_parameters">
 <a class="viewcode-back" href="../../performance.html#pyampact.performance.estimate_perceptual_parameters">[docs]</a>
-<span class="k">def</span> <span class="nf">estimate_perceptual_parameters</span><span class="p">(</span><span class="n">f0_vals</span><span class="p">,</span> <span class="n">pwr_vals</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">SR</span><span class="p">,</span> <span class="n">hop</span><span class="p">,</span> <span class="n">gt_flag</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>        
+<span class="k">def</span> <span class="nf">estimate_perceptual_parameters</span><span class="p">(</span><span class="n">f0_vals</span><span class="p">,</span> <span class="n">pwr_vals</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">SR</span><span class="p">,</span> <span class="n">hop</span><span class="p">,</span> <span class="n">gt_flag</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    NEEDS INFO UPDATED</span>
+<span class="sd">    Estimates a range of performance parameters from the inputted fundamental</span>
+<span class="sd">    frequency (f0_vales), power (pwr_vals), and spectrum estimates (M)</span>
+
+<span class="sd">    :param f0s: Vector of fundamental frequency estimates</span>
+<span class="sd">    :param sr: 1/sample rate of the f0 estimates (e.g. the hop rate in Hz of yin)</span>
+<span class="sd">    :param gamma: Sets the relative weighting of quickly changing vs slowly</span>
+<span class="sd">        changing portions of  notes. - a high gamma (e.g., 1000000)</span>
+<span class="sd">        gives more weight to slowly changing portions.</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - pp1: perceived pitch using the entire vector of f0 estimates</span>
+<span class="sd">        - pp2: perceived pitch using the central 80% of f0 estimates</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Perceived pitch</span>
-    <span class="n">res_ppitch</span> <span class="o">=</span> <span class="n">perceived_pitch</span><span class="p">(</span><span class="n">f0_vals</span><span class="p">,</span> <span class="n">SR</span><span class="p">)</span>    
+    <span class="n">res_ppitch</span> <span class="o">=</span> <span class="n">perceived_pitch</span><span class="p">(</span><span class="n">f0_vals</span><span class="p">,</span> <span class="n">SR</span><span class="p">)</span>
     <span class="c1"># Jitter</span>
     <span class="n">tmp_jitter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">f0_vals</span><span class="p">))</span>
     <span class="n">res_jitter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">tmp_jitter</span><span class="p">)</span>
@@ -121,7 +137,7 @@
     <span class="n">detrended_f0_vals</span> <span class="o">=</span> <span class="n">f0_vals</span> <span class="o">-</span> <span class="n">mean_f0_vals</span>
     <span class="n">res_vibrato_depth</span><span class="p">,</span> <span class="n">res_vibrato_rate</span> <span class="o">=</span> <span class="n">calculate_vibrato</span><span class="p">(</span><span class="n">detrended_f0_vals</span><span class="p">,</span> <span class="n">SR</span> <span class="o">/</span> <span class="n">hop</span><span class="p">)</span>
 
-    
+
     <span class="c1"># Shimmer</span>
     <span class="n">tmp_shimmer</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">pwr_vals</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">/</span> <span class="n">pwr_vals</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">res_shimmer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tmp_shimmer</span><span class="p">))</span>
@@ -130,32 +146,33 @@
 
     <span class="k">if</span> <span class="n">gt_flag</span><span class="p">:</span>
         <span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">M</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
-    
-    <span class="n">S</span><span class="p">,</span> <span class="n">phase</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">magphase</span><span class="p">(</span><span class="n">librosa</span><span class="o">.</span><span class="n">stft</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">))</span>
-    <span class="n">res_spec_centroid</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">spectral_centroid</span><span class="p">(</span><span class="n">S</span><span class="o">=</span><span class="n">S</span><span class="p">)</span>
 
-    <span class="c1"># Spectral Slope                </span>
-    <span class="n">mu_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>        
-    <span class="n">kmu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="n">M</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span>    
-    <span class="n">M_sqrt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
-    <span class="n">M_slope</span> <span class="o">=</span> <span class="n">M_sqrt</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">mu_x</span><span class="p">,</span> <span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="c1">#spectral bandwidth</span>
+    <span class="n">res_spec_bandwidth</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">spectral_bandwidth</span><span class="p">(</span><span class="n">S</span><span class="o">=</span><span class="n">M</span><span class="p">)</span>
+    <span class="n">res_mean_spec_bandwidth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">res_spec_bandwidth</span><span class="p">)</span>
 
-    <span class="n">res_spec_slope</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">kmu</span><span class="p">,</span> <span class="n">M_slope</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">kmu</span><span class="p">,</span> <span class="n">kmu</span><span class="p">)</span>
-    <span class="n">res_mean_spec_slope</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">res_spec_slope</span><span class="p">)</span>
+    <span class="c1"># Spectral Centroid</span>
+    <span class="c1"># S, phase = librosa.magphase(librosa.stft(y=y))</span>
+    <span class="n">res_spec_centroid</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">spectral_centroid</span><span class="p">(</span><span class="n">S</span><span class="o">=</span><span class="n">M</span><span class="p">)</span>
+    <span class="n">res_mean_spec_centroid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">res_spec_centroid</span><span class="p">)</span>
 
-    
-    <span class="c1"># Spectral Flux    </span>
-    <span class="n">afDeltaX</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">M</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">],</span> <span class="n">M</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">res_spec_flux</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">afDeltaX</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="n">M</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">res_mean_spec_flux</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">res_spec_flux</span><span class="p">)</span>
-    
+    <span class="c1">#spectral contrast</span>
+    <span class="n">res_spec_contrast</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">spectral_contrast</span><span class="p">(</span><span class="n">S</span><span class="o">=</span><span class="n">M</span><span class="p">)</span>
+    <span class="n">res_mean_spec_contrast</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">res_spec_contrast</span><span class="p">)</span>
+
+    <span class="c1">#spectral flatness</span>
+    <span class="n">res_spec_flatness</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">spectral_flatness</span><span class="p">(</span><span class="n">S</span><span class="o">=</span><span class="n">M</span><span class="p">)</span>
+    <span class="n">res_mean_spec_flatness</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">res_spec_flatness</span><span class="p">)</span>
+
+    <span class="c1">#spectral rolloff</span>
+    <span class="n">res_spec_rolloff</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">spectral_rolloff</span><span class="p">(</span><span class="n">S</span><span class="o">=</span><span class="n">M</span><span class="p">)</span>
+    <span class="n">res_mean_spec_rolloff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">res_spec_rolloff</span><span class="p">)</span>
 
     <span class="c1"># Spectral Flatness</span>
     <span class="n">XLog</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">M</span> <span class="o">+</span> <span class="mf">1e-20</span><span class="p">)</span>
     <span class="n">res_spec_flat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">XLog</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">res_spec_flat</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">res_mean_spec_flat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">res_spec_flat</span><span class="p">)</span>
-
 
     <span class="n">res</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;ppitch&quot;</span><span class="p">:</span> <span class="n">res_ppitch</span><span class="p">,</span>
@@ -164,20 +181,22 @@
         <span class="s2">&quot;vibrato_rate&quot;</span><span class="p">:</span> <span class="n">res_vibrato_rate</span><span class="p">,</span>
         <span class="s2">&quot;shimmer&quot;</span><span class="p">:</span> <span class="n">res_shimmer</span><span class="p">,</span>
         <span class="s2">&quot;pwr_vals&quot;</span><span class="p">:</span> <span class="n">res_pwr_vals</span><span class="p">,</span>
-        <span class="s2">&quot;f0_vals&quot;</span><span class="p">:</span> <span class="n">res_f0_vals</span><span class="p">,</span>        
+        <span class="s2">&quot;f0_vals&quot;</span><span class="p">:</span> <span class="n">res_f0_vals</span><span class="p">,</span>
         <span class="s2">&quot;spec_centroid&quot;</span><span class="p">:</span> <span class="n">res_spec_centroid</span><span class="p">,</span>
-        <span class="s2">&quot;spec_slope&quot;</span><span class="p">:</span> <span class="n">res_spec_slope</span><span class="p">,</span>
-        <span class="s2">&quot;mean_spec_slope&quot;</span><span class="p">:</span> <span class="n">res_mean_spec_slope</span><span class="p">,</span>
-        <span class="s2">&quot;spec_flux&quot;</span><span class="p">:</span> <span class="n">res_spec_flux</span><span class="p">,</span>
-        <span class="s2">&quot;mean_spec_flux&quot;</span><span class="p">:</span> <span class="n">res_mean_spec_flux</span><span class="p">,</span>
-        <span class="s2">&quot;spec_flat&quot;</span><span class="p">:</span> <span class="n">res_spec_flat</span><span class="p">,</span>
-        <span class="s2">&quot;mean_spec_flat&quot;</span><span class="p">:</span> <span class="n">res_mean_spec_flat</span><span class="p">,</span>
+        <span class="s2">&quot;mean_spec_centroid&quot;</span><span class="p">:</span> <span class="n">res_mean_spec_centroid</span><span class="p">,</span>
+        <span class="s2">&quot;spec_bandwidth&quot;</span><span class="p">:</span> <span class="n">res_spec_bandwidth</span><span class="p">,</span>
+        <span class="s2">&quot;mean_spec_bandwidth&quot;</span><span class="p">:</span> <span class="n">res_mean_spec_bandwidth</span><span class="p">,</span>
+        <span class="s2">&quot;spec_contrast&quot;</span><span class="p">:</span> <span class="n">res_spec_contrast</span><span class="p">,</span>
+        <span class="s2">&quot;mean_spec_contrast&quot;</span><span class="p">:</span> <span class="n">res_mean_spec_contrast</span><span class="p">,</span>
+        <span class="s2">&quot;spec_flatness&quot;</span><span class="p">:</span> <span class="n">res_spec_flatness</span><span class="p">,</span>
+        <span class="s2">&quot;mean_spec_flatness&quot;</span><span class="p">:</span> <span class="n">res_mean_spec_flatness</span><span class="p">,</span>
+        <span class="s2">&quot;spec_rolloff&quot;</span><span class="p">:</span> <span class="n">res_spec_rolloff</span><span class="p">,</span>
+        <span class="s2">&quot;mean_spec_rolloff&quot;</span><span class="p">:</span> <span class="n">res_mean_spec_rolloff</span><span class="p">,</span>
     <span class="p">}</span>
 
     <span class="k">return</span> <span class="n">res</span></div>
 
-
-
+    
 <span class="k">def</span> <span class="nf">calculate_vibrato</span><span class="p">(</span><span class="n">note_vals</span><span class="p">,</span> <span class="n">sr</span><span class="p">):</span>    
     <span class="n">L</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">note_vals</span><span class="p">)</span>  <span class="c1"># Length of signal</span>
     <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">note_vals</span><span class="p">)</span> <span class="o">/</span> <span class="n">L</span>  <span class="c1"># Run FFT on normalized note vals</span>
@@ -241,7 +260,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2023, AMPACT Research Team.</p>
+    <p>&#169; Copyright 2024, AMPACT Research Team.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

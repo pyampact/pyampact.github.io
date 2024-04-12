@@ -9,7 +9,7 @@
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
   
-    <link rel="canonical" href="https://daniel-mckemie.github.io/alignment.html" />
+    <link rel="canonical" href="https://pyampact.github.io/alignment.html" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -61,6 +61,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="alignmentUtils.html">alignmentUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataCompilation.html">dataCompilation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="performance.html">performance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="symbolic.html">symbolic</a></li>
 <li class="toctree-l1"><a class="reference internal" href="symbolicUtils.html">symbolicUtils</a></li>
@@ -97,7 +98,7 @@
 </section>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyampact.alignment.align_midi_wav">
-<span class="sig-prename descclassname"><span class="pre">pyampact.alignment.</span></span><span class="sig-name descname"><span class="pre">align_midi_wav</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">WF</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TH</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ST</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tsr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nhar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">showSpec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignment.html#align_midi_wav"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignment.align_midi_wav" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyampact.alignment.</span></span><span class="sig-name descname"><span class="pre">align_midi_wav</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">WF</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TH</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ST</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tsr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nhar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">showSpec</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignment.html#align_midi_wav"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignment.align_midi_wav" title="Link to this definition"></a></dt>
 <dd><p>Align a midi file to a wav file using the “peak structure
 distance” of Orio et al. that use the MIDI notes to build
 a mask that is compared against harmonics in the audio</p>
@@ -108,6 +109,7 @@ a mask that is compared against harmonics in the audio</p>
 <li><p><strong>WF</strong> – Audio time series of file</p></li>
 <li><p><strong>TH</strong> – is the time step resolution (default 0.050)</p></li>
 <li><p><strong>ST</strong> – is the similarity type: 0 (default) is triangle inequality</p></li>
+<li><p><strong>showSpec</strong> – Boolean to show the spectrogram</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -126,7 +128,7 @@ a mask that is compared against harmonics in the audio</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyampact.alignment.alignment_visualiser">
-<span class="sig-prename descclassname"><span class="pre">pyampact.alignment.</span></span><span class="sig-name descname"><span class="pre">alignment_visualiser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio_spec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">times</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freqs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">showSpec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignment.html#alignment_visualiser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignment.alignment_visualiser" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyampact.alignment.</span></span><span class="sig-name descname"><span class="pre">alignment_visualiser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio_spec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">times</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freqs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">showSpec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignment.html#alignment_visualiser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignment.alignment_visualiser" title="Link to this definition"></a></dt>
 <dd><p>Plots a gross DTW alignment overlaid with the fine alignment
 resulting from the HMM aligner on the output of YIN.  Trace(1,:)
 is the list of states in the HMM, and trace(2,:) is the number of YIN
@@ -172,7 +174,7 @@ third row is the state index</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyampact.alignment.run_DTW_alignment">
-<span class="sig-prename descclassname"><span class="pre">pyampact.alignment.</span></span><span class="sig-name descname"><span class="pre">run_DTW_alignment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">original_sr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tres</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_sr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nharm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">win_ms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nmat</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignment.html#run_DTW_alignment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignment.run_DTW_alignment" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyampact.alignment.</span></span><span class="sig-name descname"><span class="pre">run_DTW_alignment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">original_sr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tres</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_sr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nharm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">win_ms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nmat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">showSpec</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignment.html#run_DTW_alignment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignment.run_DTW_alignment" title="Link to this definition"></a></dt>
 <dd><p>Perform a dynamic time warping alignment between specified audio and MIDI files.</p>
 <p>Returns a matrix with the aligned onset and offset times (with corresponding MIDI
 note numbers) and a spectrogram of the audio.</p>
@@ -187,6 +189,7 @@ note numbers) and a spectrogram of the audio.</p>
 <li><p><strong>target_sr</strong> – Target sample rate (you need to specify this value)</p></li>
 <li><p><strong>nharm</strong> – Number of harmonics (you need to specify this value)</p></li>
 <li><p><strong>win_ms</strong> – Window size in milliseconds (you need to specify this value)</p></li>
+<li><p><strong>showSpec</strong> – Boolean to show the spectrogram</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -222,11 +225,8 @@ note numbers) and a spectrogram of the audio.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyampact.alignment.run_alignment">
-<span class="sig-prename descclassname"><span class="pre">pyampact.alignment.</span></span><span class="sig-name descname"><span class="pre">run_alignment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">original_sr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">means</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">covars</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nmat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_sr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nharm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">win_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignment.html#run_alignment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignment.run_alignment" title="Link to this definition"></a></dt>
-<dd><p>Calls the DTW alignment function and refines the results with the HMM
-alignment algorithm, with both a basic and modified state spaces (based on the lyrics).
-This function returns the results of both the state spaces as well as the YIN analysis
-of the specified audio file.</p>
+<span class="sig-prename descclassname"><span class="pre">pyampact.alignment.</span></span><span class="sig-name descname"><span class="pre">run_alignment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">original_sr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nmat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_sr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nharm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">win_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">showSpec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignment.html#run_alignment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignment.run_alignment" title="Link to this definition"></a></dt>
+<dd><p>Calls the DTW alignment function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -240,6 +240,7 @@ of the specified audio file.</p>
 <li><p><strong>nharm</strong> – Number of harmonics (you need to specify this value)</p></li>
 <li><p><strong>win_ms</strong> – Window size in milliseconds (you need to specify this value)</p></li>
 <li><p><strong>hop</strong> – Number of samples between successive frames</p></li>
+<li><p><strong>showSpec</strong> – Boolean to show the spectrogram</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -286,7 +287,7 @@ of the specified audio file.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2023, AMPACT Research Team.</p>
+    <p>&#169; Copyright 2024, AMPACT Research Team.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
