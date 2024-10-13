@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
@@ -5,20 +7,16 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>alignmentUtils &mdash; pyAMPACT 0.0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
     <link rel="canonical" href="https://pyampact.github.io/alignmentUtils.html" />
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=d45e8c67"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
-        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -55,18 +53,16 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">alignmentUtils</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#id1">alignmentUtils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pyampact.alignmentUtils.dp"><code class="docutils literal notranslate"><span class="pre">dp()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pyampact.alignmentUtils.dpcore"><code class="docutils literal notranslate"><span class="pre">dpcore()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pyampact.alignmentUtils.durations_from_midi_ticks"><code class="docutils literal notranslate"><span class="pre">durations_from_midi_ticks()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pyampact.alignmentUtils.f0_est_weighted_sum"><code class="docutils literal notranslate"><span class="pre">f0_est_weighted_sum()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pyampact.alignmentUtils.f0_est_weighted_sum_spec"><code class="docutils literal notranslate"><span class="pre">f0_est_weighted_sum_spec()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#pyampact.alignmentUtils.fill_priormat_gauss"><code class="docutils literal notranslate"><span class="pre">fill_priormat_gauss()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#pyampact.alignmentUtils.fill_trans_mat"><code class="docutils literal notranslate"><span class="pre">fill_trans_mat()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#pyampact.alignmentUtils.flatTopGaussIdx"><code class="docutils literal notranslate"><span class="pre">flatTopGaussIdx()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#pyampact.alignmentUtils.flatTopGaussian"><code class="docutils literal notranslate"><span class="pre">flatTopGaussian()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pyampact.alignmentUtils.g"><code class="docutils literal notranslate"><span class="pre">g()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pyampact.alignmentUtils.gh"><code class="docutils literal notranslate"><span class="pre">gh()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pyampact.alignmentUtils.load_audiofile"><code class="docutils literal notranslate"><span class="pre">load_audiofile()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pyampact.alignmentUtils.maptimes"><code class="docutils literal notranslate"><span class="pre">maptimes()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pyampact.alignmentUtils.orio_simmx"><code class="docutils literal notranslate"><span class="pre">orio_simmx()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pyampact.alignmentUtils.simmx"><code class="docutils literal notranslate"><span class="pre">simmx()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#pyampact.alignmentUtils.viterbi_path"><code class="docutils literal notranslate"><span class="pre">viterbi_path()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="dataCompilation.html">dataCompilation</a></li>
@@ -106,18 +102,85 @@
 </section>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyampact.alignmentUtils.dp">
-<span class="sig-prename descclassname"><span class="pre">pyampact.alignmentUtils.</span></span><span class="sig-name descname"><span class="pre">dp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignmentUtils.html#dp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignmentUtils.dp" title="Link to this definition"></a></dt>
-<dd><p>Use dynamic programming to find a min-cost path through matrix M.
-Return state sequence in p,q.</p>
+<span class="sig-prename descclassname"><span class="pre">pyampact.alignmentUtils.</span></span><span class="sig-name descname"><span class="pre">dp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_costs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">penalty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gutter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">G</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignmentUtils.html#dp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignmentUtils.dp" title="Link to this definition"></a></dt>
+<dd><p>Use dynamic programming to find a min-cost path through a matrix
+of local costs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>M</strong> – 2D numpy array, the input matrix.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>local_costs</strong> (<em>np.ndarray</em>) – A 2D matrix of local costs, where each cell represents the cost associated
+with that specific position.</p></li>
+<li><p><strong>penalty</strong> (<em>float</em><em>, </em><em>optional</em>) – An additional cost incurred for moving in the horizontal or vertical direction
+(i.e., (0,1) and (1,0) steps). Default is 0.1.</p></li>
+<li><p><strong>gutter</strong> (<em>float</em><em>, </em><em>optional</em>) – A proportion of edge length that allows for deviations away from the
+bottom-left corner (-1,-1) in the optimal path. Default is 0.0, meaning
+the path must reach the top-right corner.</p></li>
+<li><p><strong>G</strong> (<em>float</em><em>, </em><em>optional</em>) – A proportion of the edge length considered for identifying gulleys in the
+cost matrix. Default is 0.5.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A tuple containing three elements:
-- p: List, the sequence of row indices for the min-cost path.
-- q: List, the sequence of column indices for the min-cost path.
-- D: 2D numpy array, the cost matrix.</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>p</strong> (<em>np.ndarray</em>) – An array of row indices corresponding to the best path.</p></li>
+<li><p><strong>q</strong> (<em>np.ndarray</em>) – An array of column indices corresponding to the best path.</p></li>
+<li><p><strong>total_costs</strong> (<em>np.ndarray</em>) – A 2D array of minimum costs to reach each cell in the local costs matrix.</p></li>
+<li><p><strong>phi</strong> (<em>np.ndarray</em>) – A traceback matrix indicating the preceding best-path step for each cell, where:
+- 0 indicates a diagonal predecessor.
+- 1 indicates the previous column (same row).
+- 2 indicates the previous row (same column).</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyampact.alignmentUtils.dpcore">
+<span class="sig-prename descclassname"><span class="pre">pyampact.alignmentUtils.</span></span><span class="sig-name descname"><span class="pre">dpcore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pen</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignmentUtils.html#dpcore"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignmentUtils.dpcore" title="Link to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Core dynamic programming calculation of best path.</dt><dd><p>M[r,c] is the array of local costs.
+Create D[r,c] as the array of costs-of-best-paths to r,c,
+and phi[r,c] as the indicator of the point preceding [r,c] to
+allow traceback; 0 = (r-1,c-1), 1 = (r,c-1), 2 = (r-1, c)</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>M</strong> (<em>np.ndarray</em>) – A 2D array of local costs, where M[r, c] represents the cost at position (r, c).</p></li>
+<li><p><strong>pen</strong> (<em>float</em>) – A penalty value applied for non-diagonal movements in the path.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>D</strong> (<em>np.ndarray</em>) – A 2D array of cumulative best costs to each point (r,c), starting from (0,0).</p></li>
+<li><p><strong>phi</strong> (<em>np.ndarray</em>) – A 2D array of integers used for traceback, where:
+- 0 indicates the previous point was (r-1, c-1).
+- 1 indicates the previous point was (r, c-1).
+- 2 indicates the previous point was (r-1, c).</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyampact.alignmentUtils.durations_from_midi_ticks">
+<span class="sig-prename descclassname"><span class="pre">pyampact.alignmentUtils.</span></span><span class="sig-name descname"><span class="pre">durations_from_midi_ticks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignmentUtils.html#durations_from_midi_ticks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignmentUtils.durations_from_midi_ticks" title="Link to this definition"></a></dt>
+<dd><p>Extract note durations from a MIDI file using MIDI ticks. This function processes a MIDI file, calculates note onset and offset times
+based on MIDI ticks and tempo, and returns the duration matrix (nmat). It handles
+tempo changes and computes times by converting MIDI ticks to seconds.</p>
+<p>Assumes a default pulses-per-quarter-note (PPQN) value of 96.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – Path to the MIDI file to be processed.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A numpy array where each row contains the start and end times of notes
+(in seconds) based on MIDI ticks and tempo changes.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
 </dd>
 </dl>
 </dd></dl>
@@ -129,18 +192,23 @@ Return state sequence in p,q.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> – FxT matrix of complex spectrogram values.</p></li>
-<li><p><strong>f</strong> – FxT matrix of frequencies of each of those spectrogram values.</p></li>
-<li><p><strong>f0i</strong> – 1xT vector of initial estimates of f0 for each time.</p></li>
-<li><p><strong>fMax</strong> – Maximum frequency to consider in weighted sum.</p></li>
-<li><p><strong>fThresh</strong> – Maximum distance in Hz from each harmonic to consider.</p></li>
+<li><p><strong>x</strong> (<em>np.ndarray</em><em>, </em><em>shape</em><em> (</em><em>F</em><em>, </em><em>T</em><em>)</em>) – Matrix of complex spectrogram values, where F is the number of frequency bins
+and T is the number of time frames.</p></li>
+<li><p><strong>f</strong> (<em>np.ndarray</em><em>, </em><em>shape</em><em> (</em><em>F</em><em>, </em><em>T</em><em>)</em>) – Matrix of frequencies corresponding to each of the spectrogram values in <cite>x</cite>.</p></li>
+<li><p><strong>f0i</strong> (<em>np.ndarray</em><em>, </em><em>shape</em><em> (</em><em>1</em><em>, </em><em>T</em><em>)</em>) – Initial estimates of F0 for each time frame. This should be a 1D array containing
+the F0 estimates for each time point.</p></li>
+<li><p><strong>fMax</strong> (<em>float</em><em>, </em><em>optional</em>) – Maximum frequency to consider in the weighted sum. Defaults to 5000 Hz.</p></li>
+<li><p><strong>fThresh</strong> (<em>float</em><em>, </em><em>optional</em>) – Maximum distance in Hz from each harmonic to consider. If not specified, no threshold
+will be applied.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A tuple containing three elements:
-- f0: Vector of estimated f0s from noteStart_s to noteEnd_s.
-- p: Vector of corresponding “powers” from f0EstWeightedSum.
-- strips: Estimated spectrum for each partial.</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>f0</strong> (<em>np.ndarray</em>) – Vector of estimated F0s from the beginning to the end of the input time series.</p></li>
+<li><p><strong>p</strong> (<em>np.ndarray</em>) – Vector of corresponding “powers” derived from the weighted sum of the estimated F0.</p></li>
+<li><p><strong>strips</strong> (<em>np.ndarray</em>) – Estimated spectrum for each partial frequency based on the weighted contributions.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
@@ -152,120 +220,25 @@ Return state sequence in p,q.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>fileName</strong> – Name of wav file to analyze.</p></li>
-<li><p><strong>noteStart_s</strong> – Start position (in seconds) of note to analyze.</p></li>
-<li><p><strong>noteEnd_s</strong> – End position (in seconds) of note to analyze.</p></li>
-<li><p><strong>noteMidi</strong> – Midi note number of note to analyze.</p></li>
-<li><p><strong>useIf</strong> – If true, use instantaneous frequency, else spectrogram frequencies.</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) – Name of the WAV file to analyze.</p></li>
+<li><p><strong>noteStart_s</strong> (<em>float</em>) – Start position (in seconds) of the note to analyze.</p></li>
+<li><p><strong>noteEnd_s</strong> (<em>float</em>) – End position (in seconds) of the note to analyze.</p></li>
+<li><p><strong>midiNote</strong> (<em>int</em>) – MIDI note number of the note to analyze.</p></li>
+<li><p><strong>y</strong> (<em>np.ndarray</em>) – Audio time series data from the WAV file.</p></li>
+<li><p><strong>sr</strong> (<em>int</em>) – Sample rate of the audio signal.</p></li>
+<li><p><strong>useIf</strong> (<em>bool</em><em>, </em><em>optional</em>) – If true, use instantaneous frequency; otherwise, use spectrogram frequencies.
+Defaults to True.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A tuple containing three elements:
-- f0: Vector of estimated f0s from noteStart_s to noteEnd_s.
-- p: Vector of corresponding “powers” from f0EstWeightedSum.
-- M: Estimated spectrum.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyampact.alignmentUtils.fill_priormat_gauss">
-<span class="sig-prename descclassname"><span class="pre">pyampact.alignmentUtils.</span></span><span class="sig-name descname"><span class="pre">fill_priormat_gauss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Nobs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ons</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nstates</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignmentUtils.html#fill_priormat_gauss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignmentUtils.fill_priormat_gauss" title="Link to this definition"></a></dt>
-<dd><p>Creates a prior matrix based on the DTW alignment (supplied by the input
-variables ons and offs. A rectangular window with half a Gaussian on
-each side over the onsets and offsets estimated by the DTW alignment.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Params Nobs<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number of observations</p>
-</dd>
-<dt class="field-even">Params ons<span class="colon">:</span></dt>
-<dd class="field-even"><p>Vector of onset times predicted by DTW alignment</p>
-</dd>
-<dt class="field-odd">Params offs<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Vector of offset times predicted by DTW alignment</p>
-</dd>
-<dt class="field-even">Params Nstates<span class="colon">:</span></dt>
-<dd class="field-even"><p>Number of states in the hidden Markov model</p>
-</dd>
-<dt class="field-odd">Return prior<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Prior matrix based on DTW alignment</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyampact.alignmentUtils.fill_trans_mat">
-<span class="sig-prename descclassname"><span class="pre">pyampact.alignmentUtils.</span></span><span class="sig-name descname"><span class="pre">fill_trans_mat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trans_seed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">notes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignmentUtils.html#fill_trans_mat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignmentUtils.fill_trans_mat" title="Link to this definition"></a></dt>
-<dd><p>Makes a transition matrix from a seed transition matrix.  The seed
-matrix is composed of the states: steady state, transient, silence,
-transient, steady state, but the full transition matrix starts and
-ends with silence, so the seed with be chopped up on the ends.
-Notes is the number of times to repeat the seed.  Transseed’s first
-and last states should be equivalent, as they will be overlapped
-with each other.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>trans_seed</strong> – Transition matrix seed.</p></li>
-<li><p><strong>notes</strong> – Number of notes being aligned.</p></li>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>f0</strong> (<em>np.ndarray</em>) – Vector of estimated F0s from <cite>noteStart_s</cite> to <cite>noteEnd_s</cite>.</p></li>
+<li><p><strong>p</strong> (<em>np.ndarray</em>) – Vector of corresponding “powers” derived from the weighted sum of the estimated F0.</p></li>
+<li><p><strong>M</strong> (<em>np.ndarray</em>) – Estimated spectrum for the analyzed note.</p></li>
 </ul>
-</dd>
-<dt class="field-even">Return trans<span class="colon">:</span></dt>
-<dd class="field-even"><p>Transition matrix</p>
+</p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyampact.alignmentUtils.flatTopGaussIdx">
-<span class="sig-prename descclassname"><span class="pre">pyampact.alignmentUtils.</span></span><span class="sig-name descname"><span class="pre">flatTopGaussIdx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bi1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ti1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ti2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bi2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignmentUtils.html#flatTopGaussIdx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignmentUtils.flatTopGaussIdx" title="Link to this definition"></a></dt>
-<dd><p>Create a window function that is zeros, going up to 1s with the left
-half of a gaussian, then ones, then going back down to zeros with
-the right half of another gaussian.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> – 1D numpy array, the set of points over which this is to be calculated.</p></li>
-<li><p><strong>b1</strong> – Float, the x coordinate 2 stddevs out from the mean of the first gaussian.</p></li>
-<li><p><strong>bi1</strong> – Integer, the index in <cite>b1</cite>.</p></li>
-<li><p><strong>t1</strong> – Float, the x coordinate of the mean of the first gaussian.</p></li>
-<li><p><strong>ti1</strong> – Integer, the index in <cite>t1</cite>.</p></li>
-<li><p><strong>t2</strong> – Float, the x coordinate of the mean of the second gaussian.</p></li>
-<li><p><strong>ti2</strong> – Integer, the index in <cite>t2</cite>.</p></li>
-<li><p><strong>b2</strong> – Float, the x coordinate 2 stddevs out from the mean of the second gaussian.</p></li>
-<li><p><strong>bi2</strong> – Integer, the index in <cite>b2</cite>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>1D numpy array, the window function.</p>
-</dd>
-</dl>
-<p>The points should be in that order. Vectors are indexed intelligently,
-so you don’t have to worry about overflows or underflows.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyampact.alignmentUtils.flatTopGaussian">
-<span class="sig-prename descclassname"><span class="pre">pyampact.alignmentUtils.</span></span><span class="sig-name descname"><span class="pre">flatTopGaussian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignmentUtils.html#flatTopGaussian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignmentUtils.flatTopGaussian" title="Link to this definition"></a></dt>
-<dd><p>Create a window function that is zeros, going up to 1s with the left
-half of a gaussian, then ones, then going back down to zeros with the
-right half of another gaussian.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> – 1D numpy array, the set of points over which this is to be calculated.</p></li>
-<li><p><strong>b1</strong> – Float, the x coordinate 2 stddevs out from the mean of the first gaussian.</p></li>
-<li><p><strong>t1</strong> – Float, the x coordinate of the mean of the first gaussian.</p></li>
-<li><p><strong>t2</strong> – Float, the x coordinate of the mean of the second gaussian.</p></li>
-<li><p><strong>b2</strong> – Float, the x coordinate 2 stddevs out from the mean of the second gaussian.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>1D numpy array, the window function.</p>
-</dd>
-</dl>
-<p>The points should be in that order. If any of [b1, t1, t2] &gt; any of [t1, t2, b2],
-a message ‘Endpoints are not in order: b1, t1, t2, b2’ will be printed.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -276,15 +249,19 @@ that <cite>vec</cite> is a subset of.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>vec</strong> – 1D numpy array, the input vector.</p></li>
-<li><p><strong>idx</strong> – Integer, the index in <cite>vec</cite>.</p></li>
-<li><p><strong>domain</strong> – 1D numpy array, the set of points that <cite>vec</cite> is a subset of.</p></li>
+<li><p><strong>vec</strong> (<em>np.ndarray</em>) – A 1D numpy array representing the input vector.</p></li>
+<li><p><strong>idx</strong> (<em>int</em>) – The index of the desired element in <cite>vec</cite>.</p></li>
+<li><p><strong>domain</strong> (<em>np.ndarray</em>) – A 1D numpy array representing the set of valid points,
+of which <cite>vec</cite> is a subset.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The element from <cite>vec</cite> at index <cite>idx</cite> if <cite>idx</cite> is within the bounds of <cite>vec</cite>,
-otherwise the first element of <cite>domain</cite> if <cite>idx</cite> is less than 1,
-or the last element of <cite>domain</cite> if <cite>idx</cite> is greater than the length of <cite>vec</cite>.</p>
+<dd class="field-even"><p>The element from <cite>vec</cite> at index <cite>idx</cite> if it is within bounds;
+otherwise, the first element of <cite>domain</cite> if <cite>idx</cite> is less than 0,
+or the last element of <cite>domain</cite> if <cite>idx</cite> exceeds the bounds of <cite>vec</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -298,16 +275,40 @@ but check bounds on both vectors. <cite>frac</cite> of 0 returns <cite>v1[i1]</c
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>v1</strong> – 1D numpy array, the first vector.</p></li>
-<li><p><strong>i1</strong> – Integer, the index in <cite>v1</cite>.</p></li>
-<li><p><strong>v2</strong> – 1D numpy array, the second vector.</p></li>
-<li><p><strong>i2</strong> – Integer, the index in <cite>v2</cite>.</p></li>
-<li><p><strong>domain</strong> – Domain to check bounds on both vectors.</p></li>
-<li><p><strong>frac</strong> – Float, the fraction of the way between <cite>v1[i1]</cite> and <cite>v2[i2]</cite>. Default is 0.5.</p></li>
+<li><p><strong>v1</strong> (<em>np.ndarray</em>) – A 1D numpy array representing the first vector.</p></li>
+<li><p><strong>i1</strong> (<em>int</em>) – The index in <cite>v1</cite> from which to retrieve the value.</p></li>
+<li><p><strong>v2</strong> (<em>np.ndarray</em>) – A 1D numpy array representing the second vector.</p></li>
+<li><p><strong>i2</strong> (<em>int</em>) – The index in <cite>v2</cite> from which to retrieve the value.</p></li>
+<li><p><strong>domain</strong> (<em>tuple</em>) – A tuple representing the valid bounds for both vectors. This should
+define the minimum and maximum allowable indices.</p></li>
+<li><p><strong>frac</strong> (<em>float</em><em>, </em><em>optional</em>) – A fraction indicating how far between the two specified elements
+to interpolate. Default is 0.5.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Integer, the element that is <cite>frac</cite> fraction of the way between <cite>v1[i1]</cite> and <cite>v2[i2]</cite>.</p>
+<dd class="field-even"><p>The element that is <cite>frac</cite> fraction of the way between <cite>v1[i1]</cite>
+and <cite>v2[i2]</cite>, clipped to the specified domain bounds.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyampact.alignmentUtils.load_audiofile">
+<span class="sig-prename descclassname"><span class="pre">pyampact.alignmentUtils.</span></span><span class="sig-name descname"><span class="pre">load_audiofile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignmentUtils.html#load_audiofile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignmentUtils.load_audiofile" title="Link to this definition"></a></dt>
+<dd><p>Loads audio file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>audio_file</strong> (<em>str</em>) – The path to the audio file to be loaded.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>audio_data</strong> (<em>The loaded audio data as a numpy array.</em>)</p></li>
+<li><p><strong>sr</strong> (<em>The original sample rate of the audio file.</em>)</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
@@ -315,18 +316,23 @@ but check bounds on both vectors. <cite>frac</cite> of 0 returns <cite>v1[i1]</c
 <dl class="py function">
 <dt class="sig sig-object py" id="pyampact.alignmentUtils.maptimes">
 <span class="sig-prename descclassname"><span class="pre">pyampact.alignmentUtils.</span></span><span class="sig-name descname"><span class="pre">maptimes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outtime</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignmentUtils.html#maptimes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignmentUtils.maptimes" title="Link to this definition"></a></dt>
-<dd><p>Map the times in t according to the mapping that each point
-in intime corresponds to that value in outtime.</p>
+<dd><p>Map the times in t according to the mapping that each point in intime
+corresponds to that value in outtime.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>t</strong> – 1D numpy array, input times.</p></li>
-<li><p><strong>intime</strong> – 1D numpy array, input time points.</p></li>
-<li><p><strong>outtime</strong> – 1D numpy array, output time points.</p></li>
+<li><p><strong>t</strong> (<em>array-like</em>) – The input times to be mapped. This can be a list or a numpy array of time values.</p></li>
+<li><p><strong>intime</strong> (<em>array-like</em>) – The reference input time points. Each point corresponds to a value in <cite>outtime</cite>.</p></li>
+<li><p><strong>outtime</strong> (<em>array-like</em>) – The corresponding output time points that map to the values in <cite>intime</cite>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>u, a 2D numpy array of mapped times.</p>
+<dd class="field-even"><p>An array of the mapped times, where each time in <cite>t</cite> is replaced by its corresponding
+value in <cite>outtime</cite> based on the mapping provided by <cite>intime</cite>. If a time in <cite>t</cite> does
+not have a corresponding <cite>intime</cite>, it will be returned unchanged.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
 </dd>
 </dl>
 </dd></dl>
@@ -338,12 +344,17 @@ in intime corresponds to that value in outtime.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>M</strong> – Binary mask where each column corresponds to a row in the output matrix S.</p></li>
-<li><p><strong>D</strong> – Regular spectrogram, where columns of S correspond to columns of D.</p></li>
+<li><p><strong>M</strong> (<em>np.ndarray</em>) – A binary mask where each column corresponds to a row in the output similarity matrix S.
+The mask indicates the presence or absence of MIDI notes or relevant features.</p></li>
+<li><p><strong>D</strong> (<em>np.ndarray</em>) – The regular spectrogram where the columns of the similarity matrix S correspond to the columns of D.
+This spectrogram represents the audio signal over time and frequency.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>S, the similarity matrix.</p>
+<dd class="field-even"><p>The similarity matrix S, calculated based on the Peak Structure Distance between the binary mask M and the spectrogram D.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
 </dd>
 </dl>
 </dd></dl>
@@ -355,36 +366,16 @@ in intime corresponds to that value in outtime.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>A</strong> – The first feature matrix.</p></li>
-<li><p><strong>B</strong> – The second feature matrix. If not provided, B will be set to A.</p></li>
+<li><p><strong>A</strong> (<em>np.ndarray</em>) – The first feature matrix, where each row represents a sample and each column represents a feature.</p></li>
+<li><p><strong>B</strong> (<em>np.ndarray</em><em>, </em><em>optional</em>) – The second feature matrix. If not provided, B will be set to A, allowing for self-similarity calculation.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The similarity matrix between A and B.</p>
+<dd class="field-even"><p>The similarity matrix between A and B, where the element at (i, j) represents the similarity
+between the i-th sample of A and the j-th sample of B.</p>
 </dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyampact.alignmentUtils.viterbi_path">
-<span class="sig-prename descclassname"><span class="pre">pyampact.alignmentUtils.</span></span><span class="sig-name descname"><span class="pre">viterbi_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prior</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transmat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obslik</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignmentUtils.html#viterbi_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignmentUtils.viterbi_path" title="Link to this definition"></a></dt>
-<dd><p>VITERBI Find the most-probable (Viterbi) path through the HMM state trellis.
-path = viterbi(prior, transmat, obslik)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>prior</strong><strong>(</strong><strong>i</strong><strong>)</strong> – Pr(Q(1) = i)</p></li>
-<li><p><strong>transmat</strong><strong>(</strong><strong>i</strong><strong>,</strong><strong>j</strong><strong>)</strong> – Pr(Q(t+1)=j | Q(t)=i)</p></li>
-<li><p><strong>obslik</strong><strong>(</strong><strong>i</strong><strong>,</strong><strong>t</strong><strong>)</strong> – Pr(y(t) | Q(t)=i)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p>path(t): q(t), where q1 … qT is the argmax of the above expression.</p></li>
-<li><p>delta(j,t) = prob. of the best sequence of length t-1 and then going to state j, and O(1:t)</p></li>
-<li><p>psi(j,t) = the best predecessor state, given that we ended up in state j at t</p></li>
-</ul>
-</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
 </dd>
 </dl>
 </dd></dl>

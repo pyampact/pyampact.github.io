@@ -1,23 +1,21 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pyampact.symbolicUtils &mdash; pyAMPACT 0.0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=92fd9be5" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
     <link rel="canonical" href="https://pyampact.github.io/_modules/pyampact/symbolicUtils.html" />
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
-        <script src="../../_static/doctools.js?v=888ff710"></script>
-        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -107,6 +105,8 @@
 <span class="sd">    remove_namespaces</span>
 <span class="sd">    removeTied</span>
 <span class="sd">    snapTo</span>
+<span class="sd">    truncate_and_scale_onsOffsList</span>
+<span class="sd">    githubURLtoRaw</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -137,6 +137,7 @@
     <span class="s2">&quot;remove_namespaces&quot;</span><span class="p">,</span>
     <span class="s2">&quot;removeTied&quot;</span><span class="p">,</span>
     <span class="s2">&quot;snapTo&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;truncate_and_scale_onsOffsList&quot;</span><span class="p">,</span>
     <span class="s2">&quot;_duration2Kern&quot;</span><span class="p">,</span>
     <span class="s2">&quot;duration2MEI&quot;</span><span class="p">,</span>
     <span class="s2">&quot;function_pattern&quot;</span><span class="p">,</span>
@@ -144,9 +145,11 @@
     <span class="s2">&quot;tinyNotation_pattern&quot;</span><span class="p">,</span>
     <span class="s2">&quot;volpiano_pattern&quot;</span><span class="p">,</span>
     <span class="s2">&quot;meiDeclaration&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;idGen&quot;</span>    
+    <span class="s2">&quot;idGen&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;githubURLtoRaw&quot;</span>
 
 <span class="p">]</span>
+
 
 <span class="k">def</span> <span class="nf">_escape_cdata</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -181,7 +184,10 @@
             <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&amp;gt;&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">text</span>
     <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;cannot serialize </span><span class="si">%r</span><span class="s2"> (type </span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;cannot serialize </span><span class="si">%r</span><span class="s2"> (type </span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span>
+                        <span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+
+
 <span class="n">ET</span><span class="o">.</span><span class="n">_escape_cdata</span> <span class="o">=</span> <span class="n">_escape_cdata</span>
 
 <span class="n">_duration2Kern</span> <span class="o">=</span> <span class="p">{</span>  <span class="c1"># keys get rounded to 5 decimal places</span>
@@ -296,8 +302,9 @@
 <span class="sd">    Returns:</span>
 <span class="sd">    xml.etree.ElementTree.Element: The new &#39;note&#39; element.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">note_el</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="s1">&#39;note&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;oct&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">note</span><span class="o">.</span><span class="n">octave</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;pname&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">note</span><span class="o">.</span><span class="n">step</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;xml:id&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">note</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;dots&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">note</span><span class="o">.</span><span class="n">duration</span><span class="o">.</span><span class="n">dots</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">})</span>
+                                             <span class="s1">&#39;pname&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">note</span><span class="o">.</span><span class="n">step</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;xml:id&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">note</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;dots&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">note</span><span class="o">.</span><span class="n">duration</span><span class="o">.</span><span class="n">dots</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">})</span>
     <span class="k">if</span> <span class="n">note</span><span class="o">.</span><span class="n">duration</span><span class="o">.</span><span class="n">isGrace</span><span class="p">:</span>
         <span class="n">note_el</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;grace&#39;</span><span class="p">,</span> <span class="s1">&#39;acc&#39;</span><span class="p">)</span>
         <span class="n">note_el</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;dur&#39;</span><span class="p">,</span> <span class="n">duration2MEI</span><span class="p">[</span><span class="n">note</span><span class="o">.</span><span class="n">duration</span><span class="o">.</span><span class="n">type</span><span class="p">])</span>
@@ -322,13 +329,15 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">note_el</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;accid.ges&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">note</span><span class="o">.</span><span class="n">lyric</span><span class="p">:</span>
-        <span class="n">verse_el</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">note_el</span><span class="p">,</span> <span class="s1">&#39;verse&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;xml:id&#39;</span><span class="p">:</span> <span class="nb">next</span><span class="p">(</span><span class="n">idGen</span><span class="p">)})</span>
+        <span class="n">verse_el</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span>
+            <span class="n">note_el</span><span class="p">,</span> <span class="s1">&#39;verse&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;xml:id&#39;</span><span class="p">:</span> <span class="nb">next</span><span class="p">(</span><span class="n">idGen</span><span class="p">)})</span>
         <span class="n">syl_el</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">verse_el</span><span class="p">,</span> <span class="s1">&#39;syl&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;xml:id&#39;</span><span class="p">:</span> <span class="nb">next</span><span class="p">(</span><span class="n">idGen</span><span class="p">)})</span>
         <span class="n">syl_el</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">note</span><span class="o">.</span><span class="n">lyric</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">exp</span> <span class="ow">in</span> <span class="n">note</span><span class="o">.</span><span class="n">expressions</span><span class="p">:</span>
         <span class="k">if</span> <span class="s1">&#39;Dynamic&#39;</span> <span class="ow">in</span> <span class="n">exp</span><span class="o">.</span><span class="n">classes</span><span class="p">:</span>
             <span class="n">dyn_el</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">note_el</span><span class="p">,</span> <span class="s1">&#39;dynam&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;xml:id&#39;</span><span class="p">:</span> <span class="nb">next</span><span class="p">(</span><span class="n">idGen</span><span class="p">)})</span>
             <span class="n">dyn_el</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">exp</span><span class="o">.</span><span class="n">value</span></div>
+
 
 
 <div class="viewcode-block" id="addTieBreakers">
@@ -364,6 +373,7 @@
         <span class="n">part</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_arrays</span><span class="p">((</span><span class="n">part</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">tieBreakers</span><span class="p">))</span></div>
 
 
+
 <div class="viewcode-block" id="kernClefHelper">
 <a class="viewcode-back" href="../../symbolicUtils.html#pyampact.symbolicUtils.kernClefHelper">[docs]</a>
 <span class="k">def</span> <span class="nf">kernClefHelper</span><span class="p">(</span><span class="n">clef</span><span class="p">):</span>
@@ -379,6 +389,7 @@
     <span class="k">elif</span> <span class="n">clef</span><span class="o">.</span><span class="n">octaveChange</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">octaveChange</span> <span class="o">=</span> <span class="s1">&#39;v&#39;</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">clef</span><span class="o">.</span><span class="n">octaveChange</span><span class="p">)</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;*clef</span><span class="si">{</span><span class="n">clef</span><span class="o">.</span><span class="n">sign</span><span class="si">}{</span><span class="n">octaveChange</span><span class="si">}{</span><span class="n">clef</span><span class="o">.</span><span class="n">line</span><span class="si">}</span><span class="s1">&#39;</span></div>
+
 
 
 <div class="viewcode-block" id="combineRests">
@@ -397,6 +408,7 @@
     <span class="k">return</span> <span class="n">col</span><span class="p">[(</span><span class="n">col</span> <span class="o">!=</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="p">((</span><span class="n">col</span> <span class="o">==</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">col</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;r&#39;</span><span class="p">))]</span></div>
 
 
+
 <div class="viewcode-block" id="combineUnisons">
 <a class="viewcode-back" href="../../symbolicUtils.html#pyampact.symbolicUtils.combineUnisons">[docs]</a>
 <span class="k">def</span> <span class="nf">combineUnisons</span><span class="p">(</span><span class="n">col</span><span class="p">):</span>
@@ -413,13 +425,18 @@
     <span class="k">return</span> <span class="n">col</span><span class="p">[(</span><span class="n">col</span> <span class="o">==</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">col</span> <span class="o">!=</span> <span class="n">col</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">))]</span></div>
 
 
+
+<div class="viewcode-block" id="githubURLtoRaw">
+<a class="viewcode-back" href="../../symbolicUtils.html#pyampact.symbolicUtils.githubURLtoRaw">[docs]</a>
 <span class="k">def</span> <span class="nf">githubURLtoRaw</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert a GitHub URL to a raw URL and return it. Otherwise return the string.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">string</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;https://github.com/&#39;</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;https://raw.githubusercontent.com/&#39;</span> <span class="o">+</span> <span class="n">string</span><span class="p">[</span><span class="mi">19</span><span class="p">:]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;/blob/&#39;</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">string</span>
+    <span class="k">return</span> <span class="n">string</span></div>
+
+
 
 <div class="viewcode-block" id="fromJSON">
 <a class="viewcode-back" href="../../symbolicUtils.html#pyampact.symbolicUtils.fromJSON">[docs]</a>
@@ -455,7 +472,7 @@
             <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_data</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="p">((</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">json_path</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">json_path</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.dez&#39;</span><span class="p">))</span>
-        <span class="ow">or</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">json_path</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">json_path</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.dez&#39;</span><span class="p">))):</span>
+            <span class="ow">or</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">json_path</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">json_path</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.dez&#39;</span><span class="p">))):</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_records</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">])</span>
         <span class="k">if</span> <span class="s1">&#39;start&#39;</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
             <span class="n">df</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
@@ -463,6 +480,7 @@
         <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
         <span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">df</span></div>
+
 
 
 <span class="k">def</span> <span class="nf">_id_gen</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
@@ -492,7 +510,10 @@
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
         <span class="k">yield</span> <span class="sa">f</span><span class="s1">&#39;pyAMPACT-</span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s1">&#39;</span>
         <span class="n">start</span> <span class="o">+=</span> <span class="mi">1</span>
+
+
 <span class="n">idGen</span> <span class="o">=</span> <span class="n">_id_gen</span><span class="p">()</span>
+
 
 <div class="viewcode-block" id="indentMEI">
 <a class="viewcode-back" href="../../symbolicUtils.html#pyampact.symbolicUtils.indentMEI">[docs]</a>
@@ -529,6 +550,7 @@
             <span class="n">elem</span><span class="o">.</span><span class="n">tail</span> <span class="o">=</span> <span class="n">i</span></div>
 
 
+
 <span class="k">def</span> <span class="nf">_kernChordHelper</span><span class="p">(</span><span class="n">_chord</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parse a music21 chord object into a kern chord token.</span>
@@ -541,6 +563,7 @@
 <span class="sd">    :return: A string representing the kern chord token.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">_kernNoteHelper</span><span class="p">(</span><span class="n">note</span><span class="p">)</span> <span class="k">for</span> <span class="n">note</span> <span class="ow">in</span> <span class="n">_chord</span><span class="o">.</span><span class="n">notes</span><span class="p">])</span>
+
 
 <div class="viewcode-block" id="kernFooter">
 <a class="viewcode-back" href="../../symbolicUtils.html#pyampact.symbolicUtils.kernFooter">[docs]</a>
@@ -560,6 +583,7 @@
 <span class="s2">!!!title: @</span><span class="se">{{</span><span class="s2">OTL</span><span class="se">}}</span><span class="s2">&quot;&quot;&quot;</span></div>
 
 
+
 <div class="viewcode-block" id="kernHeader">
 <a class="viewcode-back" href="../../symbolicUtils.html#pyampact.symbolicUtils.kernHeader">[docs]</a>
 <span class="k">def</span> <span class="nf">kernHeader</span><span class="p">(</span><span class="n">metadata</span><span class="p">):</span>
@@ -571,6 +595,7 @@
 <span class="sd">    :return: A string representing the kern format header.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;!!!COM: </span><span class="si">{</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;composer&quot;</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s1">!!!OTL: </span><span class="si">{</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span></div>
+
 
 
 <span class="k">def</span> <span class="nf">_kernNoteHelper</span><span class="p">(</span><span class="n">_note</span><span class="p">):</span>
@@ -623,12 +648,14 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">grace</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
         <span class="n">dur</span> <span class="o">=</span> <span class="n">_duration2Kern</span><span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">_note</span><span class="o">.</span><span class="n">quarterLength</span><span class="p">),</span> <span class="mi">5</span><span class="p">)]</span>
-    <span class="n">grace</span> <span class="o">=</span> <span class="s1">&#39;q&#39;</span> <span class="k">if</span> <span class="n">_note</span><span class="o">.</span><span class="n">duration</span><span class="o">.</span><span class="n">isGrace</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>   <span class="c1"># TODO: make this sensitive to notehead and practical duration</span>
+    <span class="c1"># TODO: make this sensitive to notehead and practical duration</span>
+    <span class="n">grace</span> <span class="o">=</span> <span class="s1">&#39;q&#39;</span> <span class="k">if</span> <span class="n">_note</span><span class="o">.</span><span class="n">duration</span><span class="o">.</span><span class="n">isGrace</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
     <span class="n">fermata</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
     <span class="k">for</span> <span class="n">exp</span> <span class="ow">in</span> <span class="n">_note</span><span class="o">.</span><span class="n">expressions</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">exp</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;fermata&#39;</span><span class="p">:</span>
             <span class="n">fermata</span> <span class="o">=</span> <span class="s1">&#39;;&#39;</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">startBracket</span><span class="si">}{</span><span class="n">dur</span><span class="si">}{</span><span class="n">letter</span><span class="si">}{</span><span class="n">acc</span><span class="si">}{</span><span class="n">longa</span><span class="si">}{</span><span class="n">grace</span><span class="si">}{</span><span class="n">fermata</span><span class="si">}{</span><span class="n">beaming</span><span class="si">}{</span><span class="n">endBracket</span><span class="si">}</span><span class="s1">&#39;</span>
+
 
 <div class="viewcode-block" id="kernNRCHelper">
 <a class="viewcode-back" href="../../symbolicUtils.html#pyampact.symbolicUtils.kernNRCHelper">[docs]</a>
@@ -652,6 +679,7 @@
         <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">_kernNoteHelper</span><span class="p">(</span><span class="n">note</span><span class="p">)</span> <span class="k">for</span> <span class="n">note</span> <span class="ow">in</span> <span class="n">nrc</span><span class="o">.</span><span class="n">notes</span><span class="p">])</span></div>
 
 
+
 <div class="viewcode-block" id="noteRestHelper">
 <a class="viewcode-back" href="../../symbolicUtils.html#pyampact.symbolicUtils.noteRestHelper">[docs]</a>
 <span class="k">def</span> <span class="nf">noteRestHelper</span><span class="p">(</span><span class="n">nr</span><span class="p">):</span>
@@ -667,6 +695,7 @@
     <span class="k">if</span> <span class="n">nr</span><span class="o">.</span><span class="n">isRest</span><span class="p">:</span>
         <span class="k">return</span> <span class="s1">&#39;r&#39;</span>
     <span class="k">return</span> <span class="n">nr</span><span class="o">.</span><span class="n">nameWithOctave</span></div>
+
 
 
 <div class="viewcode-block" id="remove_namespaces">
@@ -693,6 +722,7 @@
         <span class="n">root</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;xmlns&#39;</span><span class="p">,</span> <span class="n">namespace</span><span class="p">)</span></div>
 
 
+
 <div class="viewcode-block" id="removeTied">
 <a class="viewcode-back" href="../../symbolicUtils.html#pyampact.symbolicUtils.removeTied">[docs]</a>
 <span class="k">def</span> <span class="nf">removeTied</span><span class="p">(</span><span class="n">noteOrRest</span><span class="p">):</span>
@@ -709,6 +739,7 @@
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">noteOrRest</span><span class="p">,</span> <span class="s1">&#39;tie&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">noteOrRest</span><span class="o">.</span><span class="n">tie</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">noteOrRest</span><span class="o">.</span><span class="n">tie</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="s1">&#39;start&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
     <span class="k">return</span> <span class="n">noteOrRest</span></div>
+
 
 
 <div class="viewcode-block" id="snapTo">
@@ -764,6 +795,69 @@
         <span class="k">return</span> <span class="n">_data</span><span class="o">.</span><span class="n">values</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">_data</span></div>
+
+
+
+<div class="viewcode-block" id="truncate_and_scale_onsOffsList">
+<a class="viewcode-back" href="../../symbolicUtils.html#pyampact.symbolicUtils.truncate_and_scale_onsOffsList">[docs]</a>
+<span class="k">def</span> <span class="nf">truncate_and_scale_onsOffsList</span><span class="p">(</span><span class="n">onsOffsList</span><span class="p">,</span> <span class="n">target_length</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Scale and truncate onsOffsList to match the target_length, adjusting values proportionally.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    onsOffsList (list of lists): List containing [ONSET_SEC, OFFSET_SEC] pairs.</span>
+<span class="sd">    target_length (int): Desired length of the output list.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    list of lists: Scaled and truncated onsOffsList.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">current_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">onsOffsList</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">current_length</span> <span class="o">==</span> <span class="n">target_length</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">onsOffsList</span>
+
+    <span class="k">elif</span> <span class="n">current_length</span> <span class="o">&gt;</span> <span class="n">target_length</span><span class="p">:</span>
+        <span class="c1"># Scale down</span>
+        <span class="n">scale_factor</span> <span class="o">=</span> <span class="n">current_length</span> <span class="o">/</span> <span class="n">target_length</span>
+        <span class="n">truncated_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">target_length</span><span class="p">):</span>
+            <span class="n">start_index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">scale_factor</span><span class="p">)</span>
+            <span class="n">end_index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">scale_factor</span><span class="p">)</span>
+
+            <span class="c1"># Calculate mean values for the range</span>
+            <span class="n">start_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">onsOffsList</span><span class="p">[</span><span class="n">start_index</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">onsOffsList</span><span class="p">[</span><span class="n">end_index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]])</span>
+            <span class="n">end_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">onsOffsList</span><span class="p">[</span><span class="n">start_index</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">onsOffsList</span><span class="p">[</span><span class="n">end_index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]])</span>
+
+            <span class="n">truncated_list</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">truncated_list</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Scale up by interpolation</span>
+        <span class="n">scaling_factor</span> <span class="o">=</span> <span class="n">target_length</span> <span class="o">/</span> <span class="n">current_length</span>
+        <span class="n">new_onsOffsList</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">target_length</span><span class="p">):</span>
+            <span class="n">original_index</span> <span class="o">=</span> <span class="n">i</span> <span class="o">/</span> <span class="n">scaling_factor</span>
+            <span class="n">lower_index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">original_index</span><span class="p">))</span>
+            <span class="n">upper_index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">original_index</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="n">lower_index</span> <span class="o">==</span> <span class="n">upper_index</span><span class="p">:</span>
+                <span class="n">new_onsOffsList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">onsOffsList</span><span class="p">[</span><span class="n">lower_index</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">lower_value</span> <span class="o">=</span> <span class="n">onsOffsList</span><span class="p">[</span><span class="n">lower_index</span><span class="p">]</span>
+                <span class="n">upper_value</span> <span class="o">=</span> <span class="n">onsOffsList</span><span class="p">[</span><span class="n">upper_index</span><span class="p">]</span>
+                <span class="n">fraction</span> <span class="o">=</span> <span class="n">original_index</span> <span class="o">-</span> <span class="n">lower_index</span>
+
+                <span class="n">new_onsOffsList</span><span class="o">.</span><span class="n">append</span><span class="p">([</span>
+                    <span class="n">lower_value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">fraction</span> <span class="o">*</span>
+                    <span class="p">(</span><span class="n">upper_value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">lower_value</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                    <span class="n">lower_value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">fraction</span> <span class="o">*</span>
+                    <span class="p">(</span><span class="n">upper_value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">lower_value</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">new_onsOffsList</span></div>
 
 </pre></div>
 

@@ -1,23 +1,21 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pyampact.alignmentUtils &mdash; pyAMPACT 0.0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=92fd9be5" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
     <link rel="canonical" href="https://pyampact.github.io/_modules/pyampact/alignmentUtils.html" />
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
-        <script src="../../_static/doctools.js?v=888ff710"></script>
-        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -85,165 +83,189 @@
 <span class="sd">alignmentUtils</span>
 <span class="sd">==============</span>
 
-
 <span class="sd">.. autosummary::</span>
 <span class="sd">    :toctree: generated/</span>
 
+<span class="sd">    dpcore</span>
 <span class="sd">    dp</span>
-<span class="sd">    fill_priormat_gauss</span>
-<span class="sd">    gh</span>
-<span class="sd">    flatTopGaussIdx</span>
+<span class="sd">    gh    </span>
 <span class="sd">    g</span>
-<span class="sd">    flatTopGaussian</span>
-<span class="sd">    viterbi_path</span>
-<span class="sd">    mixgauss_prob</span>
-<span class="sd">    fill_trans_mat</span>
 <span class="sd">    orio_simmx</span>
 <span class="sd">    simmx</span>
-<span class="sd">    maptimes</span>
-<span class="sd">    calculate_f0_est</span>
+<span class="sd">    maptimes    </span>
 <span class="sd">    f0_est_weighted_sum</span>
 <span class="sd">    f0_est_weighted_sum_spec</span>
+<span class="sd">    durations_from_midi_ticks</span>
+<span class="sd">    load_audiofile</span>
+
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">wave</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">librosa</span>
+<span class="kn">import</span> <span class="nn">mido</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 
-<span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">gaussian</span>
-<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">multivariate_normal</span>
-<span class="kn">from</span> <span class="nn">sklearn.mixture</span> <span class="kn">import</span> <span class="n">GaussianMixture</span>
-
-<span class="kn">import</span> <span class="nn">sys</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;dpcore&quot;</span><span class="p">,</span>
     <span class="s2">&quot;dp&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;fill_priormat_gauss&quot;</span><span class="p">,</span>
     <span class="s2">&quot;gh&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;flatTopGaussIdx&quot;</span><span class="p">,</span>
     <span class="s2">&quot;g&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;flatTopGaussian&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;viterbi_path&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;mixgauss_prob&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;fill_trans_mat&quot;</span><span class="p">,</span>
     <span class="s2">&quot;orio_simmx&quot;</span><span class="p">,</span>
     <span class="s2">&quot;simmx&quot;</span><span class="p">,</span>
     <span class="s2">&quot;maptimes&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;calculate_f0_est&quot;</span><span class="p">,</span>
     <span class="s2">&quot;f0_est_weighted_sum&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;f0_est_weighted_sum_spec&quot;</span>
+    <span class="s2">&quot;f0_est_weighted_sum_spec&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;durations_from_midi_ticks&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;load_audiofile&quot;</span>
 <span class="p">]</span>
+
+
+<div class="viewcode-block" id="dpcore">
+<a class="viewcode-back" href="../../alignmentUtils.html#pyampact.alignmentUtils.dpcore">[docs]</a>
+<span class="k">def</span> <span class="nf">dpcore</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">pen</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Core dynamic programming calculation of best path.</span>
+<span class="sd">       M[r,c] is the array of local costs.</span>
+<span class="sd">       Create D[r,c] as the array of costs-of-best-paths to r,c,</span>
+<span class="sd">       and phi[r,c] as the indicator of the point preceding [r,c] to</span>
+<span class="sd">       allow traceback; 0 = (r-1,c-1), 1 = (r,c-1), 2 = (r-1, c)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    M : np.ndarray</span>
+<span class="sd">        A 2D array of local costs, where M[r, c] represents the cost at position (r, c).</span>
+
+<span class="sd">    pen : float</span>
+<span class="sd">        A penalty value applied for non-diagonal movements in the path.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    D : np.ndarray</span>
+<span class="sd">        A 2D array of cumulative best costs to each point (r,c), starting from (0,0).</span>
+
+<span class="sd">    phi : np.ndarray</span>
+<span class="sd">        A 2D array of integers used for traceback, where:</span>
+<span class="sd">        - 0 indicates the previous point was (r-1, c-1).</span>
+<span class="sd">        - 1 indicates the previous point was (r, c-1).</span>
+<span class="sd">        - 2 indicates the previous point was (r-1, c).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Pure python equivalent</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    <span class="c1"># bottom edge can only come from preceding column</span>
+    <span class="n">D</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">:]</span><span class="o">+</span><span class="n">pen</span><span class="p">)</span>
+    <span class="n">phi</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="c1"># left edge can only come from preceding row</span>
+    <span class="n">D</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">pen</span><span class="p">)</span>
+    <span class="n">phi</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="c1"># initialize bottom left</span>
+    <span class="n">D</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">phi</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1"># Calculate the rest recursively</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">M</span><span class="p">)[</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">M</span><span class="p">)[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">best_preceding_costs</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">D</span><span class="p">[</span><span class="n">r</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">pen</span><span class="o">+</span><span class="n">D</span><span class="p">[</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">pen</span><span class="o">+</span><span class="n">D</span><span class="p">[</span><span class="n">r</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="p">]]</span>
+            <span class="n">tb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">best_preceding_costs</span><span class="p">)</span>
+            <span class="n">D</span><span class="p">[</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_preceding_costs</span><span class="p">[</span><span class="n">tb</span><span class="p">]</span> <span class="o">+</span> <span class="n">M</span><span class="p">[</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span>
+            <span class="n">phi</span><span class="p">[</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">tb</span>
+
+    <span class="k">return</span> <span class="n">D</span><span class="p">,</span> <span class="n">phi</span></div>
+
 
 
 <div class="viewcode-block" id="dp">
 <a class="viewcode-back" href="../../alignmentUtils.html#pyampact.alignmentUtils.dp">[docs]</a>
-<span class="k">def</span> <span class="nf">dp</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">dp</span><span class="p">(</span><span class="n">local_costs</span><span class="p">,</span> <span class="n">penalty</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">gutter</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">G</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Use dynamic programming to find a min-cost path through matrix M.</span>
-<span class="sd">    Return state sequence in p,q.</span>
+<span class="sd">    Use dynamic programming to find a min-cost path through a matrix</span>
+<span class="sd">    of local costs.</span>
 
-<span class="sd">    :param M: 2D numpy array, the input matrix.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    local_costs : np.ndarray</span>
+<span class="sd">        A 2D matrix of local costs, where each cell represents the cost associated </span>
+<span class="sd">        with that specific position.</span>
 
-<span class="sd">    :return: A tuple containing three elements:</span>
-<span class="sd">        - p: List, the sequence of row indices for the min-cost path.</span>
-<span class="sd">        - q: List, the sequence of column indices for the min-cost path.</span>
-<span class="sd">        - D: 2D numpy array, the cost matrix.</span>
-<span class="sd">    &quot;&quot;&quot;</span>    
-    <span class="n">r</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">shape</span>
+<span class="sd">    penalty : float, optional</span>
+<span class="sd">        An additional cost incurred for moving in the horizontal or vertical direction </span>
+<span class="sd">        (i.e., (0,1) and (1,0) steps). Default is 0.1.</span>
 
-    <span class="c1"># Initialize cost matrix D</span>
-    <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">c</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="n">D</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>  <span class="c1"># Use np.inf instead of np.nan for proper comparison</span>
-    <span class="n">D</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
-    <span class="n">D</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">D</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">M</span>
+<span class="sd">    gutter : float, optional</span>
+<span class="sd">        A proportion of edge length that allows for deviations away from the </span>
+<span class="sd">        bottom-left corner (-1,-1) in the optimal path. Default is 0.0, meaning </span>
+<span class="sd">        the path must reach the top-right corner.</span>
 
-    <span class="n">traceback</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">c</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<span class="sd">    G : float, optional</span>
+<span class="sd">        A proportion of the edge length considered for identifying gulleys in the </span>
+<span class="sd">        cost matrix. Default is 0.5.</span>
 
-    <span class="c1"># Dynamic programming loop</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-            <span class="n">min_cost</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">D</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">D</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">min_cost</span> <span class="o">==</span> <span class="n">D</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="p">]:</span>
-                <span class="n">direction</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># Move upward</span>
-            <span class="k">elif</span> <span class="n">min_cost</span> <span class="o">==</span> <span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]:</span>
-                <span class="n">direction</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># Move leftward</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">direction</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Move diagonally</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    p : np.ndarray</span>
+<span class="sd">        An array of row indices corresponding to the best path.</span>
 
-            <span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">min_cost</span>
-            <span class="n">traceback</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">direction</span>
+<span class="sd">    q : np.ndarray</span>
+<span class="sd">        An array of column indices corresponding to the best path.</span>
 
-    <span class="c1"># Traceback from bottom right</span>
-    <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">r</span><span class="p">,</span> <span class="n">c</span>
-    <span class="n">p</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+<span class="sd">    total_costs : np.ndarray</span>
+<span class="sd">        A 2D array of minimum costs to reach each cell in the local costs matrix.</span>
 
-    <span class="k">while</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># Adjust for 0-based indexing</span>
-        <span class="n">direction</span> <span class="o">=</span> <span class="n">traceback</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">i</span> <span class="o">-=</span> <span class="mi">1</span>
-            <span class="n">j</span> <span class="o">-=</span> <span class="mi">1</span>
-        <span class="k">elif</span> <span class="n">direction</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">i</span> <span class="o">-=</span> <span class="mi">1</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">j</span> <span class="o">-=</span> <span class="mi">1</span>
-        <span class="n">p</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Adjust for 0-based indexing</span>
-        <span class="n">q</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Adjust for 0-based indexing</span>
-
-    <span class="k">return</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">D</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">1</span><span class="p">:]</span>  <span class="c1"># Return the corrected sequences and the trimmed D matrix</span></div>
-
-
-
-<span class="c1"># Gaussian/Viterbi functions</span>
-<div class="viewcode-block" id="fill_priormat_gauss">
-<a class="viewcode-back" href="../../alignmentUtils.html#pyampact.alignmentUtils.fill_priormat_gauss">[docs]</a>
-<span class="k">def</span> <span class="nf">fill_priormat_gauss</span><span class="p">(</span><span class="n">Nobs</span><span class="p">,</span> <span class="n">ons</span><span class="p">,</span> <span class="n">offs</span><span class="p">,</span> <span class="n">Nstates</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Creates a prior matrix based on the DTW alignment (supplied by the input</span>
-<span class="sd">    variables ons and offs. A rectangular window with half a Gaussian on</span>
-<span class="sd">    each side over the onsets and offsets estimated by the DTW alignment.</span>
-<span class="sd">    </span>
-<span class="sd">    :params Nobs: Number of observations</span>
-<span class="sd">    :params ons: Vector of onset times predicted by DTW alignment</span>
-<span class="sd">    :params offs: Vector of offset times predicted by DTW alignment</span>
-<span class="sd">    :params Nstates: Number of states in the hidden Markov model</span>
-
-<span class="sd">    :return prior: Prior matrix based on DTW alignment</span>
+<span class="sd">    phi : np.ndarray</span>
+<span class="sd">        A traceback matrix indicating the preceding best-path step for each cell, where:</span>
+<span class="sd">        - 0 indicates a diagonal predecessor.</span>
+<span class="sd">        - 1 indicates the previous column (same row).</span>
+<span class="sd">        - 2 indicates the previous row (same column).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">Nstates</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">Nstates</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">local_costs</span><span class="p">)</span>
+    <span class="n">total_costs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">rows</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">cols</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="n">total_costs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+    <span class="n">total_costs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+    <span class="n">total_costs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">total_costs</span><span class="p">[</span><span class="mi">1</span><span class="p">:(</span><span class="n">rows</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">1</span><span class="p">:(</span><span class="n">cols</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> <span class="n">local_costs</span>
 
-    <span class="n">Nnotes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ons</span><span class="p">)</span>
-    <span class="n">prior</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Nnotes</span> <span class="o">*</span> <span class="p">(</span><span class="n">Nstates</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">Nobs</span><span class="p">))</span>
-    <span class="n">frames</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">Nobs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">),</span> <span class="nb">int</span><span class="p">)</span>
 
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Nnotes</span><span class="p">):</span>
-        <span class="n">row</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">Nstates</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">insert</span> <span class="o">=</span> <span class="n">Nstates</span> <span class="o">-</span> <span class="mi">5</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">rows</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">cols</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">choices</span> <span class="o">=</span> <span class="p">[</span><span class="n">total_costs</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span>
+                       <span class="n">total_costs</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">penalty</span><span class="p">,</span>
+                       <span class="n">total_costs</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">penalty</span><span class="p">]</span>
+            <span class="n">tb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">choices</span><span class="p">)</span>
+            <span class="n">total_costs</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">choices</span><span class="p">[</span><span class="n">tb</span><span class="p">]</span>
+            <span class="n">phi</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">tb</span> <span class="o">+</span> <span class="mi">1</span>
 
-        <span class="c1"># Silence</span>
-        <span class="n">prior</span><span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">flatTopGaussian</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">gh</span><span class="p">(</span><span class="n">ons</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">offs</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">frames</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span>
-                                            <span class="n">g</span><span class="p">(</span><span class="n">offs</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">frames</span><span class="p">),</span> <span class="n">g</span><span class="p">(</span><span class="n">ons</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">frames</span><span class="p">),</span> <span class="n">gh</span><span class="p">(</span><span class="n">ons</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">offs</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">frames</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
-    
-        <span class="c1"># Throws Value Error for negative values, both here and in MATLAB</span>
-        <span class="n">prior</span><span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="mi">2</span><span class="p">:</span><span class="n">row</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">insert</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">prior</span><span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:],</span> <span class="p">(</span><span class="n">insert</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">total_costs</span> <span class="o">=</span> <span class="n">total_costs</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">1</span><span class="p">:]</span>
+    <span class="n">phi</span> <span class="o">=</span> <span class="n">phi</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">1</span><span class="p">:]</span>
 
-        <span class="c1"># Transient, steady state, transient</span>
-        <span class="n">prior</span><span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">insert</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">flatTopGaussian</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">g</span><span class="p">(</span><span class="n">offs</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">frames</span><span class="p">),</span>
-                                                     <span class="n">gh</span><span class="p">(</span><span class="n">offs</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ons</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">frames</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">),</span>
-                                                     <span class="n">gh</span><span class="p">(</span><span class="n">ons</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">offs</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">frames</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">),</span> <span class="n">g</span><span class="p">(</span><span class="n">offs</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">frames</span><span class="p">))</span>
-        <span class="n">prior</span><span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">insert</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">flatTopGaussian</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">g</span><span class="p">(</span><span class="n">offs</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">frames</span><span class="p">),</span>
-                                                     <span class="n">g</span><span class="p">(</span><span class="n">ons</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">frames</span><span class="p">),</span> <span class="n">g</span><span class="p">(</span><span class="n">offs</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">frames</span><span class="p">),</span> <span class="n">g</span><span class="p">(</span><span class="n">ons</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">frames</span><span class="p">))</span>
-        <span class="n">prior</span><span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">+</span> <span class="n">insert</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">flatTopGaussian</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">g</span><span class="p">(</span><span class="n">ons</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">frames</span><span class="p">),</span>
-                                                     <span class="n">gh</span><span class="p">(</span><span class="n">ons</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">offs</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">frames</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">),</span>
-                                                     <span class="n">gh</span><span class="p">(</span><span class="n">offs</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">ons</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">frames</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">),</span> <span class="n">g</span><span class="p">(</span><span class="n">ons</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">frames</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">gutter</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">rows</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">cols</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">best_top_pt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">total_costs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:</span><span class="nb">int</span><span class="p">(</span><span class="n">G</span> <span class="o">*</span> <span class="n">cols</span><span class="p">)])</span>
+        <span class="n">best_right_pt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">total_costs</span><span class="p">[:</span><span class="nb">int</span><span class="p">(</span><span class="n">G</span> <span class="o">*</span> <span class="n">rows</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
-    <span class="c1"># The last silence</span>
-    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="n">prior</span><span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="mi">5</span> <span class="o">+</span> <span class="n">insert</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">flatTopGaussIdx</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">ons</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">offs</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">offs</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">ons</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">total_costs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">best_top_pt</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">total_costs</span><span class="p">[</span><span class="n">best_right_pt</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">rows</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">best_top_pt</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">best_right_pt</span><span class="p">,</span> <span class="n">cols</span> <span class="o">-</span> <span class="mi">1</span>
 
-    <span class="k">return</span> <span class="n">prior</span></div>
+    <span class="n">p</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="p">[</span><span class="n">j</span><span class="p">]</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">tb</span> <span class="o">=</span> <span class="n">phi</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">tb</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="n">j</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">tb</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">tb</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">j</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="n">q</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">:]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">:]),</span> <span class="n">total_costs</span><span class="p">,</span> <span class="n">phi</span></div>
 
 
 
@@ -251,54 +273,42 @@
 <a class="viewcode-back" href="../../alignmentUtils.html#pyampact.alignmentUtils.gh">[docs]</a>
 <span class="k">def</span> <span class="nf">gh</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">i1</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">i2</span><span class="p">,</span> <span class="n">domain</span><span class="p">,</span> <span class="n">frac</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Get an element that is `frac` fraction of the way between `v1[i1]` and `v2[i2]`, </span>
-<span class="sd">    but check bounds on both vectors. `frac` of 0 returns `v1[i1]`, `frac` of 1 returns `v2[i2]`, </span>
+<span class="sd">    Get an element that is `frac` fraction of the way between `v1[i1]` and `v2[i2]`,</span>
+<span class="sd">    but check bounds on both vectors. `frac` of 0 returns `v1[i1]`, `frac` of 1 returns `v2[i2]`,</span>
 <span class="sd">    `frac` of 0.5 (the default) returns halfway between them.</span>
 
-<span class="sd">    :param v1: 1D numpy array, the first vector.</span>
-<span class="sd">    :param i1: Integer, the index in `v1`.</span>
-<span class="sd">    :param v2: 1D numpy array, the second vector.</span>
-<span class="sd">    :param i2: Integer, the index in `v2`.</span>
-<span class="sd">    :param domain: Domain to check bounds on both vectors.</span>
-<span class="sd">    :param frac: Float, the fraction of the way between `v1[i1]` and `v2[i2]`. Default is 0.5.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v1 : np.ndarray</span>
+<span class="sd">        A 1D numpy array representing the first vector.</span>
 
-<span class="sd">    :return: Integer, the element that is `frac` fraction of the way between `v1[i1]` and `v2[i2]`.</span>
+<span class="sd">    i1 : int</span>
+<span class="sd">        The index in `v1` from which to retrieve the value.</span>
+
+<span class="sd">    v2 : np.ndarray</span>
+<span class="sd">        A 1D numpy array representing the second vector.</span>
+
+<span class="sd">    i2 : int</span>
+<span class="sd">        The index in `v2` from which to retrieve the value.</span>
+
+<span class="sd">    domain : tuple</span>
+<span class="sd">        A tuple representing the valid bounds for both vectors. This should</span>
+<span class="sd">        define the minimum and maximum allowable indices.</span>
+
+<span class="sd">    frac : float, optional</span>
+<span class="sd">        A fraction indicating how far between the two specified elements </span>
+<span class="sd">        to interpolate. Default is 0.5.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The element that is `frac` fraction of the way between `v1[i1]` </span>
+<span class="sd">        and `v2[i2]`, clipped to the specified domain bounds.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">x1</span> <span class="o">=</span> <span class="n">g</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">i1</span><span class="p">,</span> <span class="n">domain</span><span class="p">)</span>
     <span class="n">x2</span> <span class="o">=</span> <span class="n">g</span><span class="p">(</span><span class="n">v2</span><span class="p">,</span> <span class="n">i2</span><span class="p">,</span> <span class="n">domain</span><span class="p">)</span>
     <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">frac</span> <span class="o">*</span> <span class="n">x1</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">frac</span><span class="p">)</span> <span class="o">*</span> <span class="n">x2</span><span class="p">)</span></div>
-
- 
-
-<div class="viewcode-block" id="flatTopGaussIdx">
-<a class="viewcode-back" href="../../alignmentUtils.html#pyampact.alignmentUtils.flatTopGaussIdx">[docs]</a>
-<span class="k">def</span> <span class="nf">flatTopGaussIdx</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">bi1</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">ti1</span><span class="p">,</span> <span class="n">t2</span><span class="p">,</span> <span class="n">ti2</span><span class="p">,</span> <span class="n">b2</span><span class="p">,</span> <span class="n">bi2</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Create a window function that is zeros, going up to 1s with the left</span>
-<span class="sd">    half of a gaussian, then ones, then going back down to zeros with</span>
-<span class="sd">    the right half of another gaussian.</span>
-
-<span class="sd">    :param x: 1D numpy array, the set of points over which this is to be calculated.</span>
-<span class="sd">    :param b1: Float, the x coordinate 2 stddevs out from the mean of the first gaussian.</span>
-<span class="sd">    :param bi1: Integer, the index in `b1`.</span>
-<span class="sd">    :param t1: Float, the x coordinate of the mean of the first gaussian.</span>
-<span class="sd">    :param ti1: Integer, the index in `t1`.</span>
-<span class="sd">    :param t2: Float, the x coordinate of the mean of the second gaussian.</span>
-<span class="sd">    :param ti2: Integer, the index in `t2`.</span>
-<span class="sd">    :param b2: Float, the x coordinate 2 stddevs out from the mean of the second gaussian.</span>
-<span class="sd">    :param bi2: Integer, the index in `b2`.</span>
-
-<span class="sd">    :return: 1D numpy array, the window function.</span>
-
-<span class="sd">    The points should be in that order. Vectors are indexed intelligently, </span>
-<span class="sd">    so you don&#39;t have to worry about overflows or underflows.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">b1</span> <span class="o">=</span> <span class="n">g</span><span class="p">(</span><span class="n">b1</span><span class="p">,</span> <span class="n">bi1</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
-    <span class="n">t1</span> <span class="o">=</span> <span class="n">g</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">ti1</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
-    <span class="n">t2</span> <span class="o">=</span> <span class="n">g</span><span class="p">(</span><span class="n">t2</span><span class="p">,</span> <span class="n">ti2</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
-    <span class="n">b2</span> <span class="o">=</span> <span class="n">g</span><span class="p">(</span><span class="n">b2</span><span class="p">,</span> <span class="n">bi2</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
-    
-    <span class="k">return</span> <span class="n">flatTopGaussian</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">,</span> <span class="n">b2</span><span class="p">)</span></div>
 
 
 
@@ -309,13 +319,24 @@
 <span class="sd">    Get an element from `vec`, checking bounds. `Domain` is the set of points</span>
 <span class="sd">    that `vec` is a subset of.</span>
 
-<span class="sd">    :param vec: 1D numpy array, the input vector.</span>
-<span class="sd">    :param idx: Integer, the index in `vec`.</span>
-<span class="sd">    :param domain: 1D numpy array, the set of points that `vec` is a subset of.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vec : np.ndarray</span>
+<span class="sd">        A 1D numpy array representing the input vector.</span>
 
-<span class="sd">    :return: The element from `vec` at index `idx` if `idx` is within the bounds of `vec`, </span>
-<span class="sd">            otherwise the first element of `domain` if `idx` is less than 1, </span>
-<span class="sd">            or the last element of `domain` if `idx` is greater than the length of `vec`.</span>
+<span class="sd">    idx : int</span>
+<span class="sd">        The index of the desired element in `vec`.</span>
+
+<span class="sd">    domain : np.ndarray</span>
+<span class="sd">        A 1D numpy array representing the set of valid points, </span>
+<span class="sd">        of which `vec` is a subset.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The element from `vec` at index `idx` if it is within bounds;</span>
+<span class="sd">        otherwise, the first element of `domain` if `idx` is less than 0,</span>
+<span class="sd">        or the last element of `domain` if `idx` exceeds the bounds of `vec`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">idx</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">domain</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -326,235 +347,42 @@
 
 
 
-<div class="viewcode-block" id="flatTopGaussian">
-<a class="viewcode-back" href="../../alignmentUtils.html#pyampact.alignmentUtils.flatTopGaussian">[docs]</a>
-<span class="k">def</span> <span class="nf">flatTopGaussian</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">,</span> <span class="n">b2</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Create a window function that is zeros, going up to 1s with the left </span>
-<span class="sd">    half of a gaussian, then ones, then going back down to zeros with the </span>
-<span class="sd">    right half of another gaussian. </span>
-
-<span class="sd">    :param x: 1D numpy array, the set of points over which this is to be calculated.</span>
-<span class="sd">    :param b1: Float, the x coordinate 2 stddevs out from the mean of the first gaussian.</span>
-<span class="sd">    :param t1: Float, the x coordinate of the mean of the first gaussian.</span>
-<span class="sd">    :param t2: Float, the x coordinate of the mean of the second gaussian.</span>
-<span class="sd">    :param b2: Float, the x coordinate 2 stddevs out from the mean of the second gaussian.</span>
-
-<span class="sd">    :return: 1D numpy array, the window function.</span>
-
-<span class="sd">    The points should be in that order. If any of [b1, t1, t2] &gt; any of [t1, t2, b2], </span>
-<span class="sd">    a message &#39;Endpoints are not in order: b1, t1, t2, b2&#39; will be printed.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="n">b1</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">])</span> <span class="o">&gt;</span> <span class="nb">any</span><span class="p">([</span><span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">,</span> <span class="n">b2</span><span class="p">]):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Endpoints are not in order: &#39;</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">,</span> <span class="n">b2</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">custom_normalize</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">arr</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">arr</span><span class="p">))</span>
-
-    <span class="k">def</span> <span class="nf">custom_gaussian</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">std</span><span class="p">):</span>
-        <span class="n">win</span> <span class="o">=</span> <span class="n">gaussian</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">std</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">std</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">convolve</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">win</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">custom_gaussian_filter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">b2</span><span class="p">):</span>
-        <span class="n">left_std</span> <span class="o">=</span> <span class="p">(</span><span class="n">t1</span> <span class="o">-</span> <span class="n">b1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="n">middle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">t2</span> <span class="o">-</span> <span class="n">t1</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">right_std</span> <span class="o">=</span> <span class="p">(</span><span class="n">b2</span> <span class="o">-</span> <span class="n">t2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span>
-
-        <span class="n">left</span> <span class="o">=</span> <span class="n">custom_normalize</span><span class="p">(</span><span class="n">custom_gaussian</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">left_std</span><span class="p">))</span>
-        <span class="n">right</span> <span class="o">=</span> <span class="n">custom_normalize</span><span class="p">(</span><span class="n">custom_gaussian</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">right_std</span><span class="p">))</span>
-
-        <span class="n">takeOneOut</span> <span class="o">=</span> <span class="n">t1</span> <span class="o">==</span> <span class="n">t2</span>
-        <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">left</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">t1</span><span class="p">],</span> <span class="n">middle</span><span class="p">,</span> <span class="n">right</span><span class="p">[</span><span class="n">t2</span> <span class="o">+</span> <span class="n">takeOneOut</span><span class="p">:]))</span>
-        
-        <span class="k">return</span> <span class="n">w</span></div>
-
-
-
-<div class="viewcode-block" id="viterbi_path">
-<a class="viewcode-back" href="../../alignmentUtils.html#pyampact.alignmentUtils.viterbi_path">[docs]</a>
-<span class="k">def</span> <span class="nf">viterbi_path</span><span class="p">(</span><span class="n">prior</span><span class="p">,</span> <span class="n">transmat</span><span class="p">,</span> <span class="n">obslik</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    VITERBI Find the most-probable (Viterbi) path through the HMM state trellis.</span>
-<span class="sd">    path = viterbi(prior, transmat, obslik)</span>
-
-<span class="sd">    :param prior(i): Pr(Q(1) = i)</span>
-<span class="sd">    :param transmat(i,j): Pr(Q(t+1)=j | Q(t)=i)</span>
-<span class="sd">    :param obslik(i,t): Pr(y(t) | Q(t)=i)</span>
-
-<span class="sd">    :returns:</span>
-<span class="sd">        - path(t): q(t), where q1 ... qT is the argmax of the above expression.</span>
-<span class="sd">        - delta(j,t) = prob. of the best sequence of length t-1 and then going to state j, and O(1:t)</span>
-<span class="sd">        - psi(j,t) = the best predecessor state, given that we ended up in state j at t</span>
-<span class="sd">    &quot;&quot;&quot;</span> 
-    <span class="n">T</span> <span class="o">=</span> <span class="n">obslik</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>    
-    <span class="n">prior</span> <span class="o">=</span> <span class="n">prior</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">Q</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">prior</span><span class="p">)</span>
-
-    <span class="n">scaled</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="n">delta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Q</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span>    
-    <span class="n">psi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Q</span><span class="p">,</span> <span class="n">T</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
-    <span class="n">path</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
-    <span class="n">scale</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
-
-    <span class="n">t</span> <span class="o">=</span> <span class="mi">0</span>
-        
-    <span class="n">delta</span><span class="p">[:,</span> <span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">prior</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span> <span class="o">*</span> <span class="n">obslik</span><span class="p">[:,</span> <span class="n">t</span><span class="p">]</span>        
-
-    <span class="k">if</span> <span class="n">scaled</span><span class="p">:</span>
-        <span class="n">delta</span><span class="p">[:,</span> <span class="n">t</span><span class="p">]</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">delta</span><span class="p">[:,</span> <span class="n">t</span><span class="p">])</span>
-        <span class="n">scale</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">delta</span><span class="p">[:,</span> <span class="n">t</span><span class="p">])</span>
-
-    <span class="n">psi</span><span class="p">[:,</span> <span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>    
-    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Q</span><span class="p">):</span>            
-            <span class="n">delta</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">delta</span><span class="p">[:,</span> <span class="n">t</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">transmat</span><span class="p">[:,</span> <span class="n">j</span><span class="p">])</span>
-            <span class="n">delta</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">*=</span> <span class="n">obslik</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span>
-
-        <span class="k">if</span> <span class="n">scaled</span><span class="p">:</span>
-            <span class="n">delta</span><span class="p">[:,</span> <span class="n">t</span><span class="p">]</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">delta</span><span class="p">[:,</span> <span class="n">t</span><span class="p">])</span>
-            <span class="n">scale</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">delta</span><span class="p">[:,</span> <span class="n">t</span><span class="p">])</span>
-
-    <span class="n">p</span><span class="p">,</span> <span class="n">path</span><span class="p">[</span><span class="n">T</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">delta</span><span class="p">[:,</span> <span class="n">T</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">delta</span><span class="p">[:,</span> <span class="n">T</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
-
-    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-        <span class="n">path</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">psi</span><span class="p">[</span><span class="n">path</span><span class="p">[</span><span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
-
-    <span class="k">return</span> <span class="n">path</span></div>
-
-
-
-<span class="k">def</span> <span class="nf">mixgauss_prob</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">means</span><span class="p">,</span> <span class="n">covariances</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
-    <span class="c1"># TODO: This docstring no longer corresponds to the function signature.</span>
-    <span class="c1"># &quot;&quot;&quot;</span>
-    <span class="c1"># Notation: Y is observation, M is mixture component, and both may be conditioned on Q.</span>
-    <span class="c1"># If Q does not exist, ignore references to Q=j below.</span>
-    <span class="c1"># Alternatively, you may ignore M if this is a conditional Gaussian.</span>
-
-    <span class="c1"># :param data(:,t): t&#39;th observation vector     </span>
-    <span class="c1"># :param mu(:,k): E[Y(t) | M(t)=k] </span>
-    <span class="c1">#     or mu(:,j,k) = E[Y(t) | Q(t)=j, M(t)=k]    </span>
-    <span class="c1"># :param Sigma(:,:,j,k): Cov[Y(t) | Q(t)=j, M(t)=k]</span>
-    <span class="c1">#     or there are various faster, special cases:</span>
-    <span class="c1">#     - Sigma() - scalar, spherical covariance independent of M,Q.</span>
-    <span class="c1">#     - Sigma(:,:) diag or full, tied params independent of M,Q. </span>
-    <span class="c1">#     - Sigma(:,:,j) tied params independent of M. </span>
-
-    <span class="c1"># :param mixmat(k): Pr(M(t)=k) = prior</span>
-    <span class="c1">#     or mixmat(j,k) = Pr(M(t)=k | Q(t)=j) </span>
-    <span class="c1">#     Not needed if M is not defined.</span>
-
-    <span class="c1"># :param unit_norm: - optional; if 1, means data(:,i) AND mu(:,i) each have unit norm (slightly faster)</span>
-
-    <span class="c1"># :returns:</span>
-    <span class="c1">#     - B(t) = Pr(y(t)) ||</span>
-    <span class="c1">#     - B(i,t) = Pr(y(t) | Q(t)=i) </span>
-    <span class="c1">#     - B2(i,k,t) = Pr(y(t) | Q(t)=i, M(t)=k) </span>
-    
-    <span class="c1"># If the number of mixture components differs depending on Q, just set the trailing</span>
-    <span class="c1"># entries of mixmat to 0, e.g., 2 components if Q=1, 3 components if Q=2,</span>
-    <span class="c1"># then set mixmat(1,3)=0. In this case, B2(1,3,:)=1.0.</span>
-    <span class="c1"># &quot;&quot;&quot;</span>
-
-    <span class="c1"># Create a Gaussian Mixture Model</span>
-    <span class="n">gmm</span> <span class="o">=</span> <span class="n">GaussianMixture</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># Specify the number of components</span>
-
-    <span class="c1"># Fit the GMM to your data</span>
-    <span class="n">gmm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-
-    <span class="c1"># Calculate the probabilities for each data point</span>
-    <span class="n">probs</span> <span class="o">=</span> <span class="n">gmm</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>    
-
-    <span class="c1"># &#39;probs&#39; now contains the conditional probabilities for each data point and each component.</span>
-    <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-    <span class="n">K</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">means</span><span class="p">)</span>    
-    
-
-    <span class="n">covariances</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">5</span><span class="p">)]</span>    
-    <span class="n">likelihood_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">K</span><span class="p">))</span>    
-
-    
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
-            <span class="n">likelihood</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">multivariate_normal</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">mean</span><span class="o">=</span><span class="n">means</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">cov</span><span class="o">=</span><span class="n">covariances</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
-            <span class="n">likelihood_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">likelihood</span>
-
-    <span class="k">return</span> <span class="n">likelihood_matrix</span>
-
-
-<span class="c1"># Matrix functions</span>
-<div class="viewcode-block" id="fill_trans_mat">
-<a class="viewcode-back" href="../../alignmentUtils.html#pyampact.alignmentUtils.fill_trans_mat">[docs]</a>
-<span class="k">def</span> <span class="nf">fill_trans_mat</span><span class="p">(</span><span class="n">trans_seed</span><span class="p">,</span> <span class="n">notes</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Makes a transition matrix from a seed transition matrix.  The seed</span>
-<span class="sd">    matrix is composed of the states: steady state, transient, silence,</span>
-<span class="sd">    transient, steady state, but the full transition matrix starts and</span>
-<span class="sd">    ends with silence, so the seed with be chopped up on the ends.</span>
-<span class="sd">    Notes is the number of times to repeat the seed.  Transseed&#39;s first</span>
-<span class="sd">    and last states should be equivalent, as they will be overlapped</span>
-<span class="sd">    with each other.</span>
-<span class="sd">    </span>
-<span class="sd">    :param trans_seed: Transition matrix seed.</span>
-<span class="sd">    :param notes: Number of notes being aligned.</span>
-<span class="sd">    </span>
-<span class="sd">    :return trans: Transition matrix</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="c1"># Set up transition matrix</span>
-    <span class="n">N</span> <span class="o">=</span> <span class="n">trans_seed</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>    
-    <span class="n">trans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">notes</span> <span class="o">*</span> <span class="p">(</span><span class="n">N</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">notes</span> <span class="o">*</span> <span class="p">(</span><span class="n">N</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="n">Non2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">N</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="c1"># ADDED ONE!</span>
-    
-
-    <span class="c1"># Fill in the first and last parts of the big matrix with the</span>
-    <span class="c1"># appropriate fragments of the seed</span>
-    <span class="n">trans</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">Non2</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">Non2</span><span class="p">]</span> <span class="o">=</span> <span class="n">trans_seed</span><span class="p">[</span><span class="n">Non2</span><span class="p">:,</span> <span class="n">Non2</span><span class="p">:]</span>
-    <span class="c1"># trans[1:Non2, 1:Non2] = trans_seed[Non2:, Non2:] # Changed 0 to 1 here</span>
-    <span class="n">trans</span><span class="p">[</span><span class="o">-</span><span class="n">Non2</span><span class="p">:,</span> <span class="o">-</span><span class="n">Non2</span><span class="p">:]</span> <span class="o">=</span> <span class="n">trans_seed</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">Non2</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">Non2</span><span class="p">]</span>
-
-    <span class="c1"># Fill in the middle parts of the big matrix with the whole seed</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Non2</span><span class="p">,</span> <span class="p">(</span><span class="n">notes</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">N</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">Non2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">N</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="n">trans</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">N</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">N</span><span class="p">]</span> <span class="o">=</span> <span class="n">trans_seed</span>
-
-    <span class="k">return</span> <span class="n">trans</span></div>
-
-
-
 <div class="viewcode-block" id="orio_simmx">
 <a class="viewcode-back" href="../../alignmentUtils.html#pyampact.alignmentUtils.orio_simmx">[docs]</a>
 <span class="k">def</span> <span class="nf">orio_simmx</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">D</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate an Orio&amp;Schwartz-style (Peak Structure Distance) similarity matrix.</span>
 
-<span class="sd">    :param M: Binary mask where each column corresponds to a row in the output matrix S.</span>
-<span class="sd">    :param D: Regular spectrogram, where columns of S correspond to columns of D.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    M : np.ndarray</span>
+<span class="sd">        A binary mask where each column corresponds to a row in the output similarity matrix S.</span>
+<span class="sd">        The mask indicates the presence or absence of MIDI notes or relevant features.</span>
 
-<span class="sd">    :return: S, the similarity matrix.</span>
+<span class="sd">    D : np.ndarray</span>
+<span class="sd">        The regular spectrogram where the columns of the similarity matrix S correspond to the columns of D.</span>
+<span class="sd">        This spectrogram represents the audio signal over time and frequency.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    np.ndarray</span>
+<span class="sd">        The similarity matrix S, calculated based on the Peak Structure Distance between the binary mask M and the spectrogram D.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    
     <span class="c1"># Convert to NumPy arrays if input is DataFrame</span>
     <span class="n">M</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">values</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="k">else</span> <span class="n">M</span>
     <span class="n">D</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">values</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="k">else</span> <span class="n">D</span>
 
-    <span class="c1"># Ensure compatibility for matrix multiplication</span>
-    
-    <span class="c1"># if M.shape[1] != D.shape[0]:</span>
-    <span class="c1">#     M = M.T  # Transpose M if the number of columns in M does not match the number of rows in D</span>
-
-    
     <span class="c1"># Calculate the similarities</span>
     <span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">M</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">D</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
 
     <span class="n">D</span> <span class="o">=</span> <span class="n">D</span><span class="o">**</span><span class="mi">2</span>
     <span class="n">M</span> <span class="o">=</span> <span class="n">M</span><span class="o">**</span><span class="mi">2</span>
-    
 
     <span class="n">nDc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
-    <span class="c1"># avoid div 0&#39;s</span>
     <span class="n">nDc</span> <span class="o">=</span> <span class="n">nDc</span> <span class="o">+</span> <span class="p">(</span><span class="n">nDc</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
 
     <span class="c1"># Evaluate one row at a time</span>
-    <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span> <span class="c1"># Suppress imaginary number warnings, for now</span>
+    <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>  <span class="c1"># Suppress imaginary number warnings, for now</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">RuntimeWarning</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
             <span class="n">S</span><span class="p">[</span><span class="n">r</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">M</span><span class="p">[:,</span> <span class="n">r</span><span class="p">]</span> <span class="o">@</span> <span class="n">D</span><span class="p">)</span> <span class="o">/</span> <span class="n">nDc</span>
@@ -569,10 +397,19 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate a similarity matrix between feature matrices A and B.</span>
 
-<span class="sd">    :param A: The first feature matrix.</span>
-<span class="sd">    :param B: The second feature matrix. If not provided, B will be set to A.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    A : np.ndarray</span>
+<span class="sd">        The first feature matrix, where each row represents a sample and each column represents a feature.</span>
 
-<span class="sd">    :return: The similarity matrix between A and B.</span>
+<span class="sd">    B : np.ndarray, optional</span>
+<span class="sd">        The second feature matrix. If not provided, B will be set to A, allowing for self-similarity calculation.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    np.ndarray</span>
+<span class="sd">        The similarity matrix between A and B, where the element at (i, j) represents the similarity</span>
+<span class="sd">        between the i-th sample of A and the j-th sample of B.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">values</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="k">else</span> <span class="n">A</span>
     <span class="n">B</span> <span class="o">=</span> <span class="n">B</span><span class="o">.</span><span class="n">values</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="k">else</span> <span class="n">B</span>
@@ -588,74 +425,44 @@
 
 <div class="viewcode-block" id="maptimes">
 <a class="viewcode-back" href="../../alignmentUtils.html#pyampact.alignmentUtils.maptimes">[docs]</a>
-<span class="k">def</span> <span class="nf">maptimes</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">intime</span><span class="p">,</span> <span class="n">outtime</span><span class="p">):</span>    
+<span class="k">def</span> <span class="nf">maptimes</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">intime</span><span class="p">,</span> <span class="n">outtime</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Map the times in t according to the mapping that each point</span>
-<span class="sd">    in intime corresponds to that value in outtime.</span>
+<span class="sd">    Map the times in t according to the mapping that each point in intime</span>
+<span class="sd">    corresponds to that value in outtime.</span>
 
-<span class="sd">    :param t: 1D numpy array, input times.</span>
-<span class="sd">    :param intime: 1D numpy array, input time points.</span>
-<span class="sd">    :param outtime: 1D numpy array, output time points.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    t : array-like</span>
+<span class="sd">        The input times to be mapped. This can be a list or a numpy array of time values.</span>
 
-<span class="sd">    :return: u, a 2D numpy array of mapped times.</span>
-<span class="sd">    &quot;&quot;&quot;</span>    
+<span class="sd">    intime : array-like</span>
+<span class="sd">        The reference input time points. Each point corresponds to a value in `outtime`.</span>
 
-    <span class="c1"># Gives ons/offs from score</span>
-    <span class="n">tr</span><span class="p">,</span> <span class="n">tc</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">shape</span>  <span class="c1"># Get the dimensions of t</span>
-    <span class="n">t_flat</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>  <span class="c1"># Flatten t</span>
-    <span class="n">nt</span> <span class="o">=</span> <span class="n">t_flat</span><span class="o">.</span><span class="n">size</span>  <span class="c1"># Get the total number of elements in t_flat</span>
-    <span class="n">nr</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">intime</span><span class="p">)</span>  <span class="c1"># Get the length of intime</span>
-    <span class="n">u</span> <span class="o">=</span> <span class="n">t_flat</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># Copy t_flat into u</span>
+<span class="sd">    outtime : array-like</span>
+<span class="sd">        The corresponding output time points that map to the values in `intime`.</span>
 
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nt</span><span class="p">):</span>
-        <span class="n">idx</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">intime</span> <span class="o">&gt;</span> <span class="n">t_flat</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="nb">len</span><span class="p">(</span><span class="n">outtime</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">u</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">outtime</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    np.ndarray</span>
+<span class="sd">        An array of the mapped times, where each time in `t` is replaced by its corresponding</span>
+<span class="sd">        value in `outtime` based on the mapping provided by `intime`. If a time in `t` does</span>
+<span class="sd">        not have a corresponding `intime`, it will be returned unchanged.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">u</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span> <span class="n">tc</span><span class="p">)</span>  <span class="c1"># Reshape u to match the original dimensions of t</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">intime</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">intime</span><span class="p">)</span>
+    <span class="n">outtime</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">outtime</span><span class="p">)</span>
+
+    <span class="c1"># Ensure that intime and outtime are sorted</span>
+    <span class="n">sort_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">intime</span><span class="p">)</span>
+    <span class="n">intime</span> <span class="o">=</span> <span class="n">intime</span><span class="p">[</span><span class="n">sort_idx</span><span class="p">]</span>
+    <span class="n">outtime</span> <span class="o">=</span> <span class="n">outtime</span><span class="p">[</span><span class="n">sort_idx</span><span class="p">]</span>
+
+    <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">intime</span><span class="p">,</span> <span class="n">outtime</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="n">outtime</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">right</span><span class="o">=</span><span class="n">outtime</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">decimals</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">u</span></div>
 
-
-    
-<span class="c1"># Old function... March 16</span>
-<span class="k">def</span> <span class="nf">calculate_f0_est</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">hop_length</span><span class="p">,</span> <span class="n">win_ms</span><span class="p">,</span> <span class="n">tsr</span><span class="p">):</span>    
-            
-    <span class="n">y</span><span class="p">,</span> <span class="n">sr</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">tsr</span><span class="p">)</span>
-
-    <span class="c1"># Calculate the maximum absolute amplitude</span>
-    <span class="n">max_amplitude</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
-
-    <span class="c1"># Normalize the audio signal</span>
-    <span class="n">normalized_y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">/</span> <span class="n">max_amplitude</span>
-
-    <span class="c1"># Compute STFT</span>
-    <span class="n">stft</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">stft</span><span class="p">(</span><span class="n">normalized_y</span><span class="p">,</span> <span class="n">n_fft</span><span class="o">=</span><span class="n">win_ms</span><span class="p">,</span> <span class="n">hop_length</span><span class="o">=</span><span class="n">hop_length</span><span class="p">)</span>
-
-    <span class="c1"># Compute magnitude and phase of STFT</span>
-    <span class="n">magnitude</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">stft</span><span class="p">)</span>
-    <span class="n">phase</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">stft</span><span class="p">)</span>
-
-    <span class="c1"># Compute instantaneous frequency</span>
-    <span class="c1"># Instantaneous frequency = Δ(phase) / Δ(time)</span>
-    <span class="c1"># Compute phase difference between consecutive frames</span>
-    <span class="n">delta_phase</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">phase</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="c1"># Compute time difference between consecutive frames</span>
-    <span class="n">delta_time</span> <span class="o">=</span> <span class="n">hop_length</span> <span class="o">/</span> <span class="n">tsr</span>
-    <span class="c1"># Compute instantaneous frequency</span>
-    <span class="n">instantaneous_freq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">phase</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">delta_time</span>
-
-    <span class="c1"># Estimate f0 by finding the dominant frequency bin at each time frame</span>
-    <span class="n">f0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">tsr</span> <span class="o">/</span> <span class="n">win_ms</span>
-
-    <span class="c1"># Estimate power at each time frame (sum of magnitude squared)</span>
-    <span class="n">power</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">magnitude</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-
-    <span class="c1"># Now you have f0 and power estimates for each time frame    </span>
-    <span class="n">time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">instantaneous_freq</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">*</span> <span class="n">hop_length</span> <span class="o">/</span> <span class="n">sr</span>
-    <span class="n">new_time_value</span> <span class="o">=</span> <span class="n">time</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">hop_length</span> <span class="o">/</span> <span class="n">sr</span>
-    <span class="n">time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">new_time_value</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">f0</span><span class="p">,</span> <span class="n">power</span>
 
 
 <span class="c1"># These are the new functions to replace calculate_f0_est</span>
@@ -665,16 +472,34 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate F0, power, and spectrum for an inputted spectral representation.</span>
 
-<span class="sd">    :param x: FxT matrix of complex spectrogram values.</span>
-<span class="sd">    :param f: FxT matrix of frequencies of each of those spectrogram values.</span>
-<span class="sd">    :param f0i: 1xT vector of initial estimates of f0 for each time.</span>
-<span class="sd">    :param fMax: Maximum frequency to consider in weighted sum.</span>
-<span class="sd">    :param fThresh: Maximum distance in Hz from each harmonic to consider.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : np.ndarray, shape (F, T)</span>
+<span class="sd">        Matrix of complex spectrogram values, where F is the number of frequency bins</span>
+<span class="sd">        and T is the number of time frames.</span>
 
-<span class="sd">    :return: A tuple containing three elements:</span>
-<span class="sd">        - f0: Vector of estimated f0s from noteStart_s to noteEnd_s.</span>
-<span class="sd">        - p: Vector of corresponding &quot;powers&quot; from f0EstWeightedSum.</span>
-<span class="sd">        - strips: Estimated spectrum for each partial.</span>
+<span class="sd">    f : np.ndarray, shape (F, T)</span>
+<span class="sd">        Matrix of frequencies corresponding to each of the spectrogram values in `x`.</span>
+
+<span class="sd">    f0i : np.ndarray, shape (1, T)</span>
+<span class="sd">        Initial estimates of F0 for each time frame. This should be a 1D array containing</span>
+<span class="sd">        the F0 estimates for each time point.</span>
+
+<span class="sd">    fMax : float, optional</span>
+<span class="sd">        Maximum frequency to consider in the weighted sum. Defaults to 5000 Hz.</span>
+
+<span class="sd">    fThresh : float, optional</span>
+<span class="sd">        Maximum distance in Hz from each harmonic to consider. If not specified, no threshold</span>
+<span class="sd">        will be applied.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------    </span>
+<span class="sd">    f0 : np.ndarray</span>
+<span class="sd">        Vector of estimated F0s from the beginning to the end of the input time series.</span>
+<span class="sd">    p : np.ndarray</span>
+<span class="sd">        Vector of corresponding &quot;powers&quot; derived from the weighted sum of the estimated F0.</span>
+<span class="sd">    strips : np.ndarray</span>
+<span class="sd">        Estimated spectrum for each partial frequency based on the weighted contributions.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># if ~exist(&#39;fMax&#39;, &#39;var&#39;) || isempty(fMax), fMax = 5000; end</span>
     <span class="c1"># if ~exist(&#39;fThresh&#39;, &#39;var&#39;) || isempty(fThresh), fThresh = 2*median(diff(f(:,1))); end</span>
@@ -683,7 +508,6 @@
 
     <span class="k">if</span> <span class="n">fThresh</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">fThresh</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]))</span>
-
 
     <span class="n">f</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">f</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">x2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
@@ -698,8 +522,8 @@
         <span class="n">strip</span> <span class="o">=</span> <span class="n">x2</span> <span class="o">*</span> <span class="n">mask</span>
         <span class="n">strips</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">strip</span><span class="p">)</span>
 
-        <span class="n">wNum</span> <span class="o">+=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">i</span> <span class="o">*</span> <span class="n">strip</span><span class="c1">#.toarray()</span>
-        <span class="n">wDen</span> <span class="o">+=</span> <span class="n">strip</span><span class="c1">#.toarray()</span>
+        <span class="n">wNum</span> <span class="o">+=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">i</span> <span class="o">*</span> <span class="n">strip</span>  <span class="c1"># .toarray()</span>
+        <span class="n">wDen</span> <span class="o">+=</span> <span class="n">strip</span>  <span class="c1"># .toarray()</span>
 
     <span class="n">wNum</span> <span class="o">*=</span> <span class="p">(</span><span class="n">f</span> <span class="o">&lt;</span> <span class="n">fMax</span><span class="p">)</span>
     <span class="n">wDen</span> <span class="o">*=</span> <span class="p">(</span><span class="n">f</span> <span class="o">&lt;</span> <span class="n">fMax</span><span class="p">)</span>
@@ -717,32 +541,39 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate F0, power, and spectrum for a single note.</span>
 
-<span class="sd">    :param fileName: Name of wav file to analyze.</span>
-<span class="sd">    :param noteStart_s: Start position (in seconds) of note to analyze.</span>
-<span class="sd">    :param noteEnd_s: End position (in seconds) of note to analyze.</span>
-<span class="sd">    :param noteMidi: Midi note number of note to analyze.</span>
-<span class="sd">    :param useIf: If true, use instantaneous frequency, else spectrogram frequencies.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filename : str</span>
+<span class="sd">        Name of the WAV file to analyze.</span>
 
-<span class="sd">    :return: A tuple containing three elements:</span>
-<span class="sd">        - f0: Vector of estimated f0s from noteStart_s to noteEnd_s.</span>
-<span class="sd">        - p: Vector of corresponding &quot;powers&quot; from f0EstWeightedSum.</span>
-<span class="sd">        - M: Estimated spectrum.</span>
+<span class="sd">    noteStart_s : float</span>
+<span class="sd">        Start position (in seconds) of the note to analyze.</span>
+
+<span class="sd">    noteEnd_s : float</span>
+<span class="sd">        End position (in seconds) of the note to analyze.</span>
+
+<span class="sd">    midiNote : int</span>
+<span class="sd">        MIDI note number of the note to analyze.</span>
+
+<span class="sd">    y : np.ndarray</span>
+<span class="sd">        Audio time series data from the WAV file.</span>
+
+<span class="sd">    sr : int</span>
+<span class="sd">        Sample rate of the audio signal.</span>
+
+<span class="sd">    useIf : bool, optional</span>
+<span class="sd">        If true, use instantaneous frequency; otherwise, use spectrogram frequencies.</span>
+<span class="sd">        Defaults to True.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------    </span>
+<span class="sd">    f0 : np.ndarray</span>
+<span class="sd">        Vector of estimated F0s from `noteStart_s` to `noteEnd_s`.</span>
+<span class="sd">    p : np.ndarray</span>
+<span class="sd">        Vector of corresponding &quot;powers&quot; derived from the weighted sum of the estimated F0.</span>
+<span class="sd">    M : np.ndarray</span>
+<span class="sd">        Estimated spectrum for the analyzed note.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    
-    <span class="c1"># Inputs:</span>
-    <span class="c1">#   fileName     name of wav file to analyze</span>
-    <span class="c1">#   noteStart_s  start position (in seconds) of note to analyze</span>
-    <span class="c1">#   noteEnd_s    end position (in seconds) of note to analyze</span>
-    <span class="c1">#   noteMidi     midi note number of note to analyze</span>
-    <span class="c1">#   useIf        if true, use instantaneous frequency, else spectrogram frequencies</span>
-    <span class="c1">#</span>
-    <span class="c1"># Outputs:</span>
-    <span class="c1">#   f0 - vector of estimated f0s from noteStart_s to noteEnd_s</span>
-    <span class="c1">#   p - vector of corresponding &quot;powers&quot; from f0EstWeightedSum</span>
-    <span class="c1">#   M - estimated spectrum</span>
-
-    <span class="c1"># set</span>
-    <span class="n">nIter</span> <span class="o">=</span> <span class="mi">10</span>
 
     <span class="c1"># set window and hop</span>
     <span class="n">win_s</span> <span class="o">=</span> <span class="mf">0.064</span>
@@ -750,20 +581,20 @@
     <span class="n">hop</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">win</span> <span class="o">/</span> <span class="mi">8</span><span class="p">)</span>
 
     <span class="c1"># load if gram</span>
-    <span class="n">freqs</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">reassigned_spectrogram</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">,</span> <span class="n">hop_length</span><span class="o">=</span><span class="n">hop</span><span class="p">)</span>
+    <span class="n">freqs</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">reassigned_spectrogram</span><span class="p">(</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">,</span> <span class="n">hop_length</span><span class="o">=</span><span class="n">hop</span><span class="p">)</span>
 
    <span class="c1"># indices for indexing into ifgram (D)</span>
     <span class="n">noteStart_hop</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">noteStart_s</span> <span class="o">*</span> <span class="n">sr</span> <span class="o">/</span> <span class="n">hop</span><span class="p">))</span>
     <span class="n">noteEnd_hop</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">noteEnd_s</span> <span class="o">*</span> <span class="n">sr</span> <span class="o">/</span> <span class="n">hop</span><span class="p">))</span>
     <span class="n">inds</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">noteStart_hop</span><span class="p">,</span> <span class="n">noteEnd_hop</span><span class="p">)</span>
-      
 
     <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">D</span><span class="p">[:,</span> <span class="n">inds</span><span class="p">])</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">6</span><span class="p">)</span>
 
     <span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">win</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">sr</span> <span class="o">/</span> <span class="n">win</span>
 
     <span class="k">if</span> <span class="n">useIf</span><span class="p">:</span>
-        <span class="n">xf</span> <span class="o">=</span> <span class="n">freqs</span><span class="p">[:,</span><span class="n">inds</span><span class="p">]</span>
+        <span class="n">xf</span> <span class="o">=</span> <span class="n">freqs</span><span class="p">[:,</span> <span class="n">inds</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">xf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
 
@@ -771,18 +602,10 @@
 
     <span class="n">fMax</span> <span class="o">=</span> <span class="mi">5000</span>
     <span class="n">fThresh</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">xf</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]))</span>
-    
-    <span class="n">f0</span><span class="p">,</span><span class="n">_</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">f0_est_weighted_sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">xf</span><span class="p">,</span> <span class="n">f0i</span><span class="p">,</span> <span class="n">fMax</span><span class="p">,</span> <span class="n">fThresh</span><span class="p">)</span>
-    <span class="c1"># tmp = f0</span>
-    <span class="c1"># for _ in range(nIter):</span>
-    <span class="c1">#     if ~np.isnan(f0).any():</span>
-    <span class="c1">#       f0,_,_ = f0_est_weighted_sum(x, xf, f0)</span>
-    <span class="c1">#       tmp = f0</span>
-    <span class="c1">#     else:</span>
-    <span class="c1">#       f0 = tmp</span>
 
-    <span class="n">_</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">partials</span> <span class="o">=</span> <span class="n">f0_est_weighted_sum</span><span class="p">(</span><span class="n">x</span> <span class="o">**</span> <span class="mi">6</span><span class="p">,</span> <span class="n">xf</span><span class="p">,</span> <span class="n">f0</span><span class="p">,</span><span class="n">sr</span><span class="p">)</span>
+    <span class="n">f0</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">f0_est_weighted_sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">xf</span><span class="p">,</span> <span class="n">f0i</span><span class="p">,</span> <span class="n">fMax</span><span class="p">,</span> <span class="n">fThresh</span><span class="p">)</span>
 
+    <span class="n">_</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">partials</span> <span class="o">=</span> <span class="n">f0_est_weighted_sum</span><span class="p">(</span><span class="n">x</span> <span class="o">**</span> <span class="mi">6</span><span class="p">,</span> <span class="n">xf</span><span class="p">,</span> <span class="n">f0</span><span class="p">,</span> <span class="n">sr</span><span class="p">)</span>
 
     <span class="n">M</span> <span class="o">=</span> <span class="n">partials</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">partials</span><span class="p">)):</span>
@@ -791,6 +614,112 @@
     <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">inds</span><span class="p">))</span> <span class="o">*</span> <span class="n">win_s</span>
 
     <span class="k">return</span> <span class="n">f0</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">xf</span></div>
+
+
+
+<div class="viewcode-block" id="durations_from_midi_ticks">
+<a class="viewcode-back" href="../../alignmentUtils.html#pyampact.alignmentUtils.durations_from_midi_ticks">[docs]</a>
+<span class="k">def</span> <span class="nf">durations_from_midi_ticks</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extract note durations from a MIDI file using MIDI ticks. This function processes a MIDI file, calculates note onset and offset times </span>
+<span class="sd">    based on MIDI ticks and tempo, and returns the duration matrix (nmat). It handles </span>
+<span class="sd">    tempo changes and computes times by converting MIDI ticks to seconds.</span>
+
+<span class="sd">    Assumes a default pulses-per-quarter-note (PPQN) value of 96.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filename : str</span>
+<span class="sd">        Path to the MIDI file to be processed.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    np.ndarray</span>
+<span class="sd">        A numpy array where each row contains the start and end times of notes </span>
+<span class="sd">        (in seconds) based on MIDI ticks and tempo changes.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># symbolic.py converts the files beforehand</span>
+    <span class="n">mid</span> <span class="o">=</span> <span class="n">mido</span><span class="o">.</span><span class="n">MidiFile</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+    <span class="n">nmat</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Set PPQN to 96</span>
+    <span class="n">ppqn</span> <span class="o">=</span> <span class="mi">96</span>
+
+    <span class="c1"># Convert ticks per beat to seconds per tick</span>
+    <span class="n">seconds_per_tick</span> <span class="o">=</span> <span class="mi">60</span> <span class="o">/</span> <span class="p">(</span><span class="mi">500000</span> <span class="o">/</span> <span class="n">ppqn</span><span class="p">)</span>
+
+    <span class="c1"># Default tempo in microseconds per quarter note (500000 µs = 120 BPM)</span>
+    <span class="n">current_tempo</span> <span class="o">=</span> <span class="mi">500000</span>
+
+    <span class="k">for</span> <span class="n">track</span> <span class="ow">in</span> <span class="n">mid</span><span class="o">.</span><span class="n">tracks</span><span class="p">:</span>
+        <span class="n">cum_time</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">track</span><span class="p">:</span>
+            <span class="n">cum_time</span> <span class="o">+=</span> <span class="n">msg</span><span class="o">.</span><span class="n">time</span>
+
+            <span class="k">if</span> <span class="n">msg</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;set_tempo&#39;</span><span class="p">:</span>
+                <span class="n">current_tempo</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">tempo</span>
+                <span class="c1"># Update seconds per tick based on new tempo</span>
+                <span class="n">seconds_per_tick</span> <span class="o">=</span> <span class="n">current_tempo</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1_000_000</span> <span class="o">*</span> <span class="n">ppqn</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">msg</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;note_on&#39;</span> <span class="ow">and</span> <span class="n">msg</span><span class="o">.</span><span class="n">velocity</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">note</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">note</span>
+                <span class="n">velocity</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">velocity</span>
+                <span class="n">start_time</span> <span class="o">=</span> <span class="n">cum_time</span> <span class="o">*</span> <span class="n">seconds_per_tick</span>
+                <span class="n">nmat</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">start_time</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+
+            <span class="k">if</span> <span class="n">msg</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;note_off&#39;</span> <span class="ow">or</span> <span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;note_on&#39;</span> <span class="ow">and</span> <span class="n">msg</span><span class="o">.</span><span class="n">velocity</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">nmat</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">event</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">event</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">cum_time</span> <span class="o">*</span> <span class="n">seconds_per_tick</span><span class="p">:</span>
+                        <span class="n">end_time</span> <span class="o">=</span> <span class="n">cum_time</span> <span class="o">*</span> <span class="n">seconds_per_tick</span>
+                        <span class="n">event</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">end_time</span>
+                        <span class="k">break</span>
+
+    <span class="c1"># Convert nmat to np.array and return only the 3rd and 4th columns</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">nmat</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="load_audiofile">
+<a class="viewcode-back" href="../../alignmentUtils.html#pyampact.alignmentUtils.load_audiofile">[docs]</a>
+<span class="k">def</span> <span class="nf">load_audiofile</span><span class="p">(</span><span class="n">audio_file</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Loads audio file</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    audio_file : str</span>
+<span class="sd">        The path to the audio file to be loaded.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    audio_data : The loaded audio data as a numpy array.</span>
+<span class="sd">    sr : The original sample rate of the audio file.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">with</span> <span class="n">wave</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">audio_file</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">wf</span><span class="p">:</span>
+        <span class="n">sr</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">getframerate</span><span class="p">()</span>
+        <span class="n">n_channels</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">getnchannels</span><span class="p">()</span>
+        <span class="n">n_frames</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">getnframes</span><span class="p">()</span>
+
+        <span class="c1"># Read the raw audio data</span>
+        <span class="n">raw_audio</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">readframes</span><span class="p">(</span><span class="n">n_frames</span><span class="p">)</span>
+
+        <span class="c1"># Convert raw audio to numpy array</span>
+        <span class="n">audio_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">raw_audio</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span>
+
+        <span class="c1"># If stereo, reshape to (n_frames, n_channels)</span>
+        <span class="k">if</span> <span class="n">n_channels</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">audio_data</span> <span class="o">=</span> <span class="n">audio_data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_channels</span><span class="p">)</span>
+
+        <span class="c1"># Flatten to a single channel if needed</span>
+        <span class="n">audio_data</span> <span class="o">=</span> <span class="n">audio_data</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">audio_data</span><span class="p">,</span> <span class="n">sr</span></div>
 
 </pre></div>
 

@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
@@ -5,20 +7,16 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>symbolicUtils &mdash; pyAMPACT 0.0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
     <link rel="canonical" href="https://pyampact.github.io/symbolicUtils.html" />
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=d45e8c67"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
-        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -62,6 +60,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#pyampact.symbolicUtils.combineRests"><code class="docutils literal notranslate"><span class="pre">combineRests()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pyampact.symbolicUtils.combineUnisons"><code class="docutils literal notranslate"><span class="pre">combineUnisons()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pyampact.symbolicUtils.fromJSON"><code class="docutils literal notranslate"><span class="pre">fromJSON()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pyampact.symbolicUtils.githubURLtoRaw"><code class="docutils literal notranslate"><span class="pre">githubURLtoRaw()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pyampact.symbolicUtils.indentMEI"><code class="docutils literal notranslate"><span class="pre">indentMEI()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pyampact.symbolicUtils.kernClefHelper"><code class="docutils literal notranslate"><span class="pre">kernClefHelper()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pyampact.symbolicUtils.kernFooter"><code class="docutils literal notranslate"><span class="pre">kernFooter()</span></code></a></li>
@@ -71,6 +70,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#pyampact.symbolicUtils.removeTied"><code class="docutils literal notranslate"><span class="pre">removeTied()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pyampact.symbolicUtils.remove_namespaces"><code class="docutils literal notranslate"><span class="pre">remove_namespaces()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pyampact.symbolicUtils.snapTo"><code class="docutils literal notranslate"><span class="pre">snapTo()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pyampact.symbolicUtils.truncate_and_scale_onsOffsList"><code class="docutils literal notranslate"><span class="pre">truncate_and_scale_onsOffsList()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -207,6 +207,12 @@ second-level keys become the columns of the DataFrame.</p>
 <span class="n">piece</span><span class="o">.</span><span class="n">fromJSON</span><span class="p">(</span><span class="n">json_path</span><span class="o">=</span><span class="s1">&#39;./test_files/CloseToYou.json&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyampact.symbolicUtils.githubURLtoRaw">
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolicUtils.</span></span><span class="sig-name descname"><span class="pre">githubURLtoRaw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolicUtils.html#githubURLtoRaw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.symbolicUtils.githubURLtoRaw" title="Link to this definition"></a></dt>
+<dd><p>Convert a GitHub URL to a raw URL and return it. Otherwise return the string.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -368,6 +374,17 @@ is a 1D numpy array.</p></li>
 with any filling operations applied.</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyampact.symbolicUtils.truncate_and_scale_onsOffsList">
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolicUtils.</span></span><span class="sig-name descname"><span class="pre">truncate_and_scale_onsOffsList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">onsOffsList</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_length</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolicUtils.html#truncate_and_scale_onsOffsList"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.symbolicUtils.truncate_and_scale_onsOffsList" title="Link to this definition"></a></dt>
+<dd><p>Scale and truncate onsOffsList to match the target_length, adjusting values proportionally.</p>
+<p>Parameters:
+onsOffsList (list of lists): List containing [ONSET_SEC, OFFSET_SEC] pairs.
+target_length (int): Desired length of the output list.</p>
+<p>Returns:
+list of lists: Scaled and truncated onsOffsList.</p>
 </dd></dl>
 
 </section>

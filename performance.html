@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
@@ -5,20 +7,16 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>performance &mdash; pyAMPACT 0.0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
     <link rel="canonical" href="https://pyampact.github.io/performance.html" />
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=d45e8c67"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
-        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -56,6 +54,7 @@
 <li class="toctree-l1"><a class="reference internal" href="dataCompilation.html">dataCompilation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">performance</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#id1">performance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pyampact.performance.calculate_vibrato"><code class="docutils literal notranslate"><span class="pre">calculate_vibrato()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pyampact.performance.estimate_perceptual_parameters"><code class="docutils literal notranslate"><span class="pre">estimate_perceptual_parameters()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pyampact.performance.perceived_pitch"><code class="docutils literal notranslate"><span class="pre">perceived_pitch()</span></code></a></li>
 </ul>
@@ -94,6 +93,30 @@
 <h2>performance<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
 </section>
 <dl class="py function">
+<dt class="sig sig-object py" id="pyampact.performance.calculate_vibrato">
+<span class="sig-prename descclassname"><span class="pre">pyampact.performance.</span></span><span class="sig-name descname"><span class="pre">calculate_vibrato</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">note_vals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/performance.html#calculate_vibrato"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.performance.calculate_vibrato" title="Link to this definition"></a></dt>
+<dd><p>Calculate the vibrato depth and rate from a note’s frequency signal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>note_vals</strong> (<em>np.ndarray</em>) – The time-domain signal values of the note, typically a 1D array representing
+the amplitude of the sound wave over time.</p></li>
+<li><p><strong>sr</strong> (<em>int</em>) – The sampling rate of the signal in Hertz (samples per second).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>vibrato_depth</strong> (<em>float</em>) – The depth of the vibrato, calculated as twice the amplitude of the
+dominant frequency component.</p></li>
+<li><p><strong>vibrato_rate</strong> (<em>float</em>) – The rate of the vibrato, in Hertz (Hz), derived from the position of
+the dominant frequency in the Fast Fourier Transform (FFT).</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="pyampact.performance.estimate_perceptual_parameters">
 <span class="sig-prename descclassname"><span class="pre">pyampact.performance.</span></span><span class="sig-name descname"><span class="pre">estimate_perceptual_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f0_vals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pwr_vals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SR</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gt_flag</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/performance.html#estimate_perceptual_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.performance.estimate_perceptual_parameters" title="Link to this definition"></a></dt>
 <dd><p>Estimates a range of performance parameters from the inputted fundamental
@@ -101,17 +124,18 @@ frequency (f0_vales), power (pwr_vals), and spectrum estimates (M)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>f0s</strong> – Vector of fundamental frequency estimates</p></li>
-<li><p><strong>sr</strong> – 1/sample rate of the f0 estimates (e.g. the hop rate in Hz of yin)</p></li>
-<li><p><strong>gamma</strong> – Sets the relative weighting of quickly changing vs slowly
-changing portions of  notes. - a high gamma (e.g., 1000000)
-gives more weight to slowly changing portions.</p></li>
+<li><p><strong>f0_vals</strong> (<em>np.ndarray</em>) – A vector of fundamental frequency estimates.</p></li>
+<li><p><strong>pwr_vals</strong> (<em>np.ndarray</em>) – A vector of power values corresponding to the fundamental frequency estimates.</p></li>
+<li><p><strong>M</strong> (<em>np.ndarray</em>) – The spectral estimates from which the perceptual parameters will be derived.</p></li>
+<li><p><strong>SR</strong> (<em>float</em>) – The sample rate used to generate the fundamental frequency estimates.</p></li>
+<li><p><strong>hop</strong> (<em>float</em>) – The hop size used in the analysis, expressed in seconds.</p></li>
+<li><p><strong>gt_flag</strong> (<em>bool</em>) – A flag indicating whether to use ground truth information for the estimation.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p>pp1: perceived pitch using the entire vector of f0 estimates</p></li>
-<li><p>pp2: perceived pitch using the central 80% of f0 estimates</p></li>
+<li><p><strong>pp1</strong> (<em>float</em>) – The perceived pitch calculated using the entire vector of f0 estimates.</p></li>
+<li><p><strong>pp2</strong> (<em>float</em>) – The perceived pitch calculated using the central 80% of f0 estimates.</p></li>
 </ul>
 </p>
 </dd>
@@ -129,17 +153,18 @@ Acoustical Society of America. 109(2):701?12.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>f0s</strong> – Vector of fundamental frequency estimates</p></li>
-<li><p><strong>sr</strong> – 1/sample rate of the f0 estimates (e.g. the hop rate in Hz of yin)</p></li>
-<li><p><strong>gamma</strong> – Sets the relative weighting of quickly changing vs slowly
-changing portions of  notes. - a high gamma (e.g., 1000000)
-gives more weight to slowly changing portions.</p></li>
+<li><p><strong>f0s</strong> (<em>np.ndarray</em>) – Vector of fundamental frequency estimates, typically a 1D array
+representing frequency values over time.</p></li>
+<li><p><strong>sr</strong> (<em>int</em>) – The sampling rate of the f0 estimates in Hertz (Hz).</p></li>
+<li><p><strong>gamma</strong> (<em>float</em><em>, </em><em>optional</em>) – A parameter that sets the relative weighting of quickly changing
+versus slowly changing portions of notes. A high gamma value (e.g.,
+1000000) gives more weight to slowly changing portions. Default is 100000.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p>pp1: perceived pitch using the entire vector of f0 estimates</p></li>
-<li><p>pp2: perceived pitch using the central 80% of f0 estimates</p></li>
+<li><p><strong>pp1</strong> (<em>float</em>) – The perceived pitch using the entire vector of f0 estimates.</p></li>
+<li><p><strong>pp2</strong> (<em>float</em>) – The perceived pitch using the central 80% of f0 estimates.</p></li>
 </ul>
 </p>
 </dd>

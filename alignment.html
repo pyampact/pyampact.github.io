@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
@@ -5,20 +7,16 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>alignment &mdash; pyAMPACT 0.0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
     <link rel="canonical" href="https://pyampact.github.io/alignment.html" />
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=d45e8c67"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
-        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -56,6 +54,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#pyampact.alignment.align_midi_wav"><code class="docutils literal notranslate"><span class="pre">align_midi_wav()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pyampact.alignment.alignment_visualiser"><code class="docutils literal notranslate"><span class="pre">alignment_visualiser()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pyampact.alignment.get_ons_offs"><code class="docutils literal notranslate"><span class="pre">get_ons_offs()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pyampact.alignment.ifgram"><code class="docutils literal notranslate"><span class="pre">ifgram()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pyampact.alignment.run_DTW_alignment"><code class="docutils literal notranslate"><span class="pre">run_DTW_alignment()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pyampact.alignment.run_alignment"><code class="docutils literal notranslate"><span class="pre">run_alignment()</span></code></a></li>
 </ul>
@@ -105,21 +104,26 @@ a mask that is compared against harmonics in the audio</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>MF</strong> – Score instance of symbolic data</p></li>
-<li><p><strong>WF</strong> – Audio time series of file</p></li>
-<li><p><strong>TH</strong> – is the time step resolution (default 0.050)</p></li>
-<li><p><strong>ST</strong> – is the similarity type: 0 (default) is triangle inequality</p></li>
-<li><p><strong>showSpec</strong> – Boolean to show the spectrogram</p></li>
+<li><p><strong>piece</strong> (<a class="reference internal" href="symbolic.html#pyampact.symbolic.Score" title="pyampact.symbolic.Score"><em>Score</em></a>) – A <cite>Score</cite> instance containing the symbolic MIDI data.</p></li>
+<li><p><strong>WF</strong> (<em>ndarray</em>) – Audio time series of the WAV file.</p></li>
+<li><p><strong>sr</strong> (<em>int</em>) – Sampling rate of the audio file.</p></li>
+<li><p><strong>TH</strong> (<em>float</em>) – Time step resolution, typically in seconds (default is 0.050).</p></li>
+<li><p><strong>ST</strong> (<em>int</em>) – Similarity type; 0 (default) uses the triangle inequality.</p></li>
+<li><p><strong>width</strong> (<em>float</em>) – Width of the mask for the analysis.</p></li>
+<li><p><strong>tsr</strong> (<em>int</em>) – Target sample rate for resampling the audio (if needed).</p></li>
+<li><p><strong>nhar</strong> (<em>int</em>) – Number of harmonics to include in the mask.</p></li>
+<li><p><strong>wms</strong> (<em>float</em>) – Window size in milliseconds.</p></li>
+<li><p><strong>hop</strong> (<em>int</em>) – Hop size for the analysis window.</p></li>
+<li><p><strong>showSpec</strong> (<em>bool</em>) – If True, displays the spectrogram.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p>m: Is the map s.t. M(:,m)</p></li>
-<li><p>[p,q]: Are the path from DP</p></li>
-<li><p>S: The similarity matrix</p></li>
-<li><p>D: Is the spectrogram</p></li>
-<li><p>M: Is the midi-note-derived mask</p></li>
-<li><p>N: Is Orio-style “peak structure distance”</p></li>
+<li><p><strong>m</strong> (<em>ndarray</em>) – The map such that M[:,m] corresponds to the alignment.</p></li>
+<li><p><strong>path</strong> (<em>tuple of ndarrays</em>) – [p, q], the path from dynamic programming (DP) that aligns the MIDI and audio.</p></li>
+<li><p><strong>S</strong> (<em>ndarray</em>) – The similarity matrix used for alignment.</p></li>
+<li><p><strong>D</strong> (<em>ndarray</em>) – The spectrogram of the audio.</p></li>
+<li><p><strong>M</strong> (<em>ndarray</em>) – The MIDI-note-derived mask, including harmonic information if available.</p></li>
 </ul>
 </p>
 </dd>
@@ -129,21 +133,22 @@ a mask that is compared against harmonics in the audio</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyampact.alignment.alignment_visualiser">
 <span class="sig-prename descclassname"><span class="pre">pyampact.alignment.</span></span><span class="sig-name descname"><span class="pre">alignment_visualiser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio_spec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">times</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freqs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">showSpec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignment.html#alignment_visualiser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignment.alignment_visualiser" title="Link to this definition"></a></dt>
-<dd><p>Plots a gross DTW alignment overlaid with the fine alignment
-resulting from the HMM aligner on the output of YIN.  Trace(1,:)
-is the list of states in the HMM, and trace(2,:) is the number of YIN
-frames for which that state is occupied.  Highlight is a list of
-notes for which the steady state will be highlighted.</p>
+<dd><p>Visualizes the dynamic time warping (DTW) alignment.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>audio_spec</strong> – Spectrogram of audio file</p></li>
-<li><p><strong>freqs</strong> – Array of sample frequencies</p></li>
-<li><p><strong>times</strong> – Array of segment times</p></li>
+<li><p><strong>audio_spec</strong> (<em>ndarray</em>) – Spectrogram of the audio file to be visualized.</p></li>
+<li><p><strong>times</strong> (<em>ndarray</em><em>, </em><em>optional</em>) – Array of segment times corresponding to the audio spectrogram. If not provided, defaults to None.</p></li>
+<li><p><strong>freqs</strong> (<em>ndarray</em><em>, </em><em>optional</em>) – Array of sample frequencies corresponding to the audio spectrogram. If not provided, defaults to None.</p></li>
+<li><p><strong>fig</strong> (<em>int</em><em>, </em><em>optional</em>) – Figure number for the plot. Default is 1.</p></li>
+<li><p><strong>showSpec</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, displays the spectrogram overlayed with the alignment information. Default is True.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Visualized spectrogram</p>
+<dd class="field-even"><p>The visualized spectrogram plot with DTW alignment overlays.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>matplotlib.figure.Figure</p>
 </dd>
 </dl>
 </dd></dl>
@@ -151,21 +156,47 @@ notes for which the steady state will be highlighted.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyampact.alignment.get_ons_offs">
 <span class="sig-prename descclassname"><span class="pre">pyampact.alignment.</span></span><span class="sig-name descname"><span class="pre">get_ons_offs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">onsoffs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignment.html#get_ons_offs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignment.get_ons_offs" title="Link to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>Extracts a list of onset and offset from an inputted</dt><dd><p>3*N matrix of states and corresponding ending times
-from AMPACT’s HMM-based alignment algorithm</p>
-</dd>
-</dl>
+<dd><p>Extract onset and offset times from a 3*N alignment matrix generated by AMPACT’s
+HMM-based alignment algorithm.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>onsoffs</strong> – A 3*N alignment matrix, the first row is a list of N states
-the second row is the time which the state ends, and the
-third row is the state index</p>
+<dd class="field-odd"><p><strong>onsoffs</strong> (<em>ndarray</em>) – A 3*N alignment matrix where:
+- The first row contains N states.
+- The second row contains the corresponding ending times for each state.
+- The third row contains the state indices.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>res</strong> – A dictionary containing:
+- ‘ons’: List of onset times.
+- ‘offs’: List of offset times.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyampact.alignment.ifgram">
+<span class="sig-prename descclassname"><span class="pre">pyampact.alignment.</span></span><span class="sig-name descname"><span class="pre">ifgram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audiofile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tsr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">win_ms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">showSpec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignment.html#ifgram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignment.ifgram" title="Link to this definition"></a></dt>
+<dd><p>Compute the instantaneous frequency (IF) spectrogram of an audio file using
+the reassigned spectrogram and Short-Time Fourier Transform (STFT).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>audiofile</strong> (<em>str</em>) – Path to the audio file to be analyzed.</p></li>
+<li><p><strong>tsr</strong> (<em>int</em>) – Target sample rate of the audio signal.</p></li>
+<li><p><strong>win_ms</strong> (<em>float</em>) – Window size in milliseconds for spectral analysis.</p></li>
+<li><p><strong>showSpec</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, displays the spectrogram of the reassigned spectrogram. Default is False.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p>res.ons: List of onset times</p></li>
-<li><p>res.offs: List of offset times</p></li>
+<li><p><strong>freqs</strong> (<em>ndarray</em>) – Reassigned frequency bins of the spectrogram.</p></li>
+<li><p><strong>times</strong> (<em>ndarray</em>) – Time frames corresponding to the spectrogram.</p></li>
+<li><p><strong>mags</strong> (<em>ndarray</em>) – Magnitudes of the reassigned spectrogram.</p></li>
+<li><p><strong>f0_values</strong> (<em>ndarray</em>) – Fundamental frequency estimates for each time frame.</p></li>
+<li><p><strong>mags_mat</strong> (<em>ndarray</em>) – Magnitude matrix from the Short-Time Fourier Transform (STFT).</p></li>
 </ul>
 </p>
 </dd>
@@ -175,48 +206,40 @@ third row is the state index</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyampact.alignment.run_DTW_alignment">
 <span class="sig-prename descclassname"><span class="pre">pyampact.alignment.</span></span><span class="sig-name descname"><span class="pre">run_DTW_alignment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">original_sr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tres</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_sr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nharm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">win_ms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nmat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">showSpec</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignment.html#run_DTW_alignment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignment.run_DTW_alignment" title="Link to this definition"></a></dt>
-<dd><p>Perform a dynamic time warping alignment between specified audio and MIDI files.</p>
-<p>Returns a matrix with the aligned onset and offset times (with corresponding MIDI
-note numbers) and a spectrogram of the audio.</p>
+<dd><p>Perform a dynamic time warping (DTW) alignment between an audio file and its corresponding MIDI file.</p>
+<p>This function returns the aligned onset and offset times with corresponding MIDI note numbers,
+as well as the spectrogram of the audio and other DTW-related data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>y</strong> – Audio time series of audio</p></li>
-<li><p><strong>original_sr</strong> – original sample rate of audio</p></li>
-<li><p><strong>piece</strong> – Score instance of symbolic data</p></li>
-<li><p><strong>tres</strong> – Time resolution for MIDI to spectrum information conversion.</p></li>
-<li><p><strong>width</strong> – Width parameter (you need to specify this value)</p></li>
-<li><p><strong>target_sr</strong> – Target sample rate (you need to specify this value)</p></li>
-<li><p><strong>nharm</strong> – Number of harmonics (you need to specify this value)</p></li>
-<li><p><strong>win_ms</strong> – Window size in milliseconds (you need to specify this value)</p></li>
-<li><p><strong>showSpec</strong> – Boolean to show the spectrogram</p></li>
+<li><p><strong>y</strong> (<em>ndarray</em>) – Audio time series of the file.</p></li>
+<li><p><strong>original_sr</strong> (<em>int</em>) – Original sample rate of the audio file.</p></li>
+<li><p><strong>piece</strong> (<a class="reference internal" href="symbolic.html#pyampact.symbolic.Score" title="pyampact.symbolic.Score"><em>Score</em></a>) – A <cite>Score</cite> instance containing the symbolic (MIDI) data.</p></li>
+<li><p><strong>tres</strong> (<em>float</em>) – Time resolution for MIDI-to-spectrum information conversion.</p></li>
+<li><p><strong>width</strong> (<em>float</em>) – Width parameter for the DTW alignment.</p></li>
+<li><p><strong>target_sr</strong> (<em>int</em>) – Target sample rate for resampling the audio (if needed).</p></li>
+<li><p><strong>nharm</strong> (<em>int</em>) – Number of harmonics to include in the analysis.</p></li>
+<li><p><strong>win_ms</strong> (<em>float</em>) – Window size in milliseconds for analysis.</p></li>
+<li><p><strong>hop</strong> (<em>int</em>) – Number of samples between successive frames for analysis.</p></li>
+<li><p><strong>nmat</strong> (<em>DataFrame</em>) – DataFrame containing note matrix (nmat) data before alignment.</p></li>
+<li><p><strong>showSpec</strong> (<em>bool</em>) – If True, displays the spectrogram of the audio file.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
-<li><dl class="simple">
-<dt>align: Dynamic time warping MIDI-audio alignment structure</dt><dd><ul>
-<li><p>align.on: onset times</p></li>
-<li><p>align.off: offset times</p></li>
-<li><p>align.midiNote: MIDI note numbers</p></li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><p>spec: Spectrogram of the audio file</p></li>
-<li><dl class="simple">
-<dt>dtw: Dict of dynamic time warping returns</dt><dd><ul>
-<li><p>M: map s.t. M(:,m)</p></li>
-<li><p>MA/RA [p,q]: path from DP</p></li>
-<li><p>S: similarity matrix</p></li>
-<li><p>D: spectrogram</p></li>
-<li><p>notemask: midi-note-derived mask</p></li>
-<li><p>pianoroll: midi-note-derived pianoroll</p></li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><p>nmat: updated DataFrame of nmat data</p></li>
+<li><p><strong>align</strong> (<em>dict</em>) – MIDI-audio alignment structure from DTW containing:
+- ‘on’: Onset times of the notes.
+- ‘off’: Offset times of the notes.
+- ‘midiNote’: MIDI note numbers corresponding to the aligned notes.</p></li>
+<li><p><strong>spec</strong> (<em>ndarray</em>) – Spectrogram of the audio file.</p></li>
+<li><p><strong>dtw</strong> (<em>dict</em>) – A dictionary of DTW returns, including:
+- ‘M’: The map such that M[:,m] corresponds to the alignment.
+- ‘MA/RA’: Path from dynamic programming (DP) for MIDI-audio alignment.
+- ‘S’: Similarity matrix used in the alignment process.
+- ‘D’: Spectrogram of the audio.
+- ‘notemask’: The MIDI-note-derived mask used in the alignment.
+- ‘pianoroll’: MIDI-note-derived piano roll.</p></li>
+<li><p><strong>nmat</strong> (<em>DataFrame</em>) – Updated DataFrame containing the note matrix (nmat) data after alignment.</p></li>
 </ul>
 </p>
 </dd>
@@ -226,52 +249,45 @@ note numbers) and a spectrogram of the audio.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyampact.alignment.run_alignment">
 <span class="sig-prename descclassname"><span class="pre">pyampact.alignment.</span></span><span class="sig-name descname"><span class="pre">run_alignment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">original_sr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nmat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_sr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nharm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">win_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">showSpec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignment.html#run_alignment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignment.run_alignment" title="Link to this definition"></a></dt>
-<dd><p>Calls the DTW alignment function.</p>
-<dl class="field-list simple">
+<dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>y</strong> – Audio time series</p></li>
-<li><p><strong>original_sr</strong> – original sample rate of audio</p></li>
-<li><p><strong>piece</strong> – Score instance of symbolic data</p></li>
-<li><p><strong>means</strong> – Mean values for each state</p></li>
-<li><p><strong>covars</strong> – Covariance values for each state</p></li>
-<li><p><strong>width</strong> – Width parameter (you need to specify this value)</p></li>
-<li><p><strong>target_sr</strong> – Target sample rate (you need to specify this value)</p></li>
-<li><p><strong>nharm</strong> – Number of harmonics (you need to specify this value)</p></li>
-<li><p><strong>win_ms</strong> – Window size in milliseconds (you need to specify this value)</p></li>
-<li><p><strong>hop</strong> – Number of samples between successive frames</p></li>
-<li><p><strong>showSpec</strong> – Boolean to show the spectrogram</p></li>
+<li><p><strong>y</strong> (<em>ndarray</em>) – Audio time series.</p></li>
+<li><p><strong>original_sr</strong> (<em>int</em>) – Original sample rate of the audio file.</p></li>
+<li><p><strong>piece</strong> (<a class="reference internal" href="symbolic.html#pyampact.symbolic.Score" title="pyampact.symbolic.Score"><em>Score</em></a>) – A <cite>Score</cite> instance containing the symbolic MIDI data.</p></li>
+<li><p><strong>means</strong> (<em>ndarray</em>) – Mean values for each state in the alignment process.</p></li>
+<li><p><strong>covars</strong> (<em>ndarray</em>) – Covariance values for each state in the alignment process.</p></li>
+<li><p><strong>width</strong> (<em>float</em>) – Width parameter for the DTW alignment.</p></li>
+<li><p><strong>target_sr</strong> (<em>int</em>) – Target sample rate for resampling the audio (if needed).</p></li>
+<li><p><strong>nharm</strong> (<em>int</em>) – Number of harmonics to include in the analysis.</p></li>
+<li><p><strong>win_ms</strong> (<em>float</em>) – Window size in milliseconds for the analysis.</p></li>
+<li><p><strong>hop</strong> (<em>int</em>) – Number of samples between successive frames.</p></li>
+<li><p><strong>showSpec</strong> (<em>bool</em>) – If True, displays the spectrogram of the audio.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
-<li><dl class="simple">
-<dt>align: Dynamic time warping MIDI-audio alignment structure</dt><dd><ul>
-<li><p>on: onset times</p></li>
-<li><p>off: offset times</p></li>
-<li><p>midiNote: MIDI note numbers</p></li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>dtw: Dict of dynamic time warping returns</dt><dd><ul>
-<li><p>M: map s.t. M(:,m)</p></li>
-<li><p>MA/RA [p,q]: path from DP</p></li>
-<li><p>S: similarity matrix</p></li>
-<li><p>D: spectrogram</p></li>
-<li><p>notemask: midi-note-derived mask</p></li>
-<li><p>pianoroll: midi-note-derived pianoroll</p></li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><p>spec: Spectrogram of the audio file</p></li>
-<li><p>newNmat: updated DataFrame of nmat data</p></li>
+<li><p><strong>align</strong> (<em>dict</em>) – MIDI-audio alignment structure from DTW containing:
+- ‘on’: Onset times of the notes.
+- ‘off’: Offset times of the notes.
+- ‘midiNote’: MIDI note numbers corresponding to the aligned notes.</p></li>
+<li><p><strong>dtw</strong> (<em>dict</em>) – A dictionary of DTW returns, including:
+- ‘M’: The map such that M[:,m] corresponds to the alignment.
+- ‘MA’: Path from dynamic programming (DP) for MIDI-audio alignment.
+- ‘RA’: Path from DP for real audio alignment.
+- ‘S’: Similarity matrix used in the alignment process.
+- ‘D’: Spectrogram of the audio.
+- ‘notemask’: The MIDI-note-derived mask used in the alignment.</p></li>
+<li><p><strong>spec</strong> (<em>ndarray</em>) – Spectrogram of the audio file.</p></li>
+<li><p><strong>newNmat</strong> (<em>DataFrame</em>) – Updated DataFrame containing the note matrix (nmat) data after alignment.</p></li>
 </ul>
 </p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>This function leverages DTW to align MIDI note information with the time series audio signal.
+It computes onset and offset times and updates the alignment using a similarity matrix.
+Optionally, it can display the audio spectrogram for visual analysis.</p>
 </dd></dl>
 
 </section>

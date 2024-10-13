@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
@@ -5,20 +7,16 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>symbolic &mdash; pyAMPACT 0.0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
     <link rel="canonical" href="https://pyampact.github.io/symbolic.html" />
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=d45e8c67"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
-        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -76,6 +74,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#pyampact.symbolic.Score.lyrics"><code class="docutils literal notranslate"><span class="pre">Score.lyrics()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyampact.symbolic.Score.mask"><code class="docutils literal notranslate"><span class="pre">Score.mask()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyampact.symbolic.Score.midiPitches"><code class="docutils literal notranslate"><span class="pre">Score.midiPitches()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyampact.symbolic.Score.midi_ticks_durations"><code class="docutils literal notranslate"><span class="pre">Score.midi_ticks_durations()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyampact.symbolic.Score.nmats"><code class="docutils literal notranslate"><span class="pre">Score.nmats()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyampact.symbolic.Score.notes"><code class="docutils literal notranslate"><span class="pre">Score.notes()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyampact.symbolic.Score.pianoRoll"><code class="docutils literal notranslate"><span class="pre">Score.pianoRoll()</span></code></a></li>
@@ -84,7 +83,6 @@
 <li class="toctree-l3"><a class="reference internal" href="#pyampact.symbolic.Score.show"><code class="docutils literal notranslate"><span class="pre">Score.show()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyampact.symbolic.Score.toKern"><code class="docutils literal notranslate"><span class="pre">Score.toKern()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyampact.symbolic.Score.toMEI"><code class="docutils literal notranslate"><span class="pre">Score.toMEI()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pyampact.symbolic.Score.tony"><code class="docutils literal notranslate"><span class="pre">Score.tony()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pyampact.symbolic.Score.xmlIDs"><code class="docutils literal notranslate"><span class="pre">Score.xmlIDs()</span></code></a></li>
 </ul>
 </li>
@@ -539,7 +537,7 @@ analysis.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyampact.symbolic.Score.insertAudioAnalysis">
-<span class="sig-name descname"><span class="pre">insertAudioAnalysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mimetype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mei_tree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.insertAudioAnalysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.symbolic.Score.insertAudioAnalysis" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">insertAudioAnalysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mimetype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mei_tree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.insertAudioAnalysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.symbolic.Score.insertAudioAnalysis" title="Link to this definition"></a></dt>
 <dd><p>Insert a &lt;performance&gt; element into the MEI score given the analysis data
 (<cite>data</cite>) in the format of a json file or an nmat dictionary with audio data
 already included. If the original score is not an MEI file, a new MEI file
@@ -767,13 +765,13 @@ and trailing whitespace from the lyrics.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyampact.symbolic.Score.mask">
-<span class="sig-name descname"><span class="pre">mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">winms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_harmonics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bpm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aFreq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">440</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_note</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tuning_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.symbolic.Score.mask" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">winms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_harmonics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bpm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aFreq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">440</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_note</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tuning_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">24</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.symbolic.Score.mask" title="Link to this definition"></a></dt>
 <dd><p>Construct a mask from the sampled piano roll using width and harmonics. This
 builds on the intermediate representations of the pianoRoll and sampled
 methods. The sampled method already put the x-axis (columns) in regular
 time intervals. The mask keeps these columns and then alters the y-axis (rows)
 into frequency bins. The number of bins is determined by the winms and sample_rate
-values, and is equal to some power of 2 plus 1. The frequency bins serve to “blur”
+values, and is˚ equal to some power of 2 plus 1. The frequency bins serve to “blur”
 the sampled pitch data that we expect from the score. This allows us to detect
 real performed sounds in audio recordings that are likely slightly above or below
 the precise notated pitches. The mask is what allows pyAMPACT to connect
@@ -793,7 +791,7 @@ controls how broad or “blurry” the mask is compared to the notated score.</p
 <li><p><strong>aFreq</strong> – Integer, default 440. The frequency of A4 in Hz.</p></li>
 <li><p><strong>base_note</strong> – Integer, default 0. The base MIDI note to use.</p></li>
 <li><p><strong>tuning_factor</strong> – Float, default 1. The tuning factor to use.</p></li>
-<li><p><strong>obs</strong> – Integer, default 20. The desired observations per second.</p></li>
+<li><p><strong>obs</strong> – Integer, default 24. The desired observations per second.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -841,6 +839,25 @@ represented as -1.</p>
 <p class="rubric">Example</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">piece</span> <span class="o">=</span> <span class="n">Score</span><span class="p">(</span><span class="s1">&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;</span><span class="p">)</span>
 <span class="n">piece</span><span class="o">.</span><span class="n">midiPitches</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyampact.symbolic.Score.midi_ticks_durations">
+<span class="sig-name descname"><span class="pre">midi_ticks_durations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.midi_ticks_durations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.symbolic.Score.midi_ticks_durations" title="Link to this definition"></a></dt>
+<dd><p>Replaces the placeholder ONSET_SEC and OFFSET_SEC columns with specific placements calculated by MIDI
+tick information. The method translates the music21 stream to MIDI and replaces the values accordingly</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#pyampact.symbolic.Score.notes" title="pyampact.symbolic.Score.notes"><code class="xref py py-meth docutils literal notranslate"><span class="pre">notes()</span></code></a></dt><dd><p>Return a DataFrame of the newly calculated ONSET_SEC and OFFSET_SEC times, and DURATION</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Example</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">piece</span> <span class="o">=</span> <span class="n">Score</span><span class="p">(</span><span class="s1">&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;</span><span class="p">)</span>
+<span class="n">piece</span><span class="o">.</span><span class="n">durations</span><span class="p">()</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -977,7 +994,7 @@ how to get the roman numeral analysis from a kern score that has a <a href="#id3
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyampact.symbolic.Score.sampled">
-<span class="sig-name descname"><span class="pre">sampled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bpm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.sampled"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.symbolic.Score.sampled" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">sampled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bpm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">24</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.sampled"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.symbolic.Score.sampled" title="Link to this definition"></a></dt>
 <dd><p>Sample the score according to the given beats per minute (bpm) and the
 desired observations per second (obs). This method is primarily used as an
 intermediate step in the construction of a mask. It builds on the pianoRoll
@@ -990,7 +1007,7 @@ time intervals, rather than at each new event as they are in the pianoRoll.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>bpm</strong> – Integer, default 60. The beats per minute to use for sampling.</p></li>
-<li><p><strong>obs</strong> – Integer, default 20. The desired observations per second.</p></li>
+<li><p><strong>obs</strong> – Integer, default 24. The desired observations per second.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1118,22 +1135,6 @@ writing the new MEI file to the current working directory.</p>
 <span class="n">piece</span><span class="o">.</span><span class="n">toMEI</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="s1">&#39;meiFile.mei.xml&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyampact.symbolic.Score.tony">
-<span class="sig-name descname"><span class="pre">tony</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.tony"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.symbolic.Score.tony" title="Link to this definition"></a></dt>
-<dd><p>Get the labels data from a .tony file/url and return it as a dataframe. Calls
-fromJSON to do this. The “meta” portion of the tony file is ignored. If no
-path is provided, the last tony table imported with this method is returned.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> – A string representing the path to the .tony file.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A pandas DataFrame representing the labels in the .tony file.</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py method">
