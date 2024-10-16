@@ -846,6 +846,7 @@
             <span class="k">if</span> <span class="n">lower_index</span> <span class="o">==</span> <span class="n">upper_index</span><span class="p">:</span>
                 <span class="n">new_onsOffsList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">onsOffsList</span><span class="p">[</span><span class="n">lower_index</span><span class="p">])</span>
             <span class="k">else</span><span class="p">:</span>
+                <span class="n">upper_index</span> <span class="o">=</span> <span class="n">upper_index</span> <span class="o">-</span> <span class="mi">1</span>
                 <span class="n">lower_value</span> <span class="o">=</span> <span class="n">onsOffsList</span><span class="p">[</span><span class="n">lower_index</span><span class="p">]</span>
                 <span class="n">upper_value</span> <span class="o">=</span> <span class="n">onsOffsList</span><span class="p">[</span><span class="n">upper_index</span><span class="p">]</span>
                 <span class="n">fraction</span> <span class="o">=</span> <span class="n">original_index</span> <span class="o">-</span> <span class="n">lower_index</span>
