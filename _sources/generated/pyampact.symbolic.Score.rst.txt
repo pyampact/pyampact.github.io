@@ -1,0 +1,50 @@
+﻿pyampact.symbolic.Score
+=======================
+
+.. currentmodule:: pyampact.symbolic
+
+.. autoclass:: Score
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Score.__init__
+      ~Score.cdata
+      ~Score.chords
+      ~Score.contextualize
+      ~Score.dez
+      ~Score.durations
+      ~Score.dynamics
+      ~Score.form
+      ~Score.functions
+      ~Score.getSpines
+      ~Score.harm
+      ~Score.insertAudioAnalysis
+      ~Score.insertScoreDef
+      ~Score.jsonCDATA
+      ~Score.kernNotes
+      ~Score.keys
+      ~Score.lyrics
+      ~Score.mask
+      ~Score.midiPitches
+      ~Score.midi_ticks_durations
+      ~Score.nmats
+      ~Score.notes
+      ~Score.pianoRoll
+      ~Score.romanNumerals
+      ~Score.sampled
+      ~Score.show
+      ~Score.toKern
+      ~Score.toMEI
+      ~Score.xmlIDs
+   
+   
+
+   
+   
+   

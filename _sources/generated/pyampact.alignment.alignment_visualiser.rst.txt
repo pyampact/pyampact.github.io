@@ -1,0 +1,6 @@
+﻿pyampact.alignment.alignment\_visualiser
+========================================
+
+.. currentmodule:: pyampact.alignment
+
+.. autofunction:: alignment_visualiser

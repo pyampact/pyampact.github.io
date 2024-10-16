@@ -1,0 +1,6 @@
+﻿pyampact.alignmentUtils.simmx
+=============================
+
+.. currentmodule:: pyampact.alignmentUtils
+
+.. autofunction:: simmx

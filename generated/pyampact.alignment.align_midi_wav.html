@@ -1,0 +1,149 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyampact.alignment.align_midi_wav &mdash; pyAMPACT 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+    <link rel="canonical" href="https://pyampact.github.io/generated/pyampact.alignment.align_midi_wav.html" />
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            pyAMPACT
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../alignment.html">alignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../alignmentUtils.html">alignmentUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dataCompilation.html">dataCompilation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance.html">performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../symbolic.html">symbolic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../symbolicUtils.html">symbolicUtils</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyAMPACT</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">pyampact.alignment.align_midi_wav</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/generated/pyampact.alignment.align_midi_wav.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pyampact-alignment-align-midi-wav">
+<h1>pyampact.alignment.align_midi_wav<a class="headerlink" href="#pyampact-alignment-align-midi-wav" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyampact.alignment.align_midi_wav">
+<span class="sig-prename descclassname"><span class="pre">pyampact.alignment.</span></span><span class="sig-name descname"><span class="pre">align_midi_wav</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">WF</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TH</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ST</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tsr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nhar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">showSpec</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyampact/alignment.html#align_midi_wav"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignment.align_midi_wav" title="Link to this definition"></a></dt>
+<dd><p>Align a midi file to a wav file using the “peak structure
+distance” of Orio et al. that use the MIDI notes to build
+a mask that is compared against harmonics in the audio</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>piece</strong> (<a class="reference internal" href="../symbolic.html#pyampact.symbolic.Score" title="pyampact.symbolic.Score"><em>Score</em></a>) – A <cite>Score</cite> instance containing the symbolic MIDI data.</p></li>
+<li><p><strong>WF</strong> (<em>ndarray</em>) – Audio time series of the WAV file.</p></li>
+<li><p><strong>sr</strong> (<em>int</em>) – Sampling rate of the audio file.</p></li>
+<li><p><strong>TH</strong> (<em>float</em>) – Time step resolution, typically in seconds (default is 0.050).</p></li>
+<li><p><strong>ST</strong> (<em>int</em>) – Similarity type; 0 (default) uses the triangle inequality.</p></li>
+<li><p><strong>width</strong> (<em>float</em>) – Width of the mask for the analysis.</p></li>
+<li><p><strong>tsr</strong> (<em>int</em>) – Target sample rate for resampling the audio (if needed).</p></li>
+<li><p><strong>nhar</strong> (<em>int</em>) – Number of harmonics to include in the mask.</p></li>
+<li><p><strong>wms</strong> (<em>float</em>) – Window size in milliseconds.</p></li>
+<li><p><strong>hop</strong> (<em>int</em>) – Hop size for the analysis window.</p></li>
+<li><p><strong>showSpec</strong> (<em>bool</em>) – If True, displays the spectrogram.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>m</strong> (<em>ndarray</em>) – The map such that M[:,m] corresponds to the alignment.</p></li>
+<li><p><strong>path</strong> (<em>tuple of ndarrays</em>) – [p, q], the path from dynamic programming (DP) that aligns the MIDI and audio.</p></li>
+<li><p><strong>S</strong> (<em>ndarray</em>) – The similarity matrix used for alignment.</p></li>
+<li><p><strong>D</strong> (<em>ndarray</em>) – The spectrogram of the audio.</p></li>
+<li><p><strong>M</strong> (<em>ndarray</em>) – The MIDI-note-derived mask, including harmonic information if available.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, AMPACT Research Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

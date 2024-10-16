@@ -1,0 +1,6 @@
+﻿pyampact.alignmentUtils.durations\_from\_midi\_ticks
+====================================================
+
+.. currentmodule:: pyampact.alignmentUtils
+
+.. autofunction:: durations_from_midi_ticks

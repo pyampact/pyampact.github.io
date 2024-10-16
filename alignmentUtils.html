@@ -298,14 +298,14 @@ and <cite>v2[i2]</cite>, clipped to the specified domain bounds.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyampact.alignmentUtils.load_audiofile">
 <span class="sig-prename descclassname"><span class="pre">pyampact.alignmentUtils.</span></span><span class="sig-name descname"><span class="pre">load_audiofile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignmentUtils.html#load_audiofile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignmentUtils.load_audiofile" title="Link to this definition"></a></dt>
-<dd><p>Loads audio file</p>
+<dd><p>Loads file for analysis. Currently only the WAV file format is allowed.  AIFF, MP3, etc. must be converted prior.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>audio_file</strong> (<em>str</em>) – The path to the audio file to be loaded.</p>
+<dd class="field-odd"><p><strong>audio_file</strong> (<em>str</em>) – The path to the wav file to be loaded.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><strong>audio_data</strong> (<em>The loaded audio data as a numpy array.</em>)</p></li>
+<li><p><strong>audio_data</strong> (<em>The loaded wav file as a numpy array.</em>)</p></li>
 <li><p><strong>sr</strong> (<em>The original sample rate of the audio file.</em>)</p></li>
 </ul>
 </p>

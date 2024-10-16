@@ -687,16 +687,16 @@
 <a class="viewcode-back" href="../../alignmentUtils.html#pyampact.alignmentUtils.load_audiofile">[docs]</a>
 <span class="k">def</span> <span class="nf">load_audiofile</span><span class="p">(</span><span class="n">audio_file</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Loads audio file</span>
+<span class="sd">    Loads file for analysis. Currently only the WAV file format is allowed.  AIFF, MP3, etc. must be converted prior.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    audio_file : str</span>
-<span class="sd">        The path to the audio file to be loaded.</span>
+<span class="sd">        The path to the wav file to be loaded.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    audio_data : The loaded audio data as a numpy array.</span>
+<span class="sd">    audio_data : The loaded wav file as a numpy array.</span>
 <span class="sd">    sr : The original sample rate of the audio file.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
