@@ -6,22 +6,22 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>performance &mdash; pyAMPACT 0.0.2 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+  <title>performance &mdash; pyAMPACT 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
     <link rel="canonical" href="https://pyampact.github.io/performance.html" />
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=e3a6060d"></script>
+      <script src="_static/documentation_options.js?v=d45e8c67"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="symbolic" href="symbolic.html" />
-    <link rel="prev" title="dataCompilation" href="dataCompilation.html" /> 
+    <link rel="next" title="pyampact.performance.estimate_perceptual_parameters" href="generated/pyampact.performance.estimate_perceptual_parameters.html" />
+    <link rel="prev" title="pyampact.dataCompilation.data_compilation" href="generated/pyampact.dataCompilation.data_compilation.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -53,10 +53,12 @@
 <li class="toctree-l1"><a class="reference internal" href="alignmentUtils.html">alignmentUtils</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dataCompilation.html">dataCompilation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">performance</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#id1">performance</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#pyampact.performance.calculate_vibrato"><code class="docutils literal notranslate"><span class="pre">calculate_vibrato()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#pyampact.performance.estimate_perceptual_parameters"><code class="docutils literal notranslate"><span class="pre">estimate_perceptual_parameters()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#pyampact.performance.perceived_pitch"><code class="docutils literal notranslate"><span class="pre">perceived_pitch()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">performance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.performance.estimate_perceptual_parameters.html">pyampact.performance.estimate_perceptual_parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.performance.calculate_vibrato.html">pyampact.performance.calculate_vibrato</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.performance.perceived_pitch.html">pyampact.performance.perceived_pitch</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="symbolic.html">symbolic</a></li>
@@ -87,14 +89,27 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-pyampact.performance">
-<span id="performance"></span><h1>performance<a class="headerlink" href="#module-pyampact.performance" title="Link to this heading"></a></h1>
+  <section id="performance">
+<h1>performance<a class="headerlink" href="#performance" title="Link to this heading"></a></h1>
 <section id="id1">
 <h2>performance<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.performance.estimate_perceptual_parameters.html#pyampact.performance.estimate_perceptual_parameters" title="pyampact.performance.estimate_perceptual_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">estimate_perceptual_parameters</span></code></a>(f0_vals, ...)</p></td>
+<td><p>Estimates a range of performance parameters from the inputted fundamental frequency (f0_vales), power (pwr_vals), and spectrum estimates (M)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pyampact.performance.calculate_vibrato.html#pyampact.performance.calculate_vibrato" title="pyampact.performance.calculate_vibrato"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_vibrato</span></code></a>(note_vals, sr)</p></td>
+<td><p>Calculate the vibrato depth and rate from a note's frequency signal.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.performance.perceived_pitch.html#pyampact.performance.perceived_pitch" title="pyampact.performance.perceived_pitch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">perceived_pitch</span></code></a>(f0s, sr[, gamma])</p></td>
+<td><p>Calculate the perceived pitch of a note based on Gockel, H., B.J.C.</p></td>
+</tr>
+</tbody>
+</table>
 </section>
 <dl class="py function">
-<dt class="sig sig-object py" id="pyampact.performance.calculate_vibrato">
-<span class="sig-prename descclassname"><span class="pre">pyampact.performance.</span></span><span class="sig-name descname"><span class="pre">calculate_vibrato</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">note_vals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/performance.html#calculate_vibrato"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.performance.calculate_vibrato" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">pyampact.performance.</span></span><span class="sig-name descname"><span class="pre">calculate_vibrato</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">note_vals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/performance.html#calculate_vibrato"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Calculate the vibrato depth and rate from a note’s frequency signal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -117,8 +132,8 @@ the dominant frequency in the Fast Fourier Transform (FFT).</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="pyampact.performance.estimate_perceptual_parameters">
-<span class="sig-prename descclassname"><span class="pre">pyampact.performance.</span></span><span class="sig-name descname"><span class="pre">estimate_perceptual_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f0_vals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pwr_vals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SR</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gt_flag</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/performance.html#estimate_perceptual_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.performance.estimate_perceptual_parameters" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">pyampact.performance.</span></span><span class="sig-name descname"><span class="pre">estimate_perceptual_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f0_vals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pwr_vals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SR</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gt_flag</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/performance.html#estimate_perceptual_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Estimates a range of performance parameters from the inputted fundamental
 frequency (f0_vales), power (pwr_vals), and spectrum estimates (M)</p>
 <dl class="field-list simple">
@@ -143,8 +158,8 @@ frequency (f0_vales), power (pwr_vals), and spectrum estimates (M)</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="pyampact.performance.perceived_pitch">
-<span class="sig-prename descclassname"><span class="pre">pyampact.performance.</span></span><span class="sig-name descname"><span class="pre">perceived_pitch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f0s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/performance.html#perceived_pitch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.performance.perceived_pitch" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">pyampact.performance.</span></span><span class="sig-name descname"><span class="pre">perceived_pitch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f0s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/performance.html#perceived_pitch"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Calculate the perceived pitch of a note based on
 Gockel, H., B.J.C. Moore,and R.P. Carlyon. 2001.
 Influence of rate of change of frequency on the overall
@@ -177,8 +192,8 @@ versus slowly changing portions of notes. A high gamma value (e.g.,
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="dataCompilation.html" class="btn btn-neutral float-left" title="dataCompilation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="symbolic.html" class="btn btn-neutral float-right" title="symbolic" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="generated/pyampact.dataCompilation.data_compilation.html" class="btn btn-neutral float-left" title="pyampact.dataCompilation.data_compilation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="generated/pyampact.performance.estimate_perceptual_parameters.html" class="btn btn-neutral float-right" title="pyampact.performance.estimate_perceptual_parameters" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

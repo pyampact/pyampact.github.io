@@ -6,20 +6,22 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyampact.symbolic.Score &mdash; pyAMPACT 0.0.2 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+  <title>pyampact.symbolic.Score &mdash; pyAMPACT 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
     <link rel="canonical" href="https://pyampact.github.io/generated/pyampact.symbolic.Score.html" />
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=e3a6060d"></script>
+      <script src="../_static/documentation_options.js?v=d45e8c67"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="symbolicUtils" href="../symbolicUtils.html" />
+    <link rel="prev" title="symbolic" href="../symbolic.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -46,12 +48,21 @@
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../alignment.html">alignment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../alignmentUtils.html">alignmentUtils</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dataCompilation.html">dataCompilation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../performance.html">performance</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../symbolic.html">symbolic</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../symbolic.html">symbolic</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../symbolic.html#id1">symbolic</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">pyampact.symbolic.Score</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyampact.symbolic.Score"><code class="docutils literal notranslate"><span class="pre">Score</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../symbolicUtils.html">symbolicUtils</a></li>
 </ul>
 
@@ -69,6 +80,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../symbolic.html">symbolic</a></li>
       <li class="breadcrumb-item active">pyampact.symbolic.Score</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/generated/pyampact.symbolic.Score.rst.txt" rel="nofollow"> View page source</a>
@@ -83,7 +95,7 @@
 <h1>pyampact.symbolic.Score<a class="headerlink" href="#pyampact-symbolic-score" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyampact.symbolic.Score">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyampact.symbolic.</span></span><span class="sig-name descname"><span class="pre">Score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">score_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyampact/symbolic.html#Score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.symbolic.Score" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyampact.symbolic.</span></span><span class="sig-name descname"><span class="pre">Score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">score_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyampact/symbolic.html#Score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.symbolic.Score" title="Link to this definition"></a></dt>
 <dd><p>A class to import a score via music21 and expose pyAMPACT’s analysis utilities.</p>
 <p>The analysis utilities are generally formatted as pandas dataframes. This
 class also ports over some matlab code to help with alignment of scores in
@@ -112,6 +124,97 @@ Humdrum Viewer.</p>
 <dd></dd></dl>
 
 <p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyampact.symbolic.Score.__init__" title="pyampact.symbolic.Score.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(score_path)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cdata</span></code>([snap_to, filler, output])</p></td>
+<td><p>Get the cdata records from <a href="#id1"><span class="problematic" id="id2">**</span></a>cdata spines in a kern file if there are any and return it as a pandas DataFrame. This is similar to the .harm, .functions, .chords, and .keys methods, with the exception that this method defaults to returning a dataframe since there are often more than one cdata spine in a kern score. If want to get the results of a different spine type (i.e. not one of the ones listed above), see <code class="xref py py-meth docutils literal notranslate"><span class="pre">getSpines()</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">chords</span></code>([snap_to, filler, output])</p></td>
+<td><p>Get the chord labels from the <a href="#id3"><span class="problematic" id="id4">**</span></a>chord spine in a kern file if there is one and return it as an array or a time-aligned pandas Series. This is similar to the .functions, .harm, .keys, and .cdata methods. The default is for the results to be returned as a 1-d array, but you can set <cite>output='series'</cite> for a pandas series instead. If want to get the results of a different spine type (i.e. not one of the ones listed above), see <code class="xref py py-meth docutils literal notranslate"><span class="pre">getSpines()</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">contextualize</span></code>(df[, offsets, measures, beats])</p></td>
+<td><p>Add measure and beat numbers to a DataFrame.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dez</span></code>([path])</p></td>
+<td><p>Get the labels data from a .dez file/url and return it as a dataframe.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">durations</span></code>([multi_index, df])</p></td>
+<td><p>Return a DataFrame of durations of note and rest objects in the piece.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dynamics</span></code>()</p></td>
+<td><p>Extract the dynamics from the score.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">form</span></code>([snap_to, filler, output, dez_path])</p></td>
+<td><p>Get the &quot;Structure&quot; labels from a .dez file/url and return it as an array or a time-aligned pandas Series.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">functions</span></code>([snap_to, filler, output])</p></td>
+<td><p>Get the harmonic function labels from a <a href="#id5"><span class="problematic" id="id6">**</span></a>function spine in a kern file if there is one and return it as an array or a time-aligned pandas Series. This is similar to the .harm, .keys, .chords, and .cdata methods. The default is for the results to be returned as a 1-d array, but you can set <cite>output='series'</cite> for a pandas series instead. If want to get the results of a different spine type (i.e. not one of the ones listed above), see <code class="xref py py-meth docutils literal notranslate"><span class="pre">getSpines()</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">getSpines</span></code>(spineType)</p></td>
+<td><p>Return a pandas DataFrame of a less common spine type.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">harm</span></code>([snap_to, filler, output])</p></td>
+<td><p>Get the harmonic analysis portion of the <a href="#id7"><span class="problematic" id="id8">**</span></a>harm spine in a kern file if there is one and return it as an array or a time-aligned pandas Series. The prevailing key signature information is not included here from the harm spine, but that key information is available in the .keys method. This is similar to the .keys, .functions, .chords, and .cdata methods. The default is for the results to be returned as a 1-d array, but you can set <cite>output='series'</cite> for a pandas series instead which is helpful if you're going to concatenate the results to a dataframe. If want to get the results of a different spine type (i.e. not one of the ones listed above), see <code class="xref py py-meth docutils literal notranslate"><span class="pre">getSpines()</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">insertAudioAnalysis</span></code>(output_path, data[, ...])</p></td>
+<td><p>Insert a &lt;performance&gt; element into the MEI score given the analysis data (<cite>data</cite>) in the format of a json file or an nmat dictionary with audio data already included.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">insertScoreDef</span></code>(root)</p></td>
+<td><p>Insert a scoreDef element into an MEI (Music Encoding Initiative) document.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">jsonCDATA</span></code>(json_path)</p></td>
+<td><p>Return a dictionary of pandas DataFrames, one for each voice.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">kernNotes</span></code>()</p></td>
+<td><p>Return a DataFrame of the notes and rests given in kern notation.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">keys</span></code>([snap_to, filler, output])</p></td>
+<td><p>Get the key signature portion of the <a href="#id9"><span class="problematic" id="id10">**</span></a>harm spine in a kern file if there is one and return it as an array or a time-aligned pandas Series. This is similar to the .harm, .functions, .chords, and .cdata methods. The default is for the results to be returned as a 1-d array, but you can set <cite>output='series'</cite> for a pandas series instead. If want to get the results of a different spine type (i.e. not one of the ones listed above), see <code class="xref py py-meth docutils literal notranslate"><span class="pre">getSpines()</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">lyrics</span></code>([strip])</p></td>
+<td><p>Extract the lyrics from the score.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">mask</span></code>([winms, sample_rate, num_harmonics, ...])</p></td>
+<td><p>Construct a mask from the sampled piano roll using width and harmonics.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">midiPitches</span></code>([multi_index])</p></td>
+<td><p>Return a DataFrame of notes and rests as MIDI pitches.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">midi_ticks_durations</span></code>([i, df])</p></td>
+<td><p>Replaces the placeholder ONSET_SEC and OFFSET_SEC columns with timing information directly extracted from the music21 stream.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">nmats</span></code>([json_path, include_cdata])</p></td>
+<td><p>Return a dictionary of DataFrames, one for each voice, with information about the notes and rests in that voice.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">notes</span></code>([combine_rests, combine_unisons])</p></td>
+<td><p>Return a DataFrame of the notes and rests given in American Standard Pitch Notation where middle C is C4.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pianoRoll</span></code>()</p></td>
+<td><p>Construct a MIDI piano roll.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">romanNumerals</span></code>([snap_to, filler, output, ...])</p></td>
+<td><p>Get the roman numeral labels from a .dez file/url or <a href="#id11"><span class="problematic" id="id12">**</span></a>harm spine and return it as an array or a time-aligned pandas Series. The default is for the results to be returned as a 1-d array, but you can set <cite>output='series'</cite> for a pandas series instead. If you want to align these results so that they match the columnar (time) axis of the pianoRoll, sampled, or mask results, you can pass the pianoRoll or mask that you want to align to as the <cite>snap_to</cite> parameter. Doing that makes it easier to combine these results with any of the pianoRoll, sampled, or mask tables to have both in a single table which can make data analysis easier. This example shows how to get the roman numeral analysis from a kern score that has a <a href="#id13"><span class="problematic" id="id14">**</span></a>harm spine.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sampled</span></code>([bpm, obs])</p></td>
+<td><p>Sample the score according to the given beats per minute (bpm) and the desired observations per second (obs).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">show</span></code>([start, stop])</p></td>
+<td><p>Print a VerovioHumdrumViewer link to the score in between the <cite>start</cite> and <cite>stop</cite> measures (inclusive).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">toKern</span></code>([path_name, data, lyrics, dynamics])</p></td>
+<td><p>Create a kern representation of the score.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">toMEI</span></code>([file_name, indentation, data, start, ...])</p></td>
+<td><p>Write or return an MEI score optionally including analysis data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">xmlIDs</span></code>()</p></td>
+<td><p>Return xml ids per part in a pandas.DataFrame time-aligned with the objects offset.</p></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </section>
@@ -119,7 +222,10 @@ Humdrum Viewer.</p>
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../symbolic.html" class="btn btn-neutral float-left" title="symbolic" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../symbolicUtils.html" class="btn btn-neutral float-right" title="symbolicUtils" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

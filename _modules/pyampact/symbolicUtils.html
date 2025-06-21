@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pyampact.symbolicUtils &mdash; pyAMPACT 0.0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
@@ -110,13 +110,13 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">requests</span>
-<span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="k">as</span> <span class="nn">ET</span>
-<span class="kn">from</span> <span class="nn">fractions</span> <span class="kn">import</span> <span class="n">Fraction</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xml.etree.ElementTree</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ET</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fractions</span><span class="w"> </span><span class="kn">import</span> <span class="n">Fraction</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;_escape_cdata&quot;</span><span class="p">,</span>
@@ -151,7 +151,9 @@
 <span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">_escape_cdata</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<div class="viewcode-block" id="_escape_cdata">
+<a class="viewcode-back" href="../../generated/pyampact.symbolicUtils._escape_cdata.html#pyampact.symbolicUtils._escape_cdata">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">_escape_cdata</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Escape certain characters in a CDATA string for XML serialization.</span>
 
@@ -185,7 +187,8 @@
         <span class="k">return</span> <span class="n">text</span>
     <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;cannot serialize </span><span class="si">%r</span><span class="s2"> (type </span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span>
-                        <span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+                        <span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span></div>
+
 
 
 <span class="n">ET</span><span class="o">.</span><span class="n">_escape_cdata</span> <span class="o">=</span> <span class="n">_escape_cdata</span>
@@ -250,9 +253,11 @@
     <span class="s1">&#39;16th&#39;</span><span class="p">:</span>    <span class="s1">&#39;16&#39;</span><span class="p">,</span>
     <span class="s1">&#39;eighth&#39;</span><span class="p">:</span>  <span class="s1">&#39;8&#39;</span><span class="p">,</span>
     <span class="s1">&#39;quarter&#39;</span><span class="p">:</span> <span class="s1">&#39;8&#39;</span>      <span class="c1"># make quarter grace notes default to eighth notes too</span>
+
 <span class="p">}</span>
 
 <span class="n">duration2MEI</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;complex&#39;</span><span class="p">:</span> <span class="s1">&#39;complex&#39;</span><span class="p">,</span>  <span class="c1"># added this 3/5</span>
     <span class="s1">&#39;maxima&#39;</span><span class="p">:</span>  <span class="s1">&#39;maxima&#39;</span><span class="p">,</span>
     <span class="s1">&#39;longa&#39;</span><span class="p">:</span>   <span class="s1">&#39;longa&#39;</span><span class="p">,</span>
     <span class="s1">&#39;breve&#39;</span><span class="p">:</span>   <span class="s1">&#39;breve&#39;</span><span class="p">,</span>
@@ -281,7 +286,7 @@
 
 <div class="viewcode-block" id="addMEINote">
 <a class="viewcode-back" href="../../symbolicUtils.html#pyampact.symbolicUtils.addMEINote">[docs]</a>
-<span class="k">def</span> <span class="nf">addMEINote</span><span class="p">(</span><span class="n">note</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">syl</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">addMEINote</span><span class="p">(</span><span class="n">note</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">syl</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Add a note element to an MEI parent element from a music21 note object.</span>
 
@@ -342,7 +347,7 @@
 
 <div class="viewcode-block" id="addTieBreakers">
 <a class="viewcode-back" href="../../symbolicUtils.html#pyampact.symbolicUtils.addTieBreakers">[docs]</a>
-<span class="k">def</span> <span class="nf">addTieBreakers</span><span class="p">(</span><span class="n">partList</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">addTieBreakers</span><span class="p">(</span><span class="n">partList</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Add tie-breaker level to index. Changes parts in partList in place and </span>
 <span class="sd">    returns None. </span>
@@ -376,7 +381,7 @@
 
 <div class="viewcode-block" id="kernClefHelper">
 <a class="viewcode-back" href="../../symbolicUtils.html#pyampact.symbolicUtils.kernClefHelper">[docs]</a>
-<span class="k">def</span> <span class="nf">kernClefHelper</span><span class="p">(</span><span class="n">clef</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">kernClefHelper</span><span class="p">(</span><span class="n">clef</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parse a music21 clef object into the corresponding humdrum syntax token.</span>
 
@@ -394,7 +399,7 @@
 
 <div class="viewcode-block" id="combineRests">
 <a class="viewcode-back" href="../../symbolicUtils.html#pyampact.symbolicUtils.combineRests">[docs]</a>
-<span class="k">def</span> <span class="nf">combineRests</span><span class="p">(</span><span class="n">col</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">combineRests</span><span class="p">(</span><span class="n">col</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Helper function for the `notes` method. </span>
 
@@ -411,7 +416,7 @@
 
 <div class="viewcode-block" id="combineUnisons">
 <a class="viewcode-back" href="../../symbolicUtils.html#pyampact.symbolicUtils.combineUnisons">[docs]</a>
-<span class="k">def</span> <span class="nf">combineUnisons</span><span class="p">(</span><span class="n">col</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">combineUnisons</span><span class="p">(</span><span class="n">col</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Helper function for the `notes` method. </span>
 
@@ -428,7 +433,7 @@
 
 <div class="viewcode-block" id="githubURLtoRaw">
 <a class="viewcode-back" href="../../symbolicUtils.html#pyampact.symbolicUtils.githubURLtoRaw">[docs]</a>
-<span class="k">def</span> <span class="nf">githubURLtoRaw</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">githubURLtoRaw</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert a GitHub URL to a raw URL and return it. Otherwise return the string.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -440,7 +445,7 @@
 
 <div class="viewcode-block" id="fromJSON">
 <a class="viewcode-back" href="../../symbolicUtils.html#pyampact.symbolicUtils.fromJSON">[docs]</a>
-<span class="k">def</span> <span class="nf">fromJSON</span><span class="p">(</span><span class="n">json_path</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">fromJSON</span><span class="p">(</span><span class="n">json_path</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load a JSON or dez file/url into a pandas DataFrame.</span>
 
@@ -483,7 +488,9 @@
 
 
 
-<span class="k">def</span> <span class="nf">_id_gen</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="_id_gen">
+<a class="viewcode-back" href="../../generated/pyampact.symbolicUtils._id_gen.html#pyampact.symbolicUtils._id_gen">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">_id_gen</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a unique ID for each instance of the Score class.</span>
 
@@ -509,7 +516,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
         <span class="k">yield</span> <span class="sa">f</span><span class="s1">&#39;pyAMPACT-</span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s1">&#39;</span>
-        <span class="n">start</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">start</span> <span class="o">+=</span> <span class="mi">1</span></div>
+
 
 
 <span class="n">idGen</span> <span class="o">=</span> <span class="n">_id_gen</span><span class="p">()</span>
@@ -517,7 +525,7 @@
 
 <div class="viewcode-block" id="indentMEI">
 <a class="viewcode-back" href="../../symbolicUtils.html#pyampact.symbolicUtils.indentMEI">[docs]</a>
-<span class="k">def</span> <span class="nf">indentMEI</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">indentation</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">_level</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">indentMEI</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">indentation</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">_level</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Indent an MEI (Music Encoding Initiative) XML element and its children.</span>
 
@@ -551,7 +559,9 @@
 
 
 
-<span class="k">def</span> <span class="nf">_kernChordHelper</span><span class="p">(</span><span class="n">_chord</span><span class="p">):</span>
+<div class="viewcode-block" id="_kernChordHelper">
+<a class="viewcode-back" href="../../generated/pyampact.symbolicUtils._kernChordHelper.html#pyampact.symbolicUtils._kernChordHelper">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">_kernChordHelper</span><span class="p">(</span><span class="n">_chord</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parse a music21 chord object into a kern chord token.</span>
 
@@ -562,12 +572,13 @@
 <span class="sd">    :param _chord: A music21 chord object to be converted into a kern chord token.</span>
 <span class="sd">    :return: A string representing the kern chord token.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">_kernNoteHelper</span><span class="p">(</span><span class="n">note</span><span class="p">)</span> <span class="k">for</span> <span class="n">note</span> <span class="ow">in</span> <span class="n">_chord</span><span class="o">.</span><span class="n">notes</span><span class="p">])</span>
+    <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">_kernNoteHelper</span><span class="p">(</span><span class="n">note</span><span class="p">)</span> <span class="k">for</span> <span class="n">note</span> <span class="ow">in</span> <span class="n">_chord</span><span class="o">.</span><span class="n">notes</span><span class="p">])</span></div>
+
 
 
 <div class="viewcode-block" id="kernFooter">
 <a class="viewcode-back" href="../../symbolicUtils.html#pyampact.symbolicUtils.kernFooter">[docs]</a>
-<span class="k">def</span> <span class="nf">kernFooter</span><span class="p">(</span><span class="n">fileExtension</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">kernFooter</span><span class="p">(</span><span class="n">fileExtension</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return a string of the kern format footer global comments.</span>
 
@@ -575,7 +586,7 @@
 
 <span class="sd">    :return: A string representing the kern format footer.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;!!!RDF**kern: %=rational rhythm</span>
 <span class="s2">!!!RDF**kern: l=long note in original notation</span>
 <span class="s2">!!!RDF**kern: i=editorial accidental</span>
@@ -586,7 +597,7 @@
 
 <div class="viewcode-block" id="kernHeader">
 <a class="viewcode-back" href="../../symbolicUtils.html#pyampact.symbolicUtils.kernHeader">[docs]</a>
-<span class="k">def</span> <span class="nf">kernHeader</span><span class="p">(</span><span class="n">metadata</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">kernHeader</span><span class="p">(</span><span class="n">metadata</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return a string of the kern format header global comments.</span>
 
@@ -598,7 +609,9 @@
 
 
 
-<span class="k">def</span> <span class="nf">_kernNoteHelper</span><span class="p">(</span><span class="n">_note</span><span class="p">):</span>
+<div class="viewcode-block" id="_kernNoteHelper">
+<a class="viewcode-back" href="../../generated/pyampact.symbolicUtils._kernNoteHelper.html#pyampact.symbolicUtils._kernNoteHelper">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">_kernNoteHelper</span><span class="p">(</span><span class="n">_note</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parse a music21 note object into a kern note token.</span>
 
@@ -654,12 +667,13 @@
     <span class="k">for</span> <span class="n">exp</span> <span class="ow">in</span> <span class="n">_note</span><span class="o">.</span><span class="n">expressions</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">exp</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;fermata&#39;</span><span class="p">:</span>
             <span class="n">fermata</span> <span class="o">=</span> <span class="s1">&#39;;&#39;</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">startBracket</span><span class="si">}{</span><span class="n">dur</span><span class="si">}{</span><span class="n">letter</span><span class="si">}{</span><span class="n">acc</span><span class="si">}{</span><span class="n">longa</span><span class="si">}{</span><span class="n">grace</span><span class="si">}{</span><span class="n">fermata</span><span class="si">}{</span><span class="n">beaming</span><span class="si">}{</span><span class="n">endBracket</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">startBracket</span><span class="si">}{</span><span class="n">dur</span><span class="si">}{</span><span class="n">letter</span><span class="si">}{</span><span class="n">acc</span><span class="si">}{</span><span class="n">longa</span><span class="si">}{</span><span class="n">grace</span><span class="si">}{</span><span class="n">fermata</span><span class="si">}{</span><span class="n">beaming</span><span class="si">}{</span><span class="n">endBracket</span><span class="si">}</span><span class="s1">&#39;</span></div>
+
 
 
 <div class="viewcode-block" id="kernNRCHelper">
 <a class="viewcode-back" href="../../symbolicUtils.html#pyampact.symbolicUtils.kernNRCHelper">[docs]</a>
-<span class="k">def</span> <span class="nf">kernNRCHelper</span><span class="p">(</span><span class="n">nrc</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">kernNRCHelper</span><span class="p">(</span><span class="n">nrc</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert a music21 note, rest, or chord object to its corresponding kern token.</span>
 
@@ -682,7 +696,7 @@
 
 <div class="viewcode-block" id="noteRestHelper">
 <a class="viewcode-back" href="../../symbolicUtils.html#pyampact.symbolicUtils.noteRestHelper">[docs]</a>
-<span class="k">def</span> <span class="nf">noteRestHelper</span><span class="p">(</span><span class="n">nr</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">noteRestHelper</span><span class="p">(</span><span class="n">nr</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Helper function for the `notes` method. </span>
 
@@ -700,7 +714,7 @@
 
 <div class="viewcode-block" id="remove_namespaces">
 <a class="viewcode-back" href="../../symbolicUtils.html#pyampact.symbolicUtils.remove_namespaces">[docs]</a>
-<span class="k">def</span> <span class="nf">remove_namespaces</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">remove_namespaces</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Indent an MEI (Music Encoding Initiative) element for better readability.</span>
 
@@ -725,7 +739,7 @@
 
 <div class="viewcode-block" id="removeTied">
 <a class="viewcode-back" href="../../symbolicUtils.html#pyampact.symbolicUtils.removeTied">[docs]</a>
-<span class="k">def</span> <span class="nf">removeTied</span><span class="p">(</span><span class="n">noteOrRest</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">removeTied</span><span class="p">(</span><span class="n">noteOrRest</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Helper function for the `_m21ObjectsNoTies` method. </span>
 
@@ -744,7 +758,7 @@
 
 <div class="viewcode-block" id="snapTo">
 <a class="viewcode-back" href="../../symbolicUtils.html#pyampact.symbolicUtils.snapTo">[docs]</a>
-<span class="k">def</span> <span class="nf">snapTo</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">snap_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filler</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">snapTo</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">snap_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filler</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;</span>
 <span class="sd">    Takes a `harm`, `keys`, `functions`, `chords`, or `cdata` as `data` and</span>
 <span class="sd">    the `snap_to` and `filler` parameters as described in the former three&#39;s </span>
@@ -800,7 +814,7 @@
 
 <div class="viewcode-block" id="truncate_and_scale_onsOffsList">
 <a class="viewcode-back" href="../../symbolicUtils.html#pyampact.symbolicUtils.truncate_and_scale_onsOffsList">[docs]</a>
-<span class="k">def</span> <span class="nf">truncate_and_scale_onsOffsList</span><span class="p">(</span><span class="n">onsOffsList</span><span class="p">,</span> <span class="n">target_length</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">truncate_and_scale_onsOffsList</span><span class="p">(</span><span class="n">onsOffsList</span><span class="p">,</span> <span class="n">target_length</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Scale and truncate onsOffsList to match the target_length, adjusting values proportionally.</span>
 

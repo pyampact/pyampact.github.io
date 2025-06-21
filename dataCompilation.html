@@ -6,22 +6,22 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dataCompilation &mdash; pyAMPACT 0.0.2 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+  <title>dataCompilation &mdash; pyAMPACT 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
     <link rel="canonical" href="https://pyampact.github.io/dataCompilation.html" />
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=e3a6060d"></script>
+      <script src="_static/documentation_options.js?v=d45e8c67"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="performance" href="performance.html" />
-    <link rel="prev" title="alignmentUtils" href="alignmentUtils.html" /> 
+    <link rel="next" title="pyampact.dataCompilation.data_compilation" href="generated/pyampact.dataCompilation.data_compilation.html" />
+    <link rel="prev" title="pyampact.alignmentUtils.load_audiofile" href="generated/pyampact.alignmentUtils.load_audiofile.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -52,8 +52,10 @@
 <li class="toctree-l1"><a class="reference internal" href="alignment.html">alignment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="alignmentUtils.html">alignmentUtils</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">dataCompilation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#datacompilations">dataCompilations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#pyampact.dataCompilation.data_compilation"><code class="docutils literal notranslate"><span class="pre">data_compilation()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">dataCompilation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.dataCompilation.data_compilation.html">pyampact.dataCompilation.data_compilation</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="performance.html">performance</a></li>
@@ -87,12 +89,19 @@
              
   <section id="datacompilation">
 <h1>dataCompilation<a class="headerlink" href="#datacompilation" title="Link to this heading"></a></h1>
-<section id="datacompilations">
-<span id="module-pyampact.dataCompilation"></span><h2>dataCompilations<a class="headerlink" href="#datacompilations" title="Link to this heading"></a></h2>
+<section id="id1">
+<h2>dataCompilation<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.dataCompilation.data_compilation.html#pyampact.dataCompilation.data_compilation" title="pyampact.dataCompilation.data_compilation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">data_compilation</span></code></a>(y, original_sr, nmat, ...)</p></td>
+<td><p>This function takes the results of the alignment and the note matrix and compiles the data into a JSON object that can be used to insert the audio analysis into the score.</p></td>
+</tr>
+</tbody>
+</table>
 </section>
 <dl class="py function">
-<dt class="sig sig-object py" id="pyampact.dataCompilation.data_compilation">
-<span class="sig-prename descclassname"><span class="pre">pyampact.dataCompilation.</span></span><span class="sig-name descname"><span class="pre">data_compilation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nmat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./output.mei'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/dataCompilation.html#data_compilation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.dataCompilation.data_compilation" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">pyampact.dataCompilation.</span></span><span class="sig-name descname"><span class="pre">data_compilation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">original_sr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nmat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio_file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'output.mei'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/dataCompilation.html#data_compilation"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>This function takes the results of the alignment and the note matrix and compiles the data into a JSON object
 that can be used to insert the audio analysis into the score.</p>
 <dl class="field-list simple">
@@ -100,7 +109,7 @@ that can be used to insert the audio analysis into the score.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>nmat</strong> (<em>np.ndarray</em>) – The note matrix containing information about notes, including their timing and duration.</p></li>
 <li><p><strong>audio_file</strong> (<em>str</em>) – The path to the audio file associated with the performance data.</p></li>
-<li><p><strong>piece</strong> (<a class="reference internal" href="symbolic.html#pyampact.symbolic.Score" title="pyampact.symbolic.Score"><em>Score</em></a>) – An instantiation of the original Score object containing the data input for the musical piece.</p></li>
+<li><p><strong>piece</strong> (<a class="reference internal" href="generated/pyampact.symbolic.Score.html#pyampact.symbolic.Score" title="pyampact.symbolic.Score"><em>Score</em></a>) – An instantiation of the original Score object containing the data input for the musical piece.</p></li>
 <li><p><strong>output_path</strong> (<em>str</em><em>, </em><em>optional</em>) – The file path for the output MEI file. Defaults to ‘./output.mei’.</p></li>
 </ul>
 </dd>
@@ -121,8 +130,8 @@ that can be used to insert the audio analysis into the score.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="alignmentUtils.html" class="btn btn-neutral float-left" title="alignmentUtils" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="performance.html" class="btn btn-neutral float-right" title="performance" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="generated/pyampact.alignmentUtils.load_audiofile.html" class="btn btn-neutral float-left" title="pyampact.alignmentUtils.load_audiofile" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="generated/pyampact.dataCompilation.data_compilation.html" class="btn btn-neutral float-right" title="pyampact.dataCompilation.data_compilation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pyampact.symbolic &mdash; pyAMPACT 0.0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
@@ -91,25 +91,25 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">pyampact.symbolicUtils</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">fractions</span> <span class="kn">import</span> <span class="n">Fraction</span>
-<span class="kn">import</span> <span class="nn">tempfile</span>
-<span class="kn">import</span> <span class="nn">mido</span>
-<span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="k">as</span> <span class="nn">ET</span>
-<span class="kn">import</span> <span class="nn">requests</span>
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">librosa</span>
-<span class="kn">import</span> <span class="nn">tempfile</span>
-<span class="kn">from</span> <span class="nn">.symbolicUtils</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">ast</span>
-<span class="kn">import</span> <span class="nn">base64</span>
-<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
-<span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">import</span> <span class="nn">music21</span> <span class="k">as</span> <span class="nn">m21</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyampact.symbolicUtils</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fractions</span><span class="w"> </span><span class="kn">import</span> <span class="n">Fraction</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">mido</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xml.etree.ElementTree</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ET</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">librosa</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.symbolicUtils</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">ast</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">deepcopy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">music21</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">m21</span>
 <span class="n">m21</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;autoDownload&#39;</span><span class="p">,</span> <span class="s1">&#39;allow&#39;</span><span class="p">)</span>
 
 <span class="c1"># utils</span>
@@ -162,7 +162,7 @@
 <span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">convert_attribs_to_str</span><span class="p">(</span><span class="n">element</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_attribs_to_str</span><span class="p">(</span><span class="n">element</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">element</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">):</span>
             <span class="n">element</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
@@ -172,17 +172,17 @@
 
 <div class="viewcode-block" id="Score">
 <a class="viewcode-back" href="../../symbolic.html#pyampact.symbolic.Score">[docs]</a>
-<span class="k">class</span> <span class="nc">Score</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Score</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A class to import a score via music21 and expose pyAMPACT&#39;s analysis utilities.</span>
 
-<span class="sd">    The analysis utilities are generally formatted as pandas dataframes. This </span>
-<span class="sd">    class also ports over some matlab code to help with alignment of scores in </span>
-<span class="sd">    symbolic notation and audio analysis of recordings of those scores. `Score` </span>
-<span class="sd">    objects can insert analysis into an MEI file, and can export any type of </span>
-<span class="sd">    file to a kern format, optionally also including analysis from a JSON file. </span>
-<span class="sd">    Similarly, `Score` objects can serve clickable URLs of short excerpts of </span>
-<span class="sd">    their associated score in symbolic notation. These links open in the Verovio </span>
+<span class="sd">    The analysis utilities are generally formatted as pandas dataframes. This</span>
+<span class="sd">    class also ports over some matlab code to help with alignment of scores in</span>
+<span class="sd">    symbolic notation and audio analysis of recordings of those scores. `Score`</span>
+<span class="sd">    objects can insert analysis into an MEI file, and can export any type of</span>
+<span class="sd">    file to a kern format, optionally also including analysis from a JSON file.</span>
+<span class="sd">    Similarly, `Score` objects can serve clickable URLs of short excerpts of</span>
+<span class="sd">    their associated score in symbolic notation. These links open in the Verovio</span>
 <span class="sd">    Humdrum Viewer.</span>
 
 <span class="sd">    :param score_path: A string representing the path to the score file.</span>
@@ -196,7 +196,9 @@
 <span class="sd">        piece = Score(url_or_path)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">score_path</span><span class="p">):</span>
+<div class="viewcode-block" id="Score.__init__">
+<a class="viewcode-back" href="../../generated/pyampact.symbolic.Score.html#pyampact.symbolic.Score.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">score_path</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="n">score_path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;https://github.com/&#39;</span><span class="p">):</span>
             <span class="n">score_path</span> <span class="o">=</span> <span class="s1">&#39;https://raw.githubusercontent.com/&#39;</span> <span class="o">+</span> \
@@ -220,14 +222,27 @@
             <span class="k">finally</span><span class="p">:</span>
                 <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">)</span>
         <span class="c1"># file is not an online kern file (can be either or neither but not both)</span>
+        <span class="c1"># elif self.fileExtension == &#39;mid&#39;:</span>
+        <span class="c1">#     # Convert MIDI to MusicXML</span>
+        <span class="c1">#     with tempfile.NamedTemporaryFile(suffix=&quot;.musicxml.xml&quot;, delete=False) as tmp:</span>
+        <span class="c1">#         try:                    </span>
+        <span class="c1">#             score = m21.converter.parse(self.path)</span>
+        <span class="c1">#             score.write(&#39;musicxml&#39;, fp=tmp.name)</span>
+        <span class="c1">#             self.path = tmp.name</span>
+        <span class="c1">#             self.fileExtension = &#39;xml&#39;</span>
+        <span class="c1">#         except Exception as e:</span>
+        <span class="c1">#             raise RuntimeError(f&quot;Failed to convert MIDI to MusicXML: {e}&quot;)</span>
+        <span class="c1">#     self._assignM21Attributes()</span>
+        <span class="c1">#     self._import_other_spines()            </span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_assignM21Attributes</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_import_other_spines</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">public</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">prop</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span><span class="si">}{</span><span class="nb">type</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">prop</span><span class="p">))</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">prop</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_partList</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_partList</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">_assignM21Attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_assignM21Attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Assign music21 attributes to a given object.</span>
 
@@ -376,24 +391,23 @@
                 <span class="n">flat</span><span class="o">.</span><span class="n">partName</span> <span class="ow">and</span> <span class="n">flat</span><span class="o">.</span><span class="n">partName</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">partNames</span><span class="p">)</span> <span class="k">else</span> <span class="sa">f</span><span class="s1">&#39;Part-</span><span class="si">{</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">partNames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_partList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_partList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a list of series of the note, rest, and chord objects in each part.</span>
 
 <span class="sd">        :return: A list of pandas Series, each representing a part in the score.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="s1">&#39;_partList&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s1">&#39;_partList&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">:</span>            
             <span class="n">kernStrands</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">parts</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">isUnique</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="n">divisiStarts</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">divisiEnds</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">flat_part</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_flatParts</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">flat_part</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_flatParts</span><span class="p">):</span>                
                 <span class="n">graces</span><span class="p">,</span> <span class="n">graceOffsets</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
                 <span class="n">notGraces</span> <span class="o">=</span> <span class="p">{}</span>
-                <span class="k">for</span> <span class="n">nrc</span> <span class="ow">in</span> <span class="n">flat_part</span><span class="o">.</span><span class="n">getElementsByClass</span><span class="p">([</span><span class="s1">&#39;Note&#39;</span><span class="p">,</span> <span class="s1">&#39;Rest&#39;</span><span class="p">,</span> <span class="s1">&#39;Chord&#39;</span><span class="p">]):</span>
-                    <span class="k">if</span> <span class="n">nrc</span><span class="o">.</span><span class="n">duration</span><span class="o">.</span><span class="n">isGrace</span><span class="p">:</span>
-                        <span class="n">graces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nrc</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">nrc</span> <span class="ow">in</span> <span class="n">flat_part</span><span class="o">.</span><span class="n">getElementsByClass</span><span class="p">([</span><span class="s1">&#39;Note&#39;</span><span class="p">,</span> <span class="s1">&#39;Rest&#39;</span><span class="p">,</span> <span class="s1">&#39;Chord&#39;</span><span class="p">]):</span>                    
+                    <span class="k">if</span> <span class="n">nrc</span><span class="o">.</span><span class="n">duration</span><span class="o">.</span><span class="n">isGrace</span><span class="p">:</span>                                                                   
                         <span class="n">graceOffsets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">nrc</span><span class="o">.</span><span class="n">offset</span><span class="p">),</span> <span class="mi">5</span><span class="p">))</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="c1"># get rid of really long rests TODO: make this get rid of rests longer than the prevailing measure</span>
@@ -406,7 +420,7 @@
                             <span class="n">notGraces</span><span class="p">[</span><span class="n">offset</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">nrc</span><span class="p">]</span>
 
                 <span class="n">ser</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">notGraces</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">ser</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>   <span class="c1"># no note, rest, or chord objects detected in this part</span>
+                <span class="k">if</span> <span class="n">ser</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>   <span class="c1"># no note, rest, or chord objects detected in this part                                        </span>
                     <span class="n">ser</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">partNames</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
                     <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ser</span><span class="p">)</span>
                     <span class="k">continue</span>
@@ -449,7 +463,7 @@
                                             <span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">jj</span><span class="p">,</span> <span class="p">[</span><span class="n">otherCol</span><span class="p">,</span> <span class="n">thisCol</span><span class="p">]]</span>
                                     <span class="k">break</span>
 
-                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">graces</span><span class="p">):</span>  <span class="c1"># add all the grace notes found to col0</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">graces</span><span class="p">):</span>  <span class="c1"># add all the grace notes found to col0                    </span>
                     <span class="n">part0</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
                         <span class="n">graces</span><span class="p">,</span> <span class="n">graceOffsets</span><span class="p">),</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()))</span><span class="o">.</span><span class="n">sort_index</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;mergesort&#39;</span><span class="p">)</span>
                     <span class="n">isUnique</span> <span class="o">=</span> <span class="kc">False</span>
@@ -457,7 +471,7 @@
                     <span class="n">part0</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
                 <span class="n">part0</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">partNames</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
                 <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">part0</span><span class="p">)</span>
-                <span class="n">kernStrands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">part0</span><span class="p">)</span>
+                <span class="n">kernStrands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">part0</span><span class="p">)</span>                
 
                 <span class="n">strands</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="c1"># if df has more than 1 column, iterate over the non-first columns</span>
@@ -503,7 +517,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">[</span><span class="s1">&#39;_kernStrands&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kernStrands</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">[</span><span class="s1">&#39;_partList&#39;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">_parts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">multi_index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">kernStrands</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">compact</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_parts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">multi_index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">kernStrands</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">compact</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                <span class="n">number</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a DataFrame of the note, rest, and chord objects in the score.</span>
@@ -525,6 +539,9 @@
 <span class="sd">        :return: A DataFrame of the note, rest, and chord objects in the score.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;_parts&#39;</span><span class="p">,</span> <span class="n">multi_index</span><span class="p">,</span> <span class="n">kernStrands</span><span class="p">,</span> <span class="n">compact</span><span class="p">,</span> <span class="n">number</span><span class="p">)</span>
+
+        <span class="c1"># if self.fileExtension == &#39;csv&#39;:</span>
+        <span class="c1">#     return</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">:</span>
             <span class="n">toConcat</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">if</span> <span class="n">kernStrands</span><span class="p">:</span>
@@ -561,14 +578,14 @@
                 <span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">droplevel</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">compact</span> <span class="ow">and</span> <span class="n">number</span><span class="p">:</span>
                 <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">mi</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span>        
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">_import_other_spines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_import_other_spines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Import the harmonic function spines from a given path.</span>
 
-<span class="sd">        :param path: A string representing the path to the file containing the </span>
+<span class="sd">        :param path: A string representing the path to the file containing the</span>
 <span class="sd">            harmonic function spines.</span>
 <span class="sd">        :return: A pandas DataFrame representing the harmonic function spines.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -656,7 +673,7 @@
 
 <div class="viewcode-block" id="Score.insertScoreDef">
 <a class="viewcode-back" href="../../symbolic.html#pyampact.symbolic.Score.insertScoreDef">[docs]</a>
-    <span class="k">def</span> <span class="nf">insertScoreDef</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">insertScoreDef</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Insert a scoreDef element into an MEI (Music Encoding Initiative) document.</span>
 
@@ -725,7 +742,7 @@
 
 <div class="viewcode-block" id="Score.xmlIDs">
 <a class="viewcode-back" href="../../symbolic.html#pyampact.symbolic.Score.xmlIDs">[docs]</a>
-    <span class="k">def</span> <span class="nf">xmlIDs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">xmlIDs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return xml ids per part in a pandas.DataFrame time-aligned with the</span>
 <span class="sd">        objects offset. If the file is not xml or mei, or an idString wasn&#39;t found,</span>
@@ -741,7 +758,8 @@
 <span class="sd">        -------</span>
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            piece = Score(&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
+<span class="sd">            piece = Score(</span>
+<span class="sd">                &#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
 <span class="sd">            piece.xmlIDs()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="s1">&#39;xmlIDs&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">:</span>
@@ -787,7 +805,7 @@
         <span class="k">return</span> <span class="n">df</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_lyricHelper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">strip</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_lyricHelper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">strip</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Helper function for the lyrics method.</span>
 
@@ -803,12 +821,12 @@
 
 <div class="viewcode-block" id="Score.lyrics">
 <a class="viewcode-back" href="../../symbolic.html#pyampact.symbolic.Score.lyrics">[docs]</a>
-    <span class="k">def</span> <span class="nf">lyrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strip</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">lyrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strip</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Extract the lyrics from the score. </span>
+<span class="sd">        Extract the lyrics from the score.</span>
 
-<span class="sd">        The lyrics are extracted from each part and returned as a pandas DataFrame </span>
-<span class="sd">        where each column represents a part and each row represents a lyric. The </span>
+<span class="sd">        The lyrics are extracted from each part and returned as a pandas DataFrame</span>
+<span class="sd">        where each column represents a part and each row represents a lyric. The</span>
 <span class="sd">        DataFrame is indexed by the offset of the lyrics.</span>
 
 <span class="sd">        :param strip: Boolean, default True. If True, the method will strip leading</span>
@@ -823,7 +841,8 @@
 <span class="sd">        -------</span>
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            piece = Score(&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/Busnoys_In_hydraulis.krn&#39;)</span>
+<span class="sd">            piece = Score(</span>
+<span class="sd">                &#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/Busnoys_In_hydraulis.krn&#39;)</span>
 <span class="sd">            piece.lyrics()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;lyrics&#39;</span><span class="p">,</span> <span class="n">strip</span><span class="p">)</span>
@@ -834,12 +853,12 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_m21Clefs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_m21Clefs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Extract the clefs from the score. </span>
+<span class="sd">        Extract the clefs from the score.</span>
 
-<span class="sd">        The clefs are extracted from each part and returned as a pandas DataFrame </span>
-<span class="sd">        where each column represents a part and each row represents a clef. The </span>
+<span class="sd">        The clefs are extracted from each part and returned as a pandas DataFrame</span>
+<span class="sd">        where each column represents a part and each row represents a clef. The</span>
 <span class="sd">        DataFrame is indexed by the offset of the clefs.</span>
 
 <span class="sd">        :return: A pandas DataFrame of the clefs in the score in music21&#39;s format.</span>
@@ -875,12 +894,12 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">[</span><span class="s1">&#39;_m21Clefs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">clefs</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">[</span><span class="s1">&#39;_m21Clefs&#39;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">_clefs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_clefs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Extract the clefs from the score. </span>
+<span class="sd">        Extract the clefs from the score.</span>
 
-<span class="sd">        The clefs are extracted from each part and returned as a pandas DataFrame </span>
-<span class="sd">        where each column represents a part and each row represents a clef. The </span>
+<span class="sd">        The clefs are extracted from each part and returned as a pandas DataFrame</span>
+<span class="sd">        where each column represents a part and each row represents a clef. The</span>
 <span class="sd">        DataFrame is indexed by the offset of the clefs.</span>
 
 <span class="sd">        :return: A pandas DataFrame of the clefs in the score in kern format.</span>
@@ -892,12 +911,12 @@
 
 <div class="viewcode-block" id="Score.dynamics">
 <a class="viewcode-back" href="../../symbolic.html#pyampact.symbolic.Score.dynamics">[docs]</a>
-    <span class="k">def</span> <span class="nf">dynamics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dynamics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Extract the dynamics from the score. </span>
+<span class="sd">        Extract the dynamics from the score.</span>
 
-<span class="sd">        The dynamics are extracted from each part and returned as a pandas DataFrame </span>
-<span class="sd">        where each column represents a part and each row represents a dynamic </span>
+<span class="sd">        The dynamics are extracted from each part and returned as a pandas DataFrame</span>
+<span class="sd">        where each column represents a part and each row represents a dynamic</span>
 <span class="sd">        marking. The DataFrame is indexed by the offset of the dynamic markings.</span>
 
 <span class="sd">        :return: A pandas DataFrame representing the dynamics in the score.</span>
@@ -910,7 +929,8 @@
 <span class="sd">        -------</span>
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            piece = Score(&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
+<span class="sd">            piece = Score(</span>
+<span class="sd">                &#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
 <span class="sd">            piece.dynamics()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="s1">&#39;dynamics&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">:</span>
@@ -923,10 +943,10 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">[</span><span class="s1">&#39;dynamics&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_priority</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_priority</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        For .krn files, get the line numbers of the events in the piece, which </span>
-<span class="sd">        music21 often calls &quot;priority&quot;. For other encoding formats return an </span>
+<span class="sd">        For .krn files, get the line numbers of the events in the piece, which</span>
+<span class="sd">        music21 often calls &quot;priority&quot;. For other encoding formats return an</span>
 <span class="sd">        empty dataframe.</span>
 
 <span class="sd">        :return: A DataFrame containing the priority values.</span>
@@ -936,7 +956,7 @@
                 <span class="n">priority</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># use compact to avoid losing priorities of chords</span>
-                <span class="n">parts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parts</span><span class="p">(</span><span class="n">compact</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">parts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parts</span><span class="p">(</span><span class="n">compact</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>                
                 <span class="k">if</span> <span class="n">parts</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
                     <span class="n">priority</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
                 <span class="k">else</span><span class="p">:</span>
@@ -949,7 +969,7 @@
 
 <div class="viewcode-block" id="Score.keys">
 <a class="viewcode-back" href="../../symbolic.html#pyampact.symbolic.Score.keys">[docs]</a>
-    <span class="k">def</span> <span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snap_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filler</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snap_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filler</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the key signature portion of the **harm spine in a kern file if there</span>
 <span class="sd">        is one and return it as an array or a time-aligned pandas Series. This is</span>
@@ -962,7 +982,8 @@
 <span class="sd">        -------</span>
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            piece = Score(&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
+<span class="sd">            piece = Score(</span>
+<span class="sd">                &#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
 <span class="sd">            piece.keys()</span>
 
 <span class="sd">        If you want to align these results so that they match the columnar (time) axis</span>
@@ -978,21 +999,22 @@
 <span class="sd">        -------</span>
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            piece = Score(&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
+<span class="sd">            piece = Score(</span>
+<span class="sd">                &#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
 <span class="sd">            pianoRoll = piece.pianoRoll()</span>
 <span class="sd">            keys = piece.keys(snap_to=pianoRoll)</span>
 <span class="sd">            combined = pd.concat((pianoRoll, keys))</span>
 
-<span class="sd">        The `sampled` and `mask` dfs often have more observations than the spine </span>
-<span class="sd">        contents, so you may want to fill in these new empty slots somehow. The kern </span>
-<span class="sd">        format uses &#39;.&#39; as a filler token so you can pass this as the `filler` </span>
-<span class="sd">        parameter to fill all the new empty slots with this as well. If you choose </span>
-<span class="sd">        some other value, say `filler=&#39;_&#39;`, then in addition to filling in the empty </span>
-<span class="sd">        slots with underscores, this will also replace the kern &#39;.&#39; observations with </span>
-<span class="sd">        &#39;_&#39;. If you want to fill them in with NaN&#39;s as pandas usually does, you can </span>
-<span class="sd">        pass `filler=&#39;nan&#39;` as a convenience. If you want to &quot;forward fill&quot; these </span>
-<span class="sd">        results, you can pass `filler=&#39;forward&#39;` (default). This will propagate the </span>
-<span class="sd">        last non-period (&#39;.&#39;) observation until a new one is found. Finally, you can </span>
+<span class="sd">        The `sampled` and `mask` dfs often have more observations than the spine</span>
+<span class="sd">        contents, so you may want to fill in these new empty slots somehow. The kern</span>
+<span class="sd">        format uses &#39;.&#39; as a filler token so you can pass this as the `filler`</span>
+<span class="sd">        parameter to fill all the new empty slots with this as well. If you choose</span>
+<span class="sd">        some other value, say `filler=&#39;_&#39;`, then in addition to filling in the empty</span>
+<span class="sd">        slots with underscores, this will also replace the kern &#39;.&#39; observations with</span>
+<span class="sd">        &#39;_&#39;. If you want to fill them in with NaN&#39;s as pandas usually does, you can</span>
+<span class="sd">        pass `filler=&#39;nan&#39;` as a convenience. If you want to &quot;forward fill&quot; these</span>
+<span class="sd">        results, you can pass `filler=&#39;forward&#39;` (default). This will propagate the</span>
+<span class="sd">        last non-period (&#39;.&#39;) observation until a new one is found. Finally, you can</span>
 <span class="sd">        pass filler=&#39;drop&#39; to drop all empty observations (both NaNs and humdrum</span>
 <span class="sd">        periods).</span>
 
@@ -1017,7 +1039,7 @@
 
 <div class="viewcode-block" id="Score.harm">
 <a class="viewcode-back" href="../../symbolic.html#pyampact.symbolic.Score.harm">[docs]</a>
-    <span class="k">def</span> <span class="nf">harm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snap_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filler</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">harm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snap_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filler</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the harmonic analysis portion of the **harm spine in a kern file if there</span>
 <span class="sd">        is one and return it as an array or a time-aligned pandas Series. The prevailing</span>
@@ -1042,21 +1064,22 @@
 <span class="sd">        -------</span>
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            piece = Score(&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
+<span class="sd">            piece = Score(</span>
+<span class="sd">                &#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
 <span class="sd">            pianoRoll = piece.pianoRoll()</span>
 <span class="sd">            harm = piece.harm(snap_to=pianoRoll, output=&#39;series&#39;)</span>
 <span class="sd">            combined = pd.concat((pianoRoll, harm))</span>
 
-<span class="sd">        The `sampled` and `mask` dfs often have more observations than the spine </span>
-<span class="sd">        contents, so you may want to fill in these new empty slots somehow. The kern </span>
-<span class="sd">        format uses &#39;.&#39; as a filler token so you can pass this as the `filler` </span>
-<span class="sd">        parameter to fill all the new empty slots with this as well. If you choose </span>
-<span class="sd">        some other value, say `filler=&#39;_&#39;`, then in addition to filling in the empty </span>
-<span class="sd">        slots with underscores, this will also replace the kern &#39;.&#39; observations with </span>
-<span class="sd">        &#39;_&#39;. If you want to fill them in with NaN&#39;s as pandas usually does, you can </span>
-<span class="sd">        pass `filler=&#39;nan&#39;` as a convenience. If you want to &quot;forward fill&quot; these </span>
-<span class="sd">        results, you can pass `filler=&#39;forward&#39;` (default). This will propagate the </span>
-<span class="sd">        last non-period (&#39;.&#39;) observation until a new one is found. Finally, you can </span>
+<span class="sd">        The `sampled` and `mask` dfs often have more observations than the spine</span>
+<span class="sd">        contents, so you may want to fill in these new empty slots somehow. The kern</span>
+<span class="sd">        format uses &#39;.&#39; as a filler token so you can pass this as the `filler`</span>
+<span class="sd">        parameter to fill all the new empty slots with this as well. If you choose</span>
+<span class="sd">        some other value, say `filler=&#39;_&#39;`, then in addition to filling in the empty</span>
+<span class="sd">        slots with underscores, this will also replace the kern &#39;.&#39; observations with</span>
+<span class="sd">        &#39;_&#39;. If you want to fill them in with NaN&#39;s as pandas usually does, you can</span>
+<span class="sd">        pass `filler=&#39;nan&#39;` as a convenience. If you want to &quot;forward fill&quot; these</span>
+<span class="sd">        results, you can pass `filler=&#39;forward&#39;` (default). This will propagate the</span>
+<span class="sd">        last non-period (&#39;.&#39;) observation until a new one is found. Finally, you can</span>
 <span class="sd">        pass filler=&#39;drop&#39; to drop all empty observations (both NaNs and humdrum</span>
 <span class="sd">        periods).</span>
 
@@ -1078,7 +1101,7 @@
 
 <div class="viewcode-block" id="Score.functions">
 <a class="viewcode-back" href="../../symbolic.html#pyampact.symbolic.Score.functions">[docs]</a>
-    <span class="k">def</span> <span class="nf">functions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snap_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filler</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">functions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snap_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filler</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the harmonic function labels from a **function spine in a kern file if there</span>
 <span class="sd">        is one and return it as an array or a time-aligned pandas Series. This is</span>
@@ -1091,7 +1114,8 @@
 <span class="sd">        -------</span>
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            piece = Score(&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
+<span class="sd">            piece = Score(</span>
+<span class="sd">                &#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
 <span class="sd">            piece.functions()</span>
 
 <span class="sd">        If you want to align these results so that they match the columnar (time) axis</span>
@@ -1107,21 +1131,22 @@
 <span class="sd">        -------</span>
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            piece = Score(&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
+<span class="sd">            piece = Score(</span>
+<span class="sd">                &#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
 <span class="sd">            pianoRoll = piece.pianoRoll()</span>
 <span class="sd">            functions = piece.functions(snap_to=pianoRoll)</span>
 <span class="sd">            combined = pd.concat((pianoRoll, functions))</span>
 
-<span class="sd">        The `sampled` and `mask` dfs often have more observations than the spine </span>
-<span class="sd">        contents, so you may want to fill in these new empty slots somehow. The kern </span>
-<span class="sd">        format uses &#39;.&#39; as a filler token so you can pass this as the `filler` </span>
-<span class="sd">        parameter to fill all the new empty slots with this as well. If you choose </span>
-<span class="sd">        some other value, say `filler=&#39;_&#39;`, then in addition to filling in the empty </span>
-<span class="sd">        slots with underscores, this will also replace the kern &#39;.&#39; observations with </span>
-<span class="sd">        &#39;_&#39;. If you want to fill them in with NaN&#39;s as pandas usually does, you can </span>
-<span class="sd">        pass `filler=&#39;nan&#39;` as a convenience. If you want to &quot;forward fill&quot; these </span>
-<span class="sd">        results, you can pass `filler=&#39;forward&#39;` (default). This will propagate the </span>
-<span class="sd">        last non-period (&#39;.&#39;) observation until a new one is found. Finally, you can </span>
+<span class="sd">        The `sampled` and `mask` dfs often have more observations than the spine</span>
+<span class="sd">        contents, so you may want to fill in these new empty slots somehow. The kern</span>
+<span class="sd">        format uses &#39;.&#39; as a filler token so you can pass this as the `filler`</span>
+<span class="sd">        parameter to fill all the new empty slots with this as well. If you choose</span>
+<span class="sd">        some other value, say `filler=&#39;_&#39;`, then in addition to filling in the empty</span>
+<span class="sd">        slots with underscores, this will also replace the kern &#39;.&#39; observations with</span>
+<span class="sd">        &#39;_&#39;. If you want to fill them in with NaN&#39;s as pandas usually does, you can</span>
+<span class="sd">        pass `filler=&#39;nan&#39;` as a convenience. If you want to &quot;forward fill&quot; these</span>
+<span class="sd">        results, you can pass `filler=&#39;forward&#39;` (default). This will propagate the</span>
+<span class="sd">        last non-period (&#39;.&#39;) observation until a new one is found. Finally, you can</span>
 <span class="sd">        pass filler=&#39;drop&#39; to drop all empty observations (both NaNs and humdrum</span>
 <span class="sd">        periods).</span>
 
@@ -1145,7 +1170,7 @@
 
 <div class="viewcode-block" id="Score.chords">
 <a class="viewcode-back" href="../../symbolic.html#pyampact.symbolic.Score.chords">[docs]</a>
-    <span class="k">def</span> <span class="nf">chords</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snap_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filler</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">chords</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snap_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filler</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the chord labels from the **chord spine in a kern file if there</span>
 <span class="sd">        is one and return it as an array or a time-aligned pandas Series. This is</span>
@@ -1158,7 +1183,8 @@
 <span class="sd">        -------</span>
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            piece = Score(&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
+<span class="sd">            piece = Score(</span>
+<span class="sd">                &#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
 <span class="sd">            piece.chords()</span>
 
 <span class="sd">        If you want to align these results so that they match the columnar (time) axis</span>
@@ -1174,21 +1200,22 @@
 <span class="sd">        -------</span>
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            piece = Score(&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
+<span class="sd">            piece = Score(</span>
+<span class="sd">                &#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
 <span class="sd">            pianoRoll = piece.pianoRoll()</span>
 <span class="sd">            chords = piece.chords(snap_to=pianoRoll)</span>
 <span class="sd">            combined = pd.concat((pianoRoll, chords))</span>
 
-<span class="sd">        The `sampled` and `mask` dfs often have more observations than the spine </span>
-<span class="sd">        contents, so you may want to fill in these new empty slots somehow. The kern </span>
-<span class="sd">        format uses &#39;.&#39; as a filler token so you can pass this as the `filler` </span>
-<span class="sd">        parameter to fill all the new empty slots with this as well. If you choose </span>
-<span class="sd">        some other value, say `filler=&#39;_&#39;`, then in addition to filling in the empty </span>
-<span class="sd">        slots with underscores, this will also replace the kern &#39;.&#39; observations with </span>
-<span class="sd">        &#39;_&#39;. If you want to fill them in with NaN&#39;s as pandas usually does, you can </span>
-<span class="sd">        pass `filler=&#39;nan&#39;` as a convenience. If you want to &quot;forward fill&quot; these </span>
-<span class="sd">        results, you can pass `filler=&#39;forward&#39;` (default). This will propagate the </span>
-<span class="sd">        last non-period (&#39;.&#39;) observation until a new one is found. Finally, you can </span>
+<span class="sd">        The `sampled` and `mask` dfs often have more observations than the spine</span>
+<span class="sd">        contents, so you may want to fill in these new empty slots somehow. The kern</span>
+<span class="sd">        format uses &#39;.&#39; as a filler token so you can pass this as the `filler`</span>
+<span class="sd">        parameter to fill all the new empty slots with this as well. If you choose</span>
+<span class="sd">        some other value, say `filler=&#39;_&#39;`, then in addition to filling in the empty</span>
+<span class="sd">        slots with underscores, this will also replace the kern &#39;.&#39; observations with</span>
+<span class="sd">        &#39;_&#39;. If you want to fill them in with NaN&#39;s as pandas usually does, you can</span>
+<span class="sd">        pass `filler=&#39;nan&#39;` as a convenience. If you want to &quot;forward fill&quot; these</span>
+<span class="sd">        results, you can pass `filler=&#39;forward&#39;` (default). This will propagate the</span>
+<span class="sd">        last non-period (&#39;.&#39;) observation until a new one is found. Finally, you can</span>
 <span class="sd">        pass filler=&#39;drop&#39; to drop all empty observations (both NaNs and humdrum</span>
 <span class="sd">        periods).</span>
 
@@ -1212,7 +1239,7 @@
 
 <div class="viewcode-block" id="Score.cdata">
 <a class="viewcode-back" href="../../symbolic.html#pyampact.symbolic.Score.cdata">[docs]</a>
-    <span class="k">def</span> <span class="nf">cdata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snap_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filler</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="s1">&#39;dataframe&#39;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cdata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snap_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filler</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="s1">&#39;dataframe&#39;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the cdata records from **cdata spines in a kern file if there</span>
 <span class="sd">        are any and return it as a pandas DataFrame. This is</span>
@@ -1226,7 +1253,8 @@
 <span class="sd">        -------</span>
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            piece = Score(&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
+<span class="sd">            piece = Score(</span>
+<span class="sd">                &#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
 <span class="sd">            piece.cdata()</span>
 
 <span class="sd">        If you want to align these results so that they match the columnar (time) axis</span>
@@ -1242,21 +1270,22 @@
 <span class="sd">        -------</span>
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            piece = Score(&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
+<span class="sd">            piece = Score(</span>
+<span class="sd">                &#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
 <span class="sd">            pianoRoll = piece.pianoRoll()</span>
 <span class="sd">            cdata = piece.cdata(snap_to=pianoRoll)</span>
 <span class="sd">            combined = pd.concat((pianoRoll, cdata))</span>
 
-<span class="sd">        The `sampled` and `mask` dfs often have more observations than the spine </span>
-<span class="sd">        contents, so you may want to fill in these new empty slots somehow. The kern </span>
-<span class="sd">        format uses &#39;.&#39; as a filler token so you can pass this as the `filler` </span>
-<span class="sd">        parameter to fill all the new empty slots with this as well. If you choose </span>
-<span class="sd">        some other value, say `filler=&#39;_&#39;`, then in addition to filling in the empty </span>
-<span class="sd">        slots with underscores, this will also replace the kern &#39;.&#39; observations with </span>
-<span class="sd">        &#39;_&#39;. If you want to fill them in with NaN&#39;s as pandas usually does, you can </span>
-<span class="sd">        pass `filler=&#39;nan&#39;` as a convenience. If you want to &quot;forward fill&quot; these </span>
-<span class="sd">        results, you can pass `filler=&#39;forward&#39;` (default). This will propagate the </span>
-<span class="sd">        last non-period (&#39;.&#39;) observation until a new one is found. Finally, you can </span>
+<span class="sd">        The `sampled` and `mask` dfs often have more observations than the spine</span>
+<span class="sd">        contents, so you may want to fill in these new empty slots somehow. The kern</span>
+<span class="sd">        format uses &#39;.&#39; as a filler token so you can pass this as the `filler`</span>
+<span class="sd">        parameter to fill all the new empty slots with this as well. If you choose</span>
+<span class="sd">        some other value, say `filler=&#39;_&#39;`, then in addition to filling in the empty</span>
+<span class="sd">        slots with underscores, this will also replace the kern &#39;.&#39; observations with</span>
+<span class="sd">        &#39;_&#39;. If you want to fill them in with NaN&#39;s as pandas usually does, you can</span>
+<span class="sd">        pass `filler=&#39;nan&#39;` as a convenience. If you want to &quot;forward fill&quot; these</span>
+<span class="sd">        results, you can pass `filler=&#39;forward&#39;` (default). This will propagate the</span>
+<span class="sd">        last non-period (&#39;.&#39;) observation until a new one is found. Finally, you can</span>
 <span class="sd">        pass filler=&#39;drop&#39; to drop all empty observations (both NaNs and humdrum</span>
 <span class="sd">        periods).</span>
 
@@ -1281,7 +1310,7 @@
 
 <div class="viewcode-block" id="Score.getSpines">
 <a class="viewcode-back" href="../../symbolic.html#pyampact.symbolic.Score.getSpines">[docs]</a>
-    <span class="k">def</span> <span class="nf">getSpines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spineType</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getSpines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spineType</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a pandas DataFrame of a less common spine type. This method is a</span>
 <span class="sd">        window into the vast ecosystem of Humdrum tools making them accessible to</span>
@@ -1313,7 +1342,8 @@
 <span class="sd">        -------</span>
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            piece = Score(&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/O_Virgo_Miserere.krn&#39;)</span>
+<span class="sd">            piece = Score(</span>
+<span class="sd">                &#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/O_Virgo_Miserere.krn&#39;)</span>
 <span class="sd">            rdiss = piece.getSpines(&#39;cdata-rdiss&#39;)</span>
 
 <span class="sd">        See Also</span>
@@ -1343,7 +1373,7 @@
 
 <div class="viewcode-block" id="Score.dez">
 <a class="viewcode-back" href="../../symbolic.html#pyampact.symbolic.Score.dez">[docs]</a>
-    <span class="k">def</span> <span class="nf">dez</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dez</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the labels data from a .dez file/url and return it as a dataframe. Calls</span>
 <span class="sd">        fromJSON to do this. The &quot;meta&quot; portion of the dez file is ignored. If no</span>
@@ -1376,7 +1406,7 @@
 
 <div class="viewcode-block" id="Score.form">
 <a class="viewcode-back" href="../../symbolic.html#pyampact.symbolic.Score.form">[docs]</a>
-    <span class="k">def</span> <span class="nf">form</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snap_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filler</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">,</span> <span class="n">dez_path</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">form</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snap_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filler</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">,</span> <span class="n">dez_path</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the &quot;Structure&quot; labels from a .dez file/url and return it as an array or a</span>
 <span class="sd">        time-aligned pandas Series. The default is for the results to be returned as a 1-d</span>
@@ -1408,7 +1438,7 @@
 
 <div class="viewcode-block" id="Score.romanNumerals">
 <a class="viewcode-back" href="../../symbolic.html#pyampact.symbolic.Score.romanNumerals">[docs]</a>
-    <span class="k">def</span> <span class="nf">romanNumerals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snap_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filler</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">,</span> <span class="n">dez_path</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">romanNumerals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snap_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filler</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">,</span> <span class="n">dez_path</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the roman numeral labels from a .dez file/url or **harm spine and return it as an array</span>
 <span class="sd">        or a time-aligned pandas Series. The default is for the results to be returned as a 1-d</span>
@@ -1423,7 +1453,8 @@
 <span class="sd">        -------</span>
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            piece = Score(&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
+<span class="sd">            piece = Score(</span>
+<span class="sd">                &#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
 <span class="sd">            pianoRoll = piece.pianoRoll()</span>
 <span class="sd">            romanNumerals = piece.romanNumerals(snap_to=pianoRoll)</span>
 
@@ -1434,7 +1465,8 @@
 <span class="sd">        .. code-block:: python</span>
 
 <span class="sd">            piece = Score(&#39;test_files/K279-1.krn&#39;)</span>
-<span class="sd">            romanNumerals = piece.romanNumerals(dez_path=&#39;test_files/K279-1_harmony_texture.dez&#39;)</span>
+<span class="sd">            romanNumerals = piece.romanNumerals(</span>
+<span class="sd">                dez_path=&#39;test_files/K279-1_harmony_texture.dez&#39;)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">dez_path</span> <span class="ow">or</span> <span class="s1">&#39;dez&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">:</span>
             <span class="n">dez</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dez</span><span class="p">(</span><span class="n">dez_path</span><span class="p">)</span>
@@ -1459,9 +1491,9 @@
         <span class="k">return</span> <span class="n">snapTo</span><span class="p">(</span><span class="n">ser</span><span class="p">,</span> <span class="n">snap_to</span><span class="p">,</span> <span class="n">filler</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_m21ObjectsNoTies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_m21ObjectsNoTies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Remove tied notes in a given voice. Only the first note in a tied group </span>
+<span class="sd">        Remove tied notes in a given voice. Only the first note in a tied group</span>
 <span class="sd">        will be kept.</span>
 
 <span class="sd">        :param voice: A music21 stream Voice object.</span>
@@ -1472,14 +1504,14 @@
                 <span class="n">multi_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">removeTied</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">[</span><span class="s1">&#39;_m21ObjectsNoTies&#39;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">_measures</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">compact</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_measures</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">compact</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a DataFrame of the measure starting points.</span>
 
 <span class="sd">        :param compact: Boolean, default False. If True, the method will keep</span>
 <span class="sd">            chords unified rather then expanding them into separate columns.</span>
 <span class="sd">        :return: A DataFrame where each column corresponds to a part in the score,</span>
-<span class="sd">            and each row index is the offset of a measure start. The values are </span>
+<span class="sd">            and each row index is the offset of a measure start. The values are</span>
 <span class="sd">            the measure numbers.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;_measures&#39;</span><span class="p">,</span> <span class="n">compact</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">:</span>
@@ -1497,15 +1529,15 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">[(</span><span class="s1">&#39;_measures&#39;</span><span class="p">,</span> <span class="n">compact</span><span class="p">)]</span> <span class="o">=</span> <span class="n">df</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">[(</span><span class="s1">&#39;_measures&#39;</span><span class="p">,</span> <span class="n">compact</span><span class="p">)]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">_barlines</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_barlines</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a DataFrame of barlines specifying which barline type.</span>
 
-<span class="sd">        Double barline, for example, can help detect section divisions, and the </span>
+<span class="sd">        Double barline, for example, can help detect section divisions, and the</span>
 <span class="sd">        final barline can help process the `highestTime` similar to music21.</span>
 
 <span class="sd">        :return: A DataFrame where each column corresponds to a part in the score,</span>
-<span class="sd">            and each row index is the offset of a barline. The values are the </span>
+<span class="sd">            and each row index is the offset of a barline. The values are the</span>
 <span class="sd">            barline types.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="s2">&quot;_barlines&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">:</span>
@@ -1516,14 +1548,14 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">[</span><span class="s2">&quot;_barlines&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">[</span><span class="s2">&quot;_barlines&quot;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">_keySignatures</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kern</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_keySignatures</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kern</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a DataFrame of key signatures for each part in the score.</span>
 
-<span class="sd">        :param kern: Boolean, default True. If True, the key signatures are </span>
+<span class="sd">        :param kern: Boolean, default True. If True, the key signatures are</span>
 <span class="sd">            returned in the **kern format.</span>
 <span class="sd">        :return: A DataFrame where each column corresponds to a part in the score,</span>
-<span class="sd">            and each row index is the offset of a key signature. The values are </span>
+<span class="sd">            and each row index is the offset of a key signature. The values are</span>
 <span class="sd">            the key signatures.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;_keySignatures&#39;</span><span class="p">,</span> <span class="n">kern</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">:</span>
@@ -1538,12 +1570,12 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">[(</span><span class="s1">&#39;_keySignatures&#39;</span><span class="p">,</span> <span class="n">kern</span><span class="p">)]</span> <span class="o">=</span> <span class="n">df</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">[(</span><span class="s1">&#39;_keySignatures&#39;</span><span class="p">,</span> <span class="n">kern</span><span class="p">)]</span>
 
-    <span class="k">def</span> <span class="nf">_timeSignatures</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ratio</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_timeSignatures</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ratio</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a DataFrame of time signatures for each part in the score.</span>
 
 <span class="sd">        :return: A DataFrame where each column corresponds to a part in the score,</span>
-<span class="sd">            and each row index is the offset of a time signature. The values are </span>
+<span class="sd">            and each row index is the offset of a time signature. The values are</span>
 <span class="sd">            the time signatures in ratio string format.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;_timeSignatures&#39;</span><span class="p">,</span> <span class="n">ratio</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">:</span>
@@ -1561,17 +1593,17 @@
 
 <div class="viewcode-block" id="Score.durations">
 <a class="viewcode-back" href="../../symbolic.html#pyampact.symbolic.Score.durations">[docs]</a>
-    <span class="k">def</span> <span class="nf">durations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">multi_index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">durations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">multi_index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a DataFrame of durations of note and rest objects in the piece.</span>
 
-<span class="sd">        If a DataFrame is provided as `df`, the method calculates the difference </span>
-<span class="sd">        between cell offsets per column in the passed DataFrame, skipping </span>
+<span class="sd">        If a DataFrame is provided as `df`, the method calculates the difference</span>
+<span class="sd">        between cell offsets per column in the passed DataFrame, skipping</span>
 <span class="sd">        memoization.</span>
 
-<span class="sd">        :param multi_index: Boolean, default False. If True, the returned DataFrame </span>
+<span class="sd">        :param multi_index: Boolean, default False. If True, the returned DataFrame</span>
 <span class="sd">            will have a MultiIndex.</span>
-<span class="sd">        :param df: Optional DataFrame. If provided, the method calculates the </span>
+<span class="sd">        :param df: Optional DataFrame. If provided, the method calculates the</span>
 <span class="sd">            difference between cell offsets per column in this DataFrame.</span>
 <span class="sd">        :return: A DataFrame of durations of note and rest objects in the piece.</span>
 
@@ -1585,7 +1617,8 @@
 <span class="sd">        -------</span>
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            piece = Score(&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
+<span class="sd">            piece = Score(</span>
+<span class="sd">                &#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
 <span class="sd">            piece.durations()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">df</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -1619,22 +1652,26 @@
 
 <div class="viewcode-block" id="Score.midi_ticks_durations">
 <a class="viewcode-back" href="../../symbolic.html#pyampact.symbolic.Score.midi_ticks_durations">[docs]</a>
-    <span class="k">def</span> <span class="nf">midi_ticks_durations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">midi_ticks_durations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Replaces the placeholder ONSET_SEC and OFFSET_SEC columns with specific placements calculated by MIDI</span>
-<span class="sd">        tick information. The method translates the music21 stream to MIDI and replaces the values accordingly</span>
+<span class="sd">        Replaces the placeholder ONSET_SEC and OFFSET_SEC columns with timing information</span>
+<span class="sd">        directly extracted from the music21 stream. No MIDI export or roundtrip needed.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        i : int</span>
+<span class="sd">            Part index (1-based)</span>
+<span class="sd">        df : pd.DataFrame or None</span>
+<span class="sd">            Optional DataFrame with rows matching notes in the selected part.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pd.DataFrame</span>
+<span class="sd">            Updated DataFrame with ONSET_SEC, OFFSET_SEC, and DURATION columns.</span>
 
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
-<span class="sd">        :meth:`notes`</span>
-<span class="sd">            Return a DataFrame of the newly calculated ONSET_SEC and OFFSET_SEC times, and DURATION</span>
-
-<span class="sd">        Example</span>
-<span class="sd">        -------</span>
-<span class="sd">        .. code-block:: python</span>
-
-<span class="sd">            piece = Score(&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
-<span class="sd">            piece.durations()</span>
+<span class="sd">        self.notes : generates the original symbolic note dataframe.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># Convert music21 stream to MIDI</span>
@@ -1651,18 +1688,19 @@
         <span class="n">onsOffsList</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="c1"># Default PPQN and tempo values</span>
-        <span class="n">ppqn</span> <span class="o">=</span> <span class="mi">9600</span>
+        <span class="n">ppqn</span> <span class="o">=</span> <span class="n">mid</span><span class="o">.</span><span class="n">ticks_per_beat</span>
         <span class="n">current_tempo</span> <span class="o">=</span> <span class="mi">500000</span>
 
         <span class="c1"># Check for tempo metadata in the MIDI file</span>
         <span class="k">for</span> <span class="n">track</span> <span class="ow">in</span> <span class="n">mid</span><span class="o">.</span><span class="n">tracks</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">track</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">msg</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;set_tempo&#39;</span><span class="p">:</span>
-                    <span class="n">current_tempo</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">tempo</span>
+                <span class="k">if</span> <span class="n">msg</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;set_tempo&#39;</span><span class="p">:</span>                                        
+                    <span class="n">current_tempo</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">tempo</span>                    
                     <span class="k">break</span>  <span class="c1"># No need to check further messages in the same track</span>
 
         <span class="c1"># Convert ticks per beat to seconds per tick</span>
         <span class="n">seconds_per_tick</span> <span class="o">=</span> <span class="n">current_tempo</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1_000_000</span> <span class="o">*</span> <span class="n">ppqn</span><span class="p">)</span>
+        <span class="n">bpm</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="mi">60000000</span> <span class="o">/</span> <span class="n">current_tempo</span><span class="p">)</span>        
 
         <span class="c1"># Check if index is out of range</span>
         <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">mid</span><span class="o">.</span><span class="n">tracks</span><span class="p">):</span>
@@ -1701,13 +1739,52 @@
         <span class="n">df</span><span class="p">[</span><span class="s1">&#39;ONSET_SEC&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s1">&#39;ONSET_SEC&#39;</span><span class="p">]</span>
         <span class="n">df</span><span class="p">[</span><span class="s1">&#39;OFFSET_SEC&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s1">&#39;OFFSET_SEC&#39;</span><span class="p">]</span>
         <span class="n">df</span><span class="p">[</span><span class="s1">&#39;DURATION&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;ONSET_SEC&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">res</span><span class="p">[</span><span class="s1">&#39;OFFSET_SEC&#39;</span><span class="p">])</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;TEMPO&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bpm</span>
 
         <span class="k">return</span> <span class="n">df</span></div>
 
+    
+        <span class="c1"># # Optional uses music21. OPTIMAL once the parts bit is worked out...</span>
+        <span class="c1"># if not isinstance(self.score, m21.stream.Score):</span>
+        <span class="c1">#     raise ValueError(&quot;self.score must be a music21.stream.Score&quot;)</span>
+
+        <span class="c1"># try:</span>
+        <span class="c1">#     part = self.score.parts[i - 1]</span>
+        <span class="c1"># except IndexError:</span>
+        <span class="c1">#     raise IndexError(f&quot;Score only has {len(self.score.parts)} parts, but index {i} was requested.&quot;)</span>
+
+        <span class="c1"># # Inject a default tempo if none is found</span>
+        <span class="c1"># if not part.recurse().getElementsByClass(m21.tempo.MetronomeMark):</span>
+        <span class="c1">#     default_tempo = m21.tempo.MetronomeMark(number=120)  # 120 BPM</span>
+        <span class="c1">#     part.insert(0.0, default_tempo)</span>
+
+        <span class="c1"># part_flat = part.flatten()</span>
+        <span class="c1"># seconds_map = part_flat.secondsMap</span>
+
+        <span class="c1"># rows = []</span>
+        <span class="c1"># for m in seconds_map:            </span>
+        <span class="c1">#     el = m[&#39;element&#39;]            </span>
+        <span class="c1">#     if isinstance(el, m21.note.Note):</span>
+        <span class="c1">#         print(el)</span>
+        <span class="c1">#         onset_sec = m[&#39;offsetSeconds&#39;]</span>
+        <span class="c1">#         duration_sec = m[&#39;durationSeconds&#39;]</span>
+        <span class="c1">#         offset_sec = onset_sec + duration_sec</span>
+        <span class="c1">#         rows.append((onset_sec, offset_sec, duration_sec))</span>
+
+        <span class="c1"># if df is not None:</span>
+        <span class="c1">#     if len(df) != len(rows):</span>
+        <span class="c1">#         raise ValueError(f&quot;Only {len(rows)} notes found, but {len(df)} rows expected.&quot;)</span>
+        <span class="c1">#     df = df.copy()</span>
+        <span class="c1">#     df[&#39;ONSET_SEC&#39;] = [r[0] for r in rows]</span>
+        <span class="c1">#     df[&#39;OFFSET_SEC&#39;] = [r[1] for r in rows]</span>
+        <span class="c1">#     df[&#39;DURATION&#39;] = [r[2] for r in rows]</span>
+        <span class="c1">#     return df</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#     return pd.DataFrame(rows, columns=[&#39;ONSET_SEC&#39;, &#39;OFFSET_SEC&#39;, &#39;DURATION&#39;])</span>
 
 <div class="viewcode-block" id="Score.contextualize">
 <a class="viewcode-back" href="../../symbolic.html#pyampact.symbolic.Score.contextualize">[docs]</a>
-    <span class="k">def</span> <span class="nf">contextualize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">offsets</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">measures</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">beats</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">contextualize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">offsets</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">measures</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">beats</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add measure and beat numbers to a DataFrame.</span>
 
@@ -1749,7 +1826,7 @@
         <span class="k">return</span> <span class="n">ret</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_beats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_beats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a DataFrame of beat numbers for each part in the score.</span>
 
@@ -1765,16 +1842,16 @@
 
 <div class="viewcode-block" id="Score.midiPitches">
 <a class="viewcode-back" href="../../symbolic.html#pyampact.symbolic.Score.midiPitches">[docs]</a>
-    <span class="k">def</span> <span class="nf">midiPitches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">multi_index</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">midiPitches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">multi_index</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a DataFrame of notes and rests as MIDI pitches.</span>
 
-<span class="sd">        MIDI does not have a representation for rests, so -1 is used as a </span>
+<span class="sd">        MIDI does not have a representation for rests, so -1 is used as a</span>
 <span class="sd">        placeholder.</span>
 
-<span class="sd">        :param multi_index: Boolean, default False. If True, the returned DataFrame </span>
+<span class="sd">        :param multi_index: Boolean, default False. If True, the returned DataFrame</span>
 <span class="sd">            will have a MultiIndex.</span>
-<span class="sd">        :return: A DataFrame of notes and rests as MIDI pitches. Rests are </span>
+<span class="sd">        :return: A DataFrame of notes and rests as MIDI pitches. Rests are</span>
 <span class="sd">            represented as -1.</span>
 
 <span class="sd">        See Also</span>
@@ -1789,7 +1866,8 @@
 <span class="sd">        -------</span>
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            piece = Score(&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
+<span class="sd">            piece = Score(</span>
+<span class="sd">                &#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
 <span class="sd">            piece.midiPitches()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;midiPitches&#39;</span><span class="p">,</span> <span class="n">multi_index</span><span class="p">)</span>
@@ -1804,7 +1882,7 @@
 
 <div class="viewcode-block" id="Score.notes">
 <a class="viewcode-back" href="../../symbolic.html#pyampact.symbolic.Score.notes">[docs]</a>
-    <span class="k">def</span> <span class="nf">notes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">combine_rests</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">combine_unisons</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">notes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">combine_rests</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">combine_unisons</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a DataFrame of the notes and rests given in American Standard Pitch</span>
 <span class="sd">        Notation where middle C is C4. Rests are designated with the string &quot;r&quot;.</span>
@@ -1814,9 +1892,9 @@
 <span class="sd">        `combine_unisons` works the same way for consecutive attacks on the same</span>
 <span class="sd">        pitch in a given voice, however, `combine_unisons` defaults to False.</span>
 
-<span class="sd">        :param combine_rests: Boolean, default True. If True, non-first consecutive </span>
+<span class="sd">        :param combine_rests: Boolean, default True. If True, non-first consecutive</span>
 <span class="sd">            rests will be removed.</span>
-<span class="sd">        :param combine_unisons: Boolean, default False. If True, consecutive attacks </span>
+<span class="sd">        :param combine_unisons: Boolean, default False. If True, consecutive attacks</span>
 <span class="sd">            on the same pitch in a given voice will be combined.</span>
 <span class="sd">        :return: A DataFrame of notes and rests in American Standard Pitch Notation.</span>
 
@@ -1830,7 +1908,8 @@
 <span class="sd">        -------</span>
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            piece = Score(&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
+<span class="sd">            piece = Score(</span>
+<span class="sd">                &#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
 <span class="sd">            piece.notes()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="s1">&#39;notes&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">:</span>
@@ -1848,11 +1927,11 @@
 
 <div class="viewcode-block" id="Score.kernNotes">
 <a class="viewcode-back" href="../../symbolic.html#pyampact.symbolic.Score.kernNotes">[docs]</a>
-    <span class="k">def</span> <span class="nf">kernNotes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">kernNotes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a DataFrame of the notes and rests given in kern notation.</span>
 
-<span class="sd">        This is not the same as creating a kern format of a score, but is an </span>
+<span class="sd">        This is not the same as creating a kern format of a score, but is an</span>
 <span class="sd">        important step in that process.</span>
 
 <span class="sd">        :return: A DataFrame of notes and rests in kern notation.</span>
@@ -1868,7 +1947,8 @@
 <span class="sd">        -------</span>
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            piece = Score(&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
+<span class="sd">            piece = Score(</span>
+<span class="sd">                &#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
 <span class="sd">            piece.kernNotes()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="s1">&#39;kernNotes&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">:</span>
@@ -1879,24 +1959,24 @@
 
 <div class="viewcode-block" id="Score.nmats">
 <a class="viewcode-back" href="../../symbolic.html#pyampact.symbolic.Score.nmats">[docs]</a>
-    <span class="k">def</span> <span class="nf">nmats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include_cdata</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">nmats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include_cdata</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return a dictionary of DataFrames, one for each voice, with information </span>
+<span class="sd">        Return a dictionary of DataFrames, one for each voice, with information</span>
 <span class="sd">        about the notes and rests in that voice.</span>
 
 <span class="sd">        Each DataFrame has the following columns:</span>
 
 <span class="sd">        MEASURE  ONSET  DURATION  PART  MIDI  ONSET_SEC  OFFSET_SEC</span>
 
-<span class="sd">        In the MIDI column, notes are represented </span>
-<span class="sd">        with their MIDI pitch numbers (0 to 127), and rests are represented with -1s. </span>
-<span class="sd">        The ONSET_SEC and OFFSET_SEC columns are taken from the audio analysis from </span>
-<span class="sd">        the `json_path` file if one is given. The XML_IDs of each note or rest serve </span>
-<span class="sd">        as the index for this DataFrame. If `include_cdata` is True and a `json_path` </span>
+<span class="sd">        In the MIDI column, notes are represented</span>
+<span class="sd">        with their MIDI pitch numbers (0 to 127), and rests are represented with -1s.</span>
+<span class="sd">        The ONSET_SEC and OFFSET_SEC columns are taken from the audio analysis from</span>
+<span class="sd">        the `json_path` file if one is given. The XML_IDs of each note or rest serve</span>
+<span class="sd">        as the index for this DataFrame. If `include_cdata` is True and a `json_path`</span>
 <span class="sd">        is provided, the cdata from the json file is included in the DataFrame.</span>
 
 <span class="sd">        :param json_path: Optional path to a JSON file containing audio analysis data.</span>
-<span class="sd">        :param include_cdata: Boolean, default False. If True and a `json_path` is </span>
+<span class="sd">        :param include_cdata: Boolean, default False. If True and a `json_path` is</span>
 <span class="sd">            provided, the cdata from the json file is included in the DataFrame.</span>
 <span class="sd">        :return: A dictionary of DataFrames, one for each voice.</span>
 
@@ -1911,12 +1991,13 @@
 <span class="sd">        -------</span>
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            piece = Score(&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/Mozart_K179_seg.krn&#39;)</span>
+<span class="sd">            piece = Score(</span>
+<span class="sd">                &#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/Mozart_K179_seg.krn&#39;)</span>
 <span class="sd">            piece.nmats()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">json_path</span><span class="p">:</span>   <span class="c1"># user must pass a json_path if they want the cdata to be included</span>
             <span class="n">include_cdata</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;nmats&#39;</span><span class="p">,</span> <span class="n">json_path</span><span class="p">,</span> <span class="n">include_cdata</span><span class="p">)</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;nmats&#39;</span><span class="p">,</span> <span class="n">json_path</span><span class="p">,</span> <span class="n">include_cdata</span><span class="p">)</span>        
         <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">:</span>
             <span class="n">nmats</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="n">included</span> <span class="o">=</span> <span class="p">{}</span>
@@ -1937,7 +2018,8 @@
 
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ids</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="p">):</span>
                 <span class="n">ms</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_product</span><span class="p">((</span><span class="n">ms</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,)))</span>
-            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">partName</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parts</span><span class="p">()</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+            
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">partName</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parts</span><span class="p">()</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>                
                 <span class="n">meas</span> <span class="o">=</span> <span class="n">ms</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
                 <span class="n">midi</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
                 <span class="n">onsetBeat</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">midi</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span>
@@ -1960,11 +2042,13 @@
                 <span class="n">df</span><span class="p">[</span><span class="s1">&#39;MEASURE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;MEASURE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span>
                 <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
                 <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;XML_ID&#39;</span><span class="p">)</span>
+                
 
-                <span class="c1"># Remove rows where MIDI == -1.0</span>
-                <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;MIDI&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">]</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fileExtension</span> <span class="o">!=</span> <span class="s1">&#39;csv&#39;</span><span class="p">:</span>
+                    <span class="c1"># Remove rows where MIDI == -1.0                                 </span>
+                    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;MIDI&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">]</span>
+                    <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">midi_ticks_durations</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
 
-                <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">midi_ticks_durations</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">json_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>   <span class="c1"># add json data if a json_path is provided</span>
                     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">):</span>
                         <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">),</span> <span class="p">:]</span>
@@ -1998,7 +2082,7 @@
 
 <div class="viewcode-block" id="Score.pianoRoll">
 <a class="viewcode-back" href="../../symbolic.html#pyampact.symbolic.Score.pianoRoll">[docs]</a>
-    <span class="k">def</span> <span class="nf">pianoRoll</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pianoRoll</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Construct a MIDI piano roll. This representation of a score plots midi pitches</span>
 <span class="sd">        on the y-axis (rows) and time on the x-axis (columns). Midi pitches are given</span>
@@ -2013,8 +2097,8 @@
 
 <span class="sd">        Note: There are 128 possible MIDI pitches.</span>
 
-<span class="sd">        :return: A DataFrame representing the MIDI piano roll. Each row corresponds </span>
-<span class="sd">            to a MIDI pitch (0 to 127), and each column corresponds to an offset in </span>
+<span class="sd">        :return: A DataFrame representing the MIDI piano roll. Each row corresponds</span>
+<span class="sd">            to a MIDI pitch (0 to 127), and each column corresponds to an offset in</span>
 <span class="sd">            the score. The values are 1 for a note onset and 0 otherwise.</span>
 
 <span class="sd">        See Also</span>
@@ -2026,11 +2110,22 @@
 <span class="sd">        -------</span>
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            piece = Score(&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
+<span class="sd">            piece = Score(</span>
+<span class="sd">                &#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
 <span class="sd">            piece.pianoRoll()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">if</span> <span class="s1">&#39;pianoRoll&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">:</span>
-            <span class="n">mp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">midiPitches</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fileExtension</span> <span class="o">==</span> <span class="s1">&#39;csv&#39;</span><span class="p">:</span>
+                <span class="n">mp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">[</span><span class="s1">&#39;nmats&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">False</span><span class="p">][</span>
+                    <span class="s1">&#39;Part-1&#39;</span><span class="p">][</span><span class="s1">&#39;MIDI&#39;</span><span class="p">]</span>
+                <span class="n">df</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+                    <span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;ONSET_SEC&#39;</span><span class="p">:</span> <span class="s1">&#39;Index&#39;</span><span class="p">,</span> <span class="s1">&#39;MIDI&#39;</span><span class="p">:</span> <span class="s1">&#39;Part-1&#39;</span><span class="p">})</span>
+                <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;Index&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">mp</span> <span class="o">=</span> <span class="n">df</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">mp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">midiPitches</span><span class="p">()</span>
+
             <span class="c1"># remove non-last offset repeats and forward-fill</span>
             <span class="n">mp</span> <span class="o">=</span> <span class="n">mp</span><span class="p">[</span><span class="o">~</span><span class="n">mp</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">duplicated</span><span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="s1">&#39;last&#39;</span><span class="p">)]</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span>
             <span class="n">pianoRoll</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">128</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="n">mp</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
@@ -2045,9 +2140,9 @@
 
 <div class="viewcode-block" id="Score.sampled">
 <a class="viewcode-back" href="../../symbolic.html#pyampact.symbolic.Score.sampled">[docs]</a>
-    <span class="k">def</span> <span class="nf">sampled</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bpm</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">obs</span><span class="o">=</span><span class="mi">24</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sampled</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bpm</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">obs</span><span class="o">=</span><span class="mi">24</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Sample the score according to the given beats per minute (bpm) and the </span>
+<span class="sd">        Sample the score according to the given beats per minute (bpm) and the</span>
 <span class="sd">        desired observations per second (obs). This method is primarily used as an</span>
 <span class="sd">        intermediate step in the construction of a mask. It builds on the pianoRoll</span>
 <span class="sd">        by sampling the time axis (columns) at the desired rate. The result is a</span>
@@ -2058,8 +2153,8 @@
 
 <span class="sd">        :param bpm: Integer, default 60. The beats per minute to use for sampling.</span>
 <span class="sd">        :param obs: Integer, default 24. The desired observations per second.</span>
-<span class="sd">        :return: A DataFrame representing the sampled score. Each row corresponds </span>
-<span class="sd">            to a MIDI pitch (0 to 127), and each column corresponds to a timepoint </span>
+<span class="sd">        :return: A DataFrame representing the sampled score. Each row corresponds</span>
+<span class="sd">            to a MIDI pitch (0 to 127), and each column corresponds to a timepoint</span>
 <span class="sd">            in the sampled score. The values are 1 for a note onset and 0 otherwise.</span>
 
 <span class="sd">        See Also</span>
@@ -2071,14 +2166,24 @@
 <span class="sd">        -------</span>
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            piece = Score(&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
+<span class="sd">            piece = Score(</span>
+<span class="sd">                &#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
 <span class="sd">            piece.sampled()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;sampled&#39;</span><span class="p">,</span> <span class="n">bpm</span><span class="p">,</span> <span class="n">obs</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">:</span>
-            <span class="n">slices</span> <span class="o">=</span> <span class="mi">60</span><span class="o">/</span><span class="n">bpm</span> <span class="o">*</span> <span class="n">obs</span>
-            <span class="n">timepoints</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">(</span>
-                <span class="p">[</span><span class="n">t</span><span class="o">/</span><span class="n">slices</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">score</span><span class="o">.</span><span class="n">highestTime</span> <span class="o">*</span> <span class="n">slices</span><span class="p">))])</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fileExtension</span> <span class="o">==</span> <span class="s1">&#39;csv&#39;</span><span class="p">:</span>
+                <span class="n">highestTime</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">[</span><span class="s1">&#39;nmats&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">False</span><span class="p">][</span>
+                    <span class="s1">&#39;Part-1&#39;</span><span class="p">][</span><span class="s1">&#39;OFFSET_SEC&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+                <span class="n">slices</span> <span class="o">=</span> <span class="mi">60</span><span class="o">/</span><span class="n">bpm</span> <span class="o">*</span> <span class="n">obs</span>
+                <span class="n">timepoints</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">(</span>
+                    <span class="p">[</span><span class="n">t</span><span class="o">/</span><span class="n">slices</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">highestTime</span> <span class="o">*</span> <span class="n">slices</span><span class="p">))])</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">slices</span> <span class="o">=</span> <span class="mi">60</span><span class="o">/</span><span class="n">bpm</span> <span class="o">*</span> <span class="n">obs</span>
+                <span class="n">timepoints</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">(</span>
+                    <span class="p">[</span><span class="n">t</span><span class="o">/</span><span class="n">slices</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">score</span><span class="o">.</span><span class="n">highestTime</span> <span class="o">*</span> <span class="n">slices</span><span class="p">))])</span>
             <span class="n">pr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pianoRoll</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
             <span class="n">pr</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">timepoints</span> <span class="k">else</span> <span class="n">timepoints</span><span class="o">.</span><span class="n">asof</span><span class="p">(</span>
                 <span class="n">col</span><span class="p">)</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">pr</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
@@ -2092,7 +2197,7 @@
 
 <div class="viewcode-block" id="Score.mask">
 <a class="viewcode-back" href="../../symbolic.html#pyampact.symbolic.Score.mask">[docs]</a>
-    <span class="k">def</span> <span class="nf">mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">winms</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">sample_rate</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">num_harmonics</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">winms</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">sample_rate</span><span class="o">=</span><span class="mi">4000</span><span class="p">,</span> <span class="n">num_harmonics</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
              <span class="n">bpm</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">aFreq</span><span class="o">=</span><span class="mi">440</span><span class="p">,</span> <span class="n">base_note</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tuning_factor</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">obs</span><span class="o">=</span><span class="mi">24</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Construct a mask from the sampled piano roll using width and harmonics. This</span>
@@ -2119,8 +2224,8 @@
 <span class="sd">        :param base_note: Integer, default 0. The base MIDI note to use.</span>
 <span class="sd">        :param tuning_factor: Float, default 1. The tuning factor to use.</span>
 <span class="sd">        :param obs: Integer, default 24. The desired observations per second.</span>
-<span class="sd">        :return: A DataFrame representing the mask. Each row corresponds to a </span>
-<span class="sd">            frequency bin, and each column corresponds to a timepoint in the </span>
+<span class="sd">        :return: A DataFrame representing the mask. Each row corresponds to a</span>
+<span class="sd">            frequency bin, and each column corresponds to a timepoint in the</span>
 <span class="sd">            sampled score. The values are 1 for a note onset and 0 otherwise.</span>
 
 <span class="sd">        See Also</span>
@@ -2132,11 +2237,56 @@
 <span class="sd">        -------</span>
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            piece = Score(&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
+<span class="sd">            piece = Score(</span>
+<span class="sd">                &#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
 <span class="sd">            piece.mask()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;mask&#39;</span><span class="p">,</span> <span class="n">winms</span><span class="p">,</span> <span class="n">sample_rate</span><span class="p">,</span> <span class="n">num_harmonics</span><span class="p">,</span>
                <span class="n">width</span><span class="p">,</span> <span class="n">bpm</span><span class="p">,</span> <span class="n">aFreq</span><span class="p">,</span> <span class="n">base_note</span><span class="p">,</span> <span class="n">tuning_factor</span><span class="p">)</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span>
+    
+
+        <span class="c1"># Function to replace the index with ONSET_SEC and reset the multi-index</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">replace_index_with_onset_sec</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>  <span class="c1"># If it&#39;s a DataFrame</span>
+                <span class="k">if</span> <span class="s1">&#39;ONSET_SEC&#39;</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+                    <span class="c1"># Set &#39;ONSET_SEC&#39; as index and reset it without keeping the old index</span>
+                    <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;ONSET_SEC&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="n">df</span>  <span class="c1"># No need to reset index, &#39;ONSET_SEC&#39; is now the index</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">):</span>  <span class="c1"># If it&#39;s a Series</span>
+                <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># Reset index for series</span>
+            <span class="k">return</span> <span class="n">df</span>
+
+        <span class="c1"># Apply the transformation</span>
+        <span class="n">processed_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fileExtension</span> <span class="o">==</span> <span class="s1">&#39;csv&#39;</span><span class="p">:</span>
+
+            <span class="c1"># Process each entry in the dictionary</span>
+            <span class="n">processed_data</span><span class="p">[</span><span class="s1">&#39;tony_csv&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">replace_index_with_onset_sec</span><span class="p">(</span>
+                <span class="n">data</span><span class="p">[</span><span class="s1">&#39;tony_csv&#39;</span><span class="p">])</span>
+            <span class="n">processed_data</span><span class="p">[(</span><span class="s1">&#39;_parts&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">)]</span> <span class="o">=</span> <span class="n">replace_index_with_onset_sec</span><span class="p">(</span>
+                <span class="n">data</span><span class="p">[</span><span class="s1">&#39;_parts&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">])</span>
+            <span class="n">processed_data</span><span class="p">[(</span><span class="s1">&#39;durations&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)]</span> <span class="o">=</span> <span class="n">replace_index_with_onset_sec</span><span class="p">(</span>
+                <span class="n">data</span><span class="p">[(</span><span class="s1">&#39;durations&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)])</span>
+            <span class="n">processed_data</span><span class="p">[(</span><span class="s1">&#39;midiPitches&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)]</span> <span class="o">=</span> <span class="n">replace_index_with_onset_sec</span><span class="p">(</span>
+                <span class="n">data</span><span class="p">[(</span><span class="s1">&#39;midiPitches&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)])</span>
+            <span class="n">processed_data</span><span class="p">[(</span><span class="s1">&#39;_measures&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)]</span> <span class="o">=</span> <span class="n">replace_index_with_onset_sec</span><span class="p">(</span>
+                <span class="n">data</span><span class="p">[(</span><span class="s1">&#39;_measures&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)])</span>
+            <span class="n">processed_data</span><span class="p">[</span><span class="s1">&#39;xmlIDs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">replace_index_with_onset_sec</span><span class="p">(</span>
+                <span class="n">data</span><span class="p">[</span><span class="s1">&#39;xmlIDs&#39;</span><span class="p">])</span>
+
+            <span class="c1"># Process the nmats dictionary similarly</span>
+            <span class="n">processed_data</span><span class="p">[(</span><span class="s1">&#39;nmats&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">False</span><span class="p">)]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">key</span><span class="p">:</span> <span class="n">replace_index_with_onset_sec</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">df</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[(</span><span class="s1">&#39;nmats&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">False</span><span class="p">)]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="p">}</span>
+
+            <span class="c1"># # Print the processed data to check the results</span>
+            <span class="c1"># for key, value in processed_data.items():</span>
+            <span class="c1">#     print(f&quot;{key}:\n{value}\n&quot;)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span> <span class="o">=</span> <span class="n">processed_data</span>
+
         <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">:</span>
             <span class="n">width_semitone_factor</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="p">((</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">12</span><span class="p">)</span>
             <span class="n">sampled</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampled</span><span class="p">(</span><span class="n">bpm</span><span class="p">,</span> <span class="n">obs</span><span class="p">)</span>
@@ -2145,7 +2295,7 @@
             <span class="n">mask</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span>
                 <span class="n">num_rows</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="n">sampled</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="o">.</span><span class="n">infer_objects</span><span class="p">(</span><span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
             <span class="n">fftlen</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="nb">round</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">winms</span> <span class="o">/</span> <span class="mi">1000</span> <span class="o">*</span>
-                              <span class="n">sample_rate</span><span class="p">)</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+                                       <span class="n">sample_rate</span><span class="p">)</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
 
             <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">base_note</span><span class="p">,</span> <span class="n">sampled</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
                 <span class="n">note</span> <span class="o">=</span> <span class="n">base_note</span> <span class="o">+</span> <span class="n">row</span>
@@ -2165,18 +2315,19 @@
                     <span class="n">mask</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">mcol</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
                         <span class="n">sampled</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">row</span><span class="p">])[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">1</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">mask</span>
+
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">[</span><span class="n">key</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="Score.jsonCDATA">
 <a class="viewcode-back" href="../../symbolic.html#pyampact.symbolic.Score.jsonCDATA">[docs]</a>
-    <span class="k">def</span> <span class="nf">jsonCDATA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_path</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">jsonCDATA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_path</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return a dictionary of pandas DataFrames, one for each voice. These </span>
-<span class="sd">        DataFrames contain the cdata from the JSON file designated in `json_path` </span>
-<span class="sd">        with each nested key in the JSON object becoming a column name in the </span>
-<span class="sd">        DataFrame. The outermost keys of the JSON cdata will become the &quot;absolute&quot; </span>
-<span class="sd">        column. While the columns are different, there are as many rows in these </span>
+<span class="sd">        Return a dictionary of pandas DataFrames, one for each voice. These</span>
+<span class="sd">        DataFrames contain the cdata from the JSON file designated in `json_path`</span>
+<span class="sd">        with each nested key in the JSON object becoming a column name in the</span>
+<span class="sd">        DataFrame. The outermost keys of the JSON cdata will become the &quot;absolute&quot;</span>
+<span class="sd">        column. While the columns are different, there are as many rows in these</span>
 <span class="sd">        DataFrames as there are in those of the nmats DataFrames for each voice.</span>
 
 <span class="sd">        :param json_path: Path to a JSON file containing cdata.</span>
@@ -2211,16 +2362,16 @@
 
 <div class="viewcode-block" id="Score.insertAudioAnalysis">
 <a class="viewcode-back" href="../../symbolic.html#pyampact.symbolic.Score.insertAudioAnalysis">[docs]</a>
-    <span class="k">def</span> <span class="nf">insertAudioAnalysis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">mimetype</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">mei_tree</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">insertAudioAnalysis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">mimetype</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">mei_tree</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Insert a &lt;performance&gt; element into the MEI score given the analysis data </span>
+<span class="sd">        Insert a &lt;performance&gt; element into the MEI score given the analysis data</span>
 <span class="sd">        (`data`) in the format of a json file or an nmat dictionary with audio data</span>
 <span class="sd">        already included. If the original score is not an MEI file, a new MEI file</span>
 <span class="sd">        will be created and used. The JSON data will be extracted via the `.nmats()`</span>
 <span class="sd">        method. If provided, the `mimetype` and `target` get passed as</span>
 <span class="sd">        attributes to the &lt;avFile&gt; element. The performance element will nest</span>
 <span class="sd">        the DataFrame data in the &lt;performance&gt; element as a child of  &lt;music&gt;</span>
-<span class="sd">        and a sibling of &lt;body&gt;. A new file will be saved to the </span>
+<span class="sd">        and a sibling of &lt;body&gt;. A new file will be saved to the</span>
 <span class="sd">        `output_filename` in the current working directory.</span>
 
 <span class="sd">        .. parsed-literal::</span>
@@ -2247,9 +2398,9 @@
 
 <span class="sd">        :param output_filename: The name of the output file.</span>
 <span class="sd">        :param data: Path to a JSON file containing analysis data or an nmats dictionary.</span>
-<span class="sd">        :param mimetype: Optional MIME type to be set as an attribute to the &lt;avFile&gt; </span>
+<span class="sd">        :param mimetype: Optional MIME type to be set as an attribute to the &lt;avFile&gt;</span>
 <span class="sd">            element.</span>
-<span class="sd">        :param target: Optional target to be set as an attribute to the &lt;avFile&gt; </span>
+<span class="sd">        :param target: Optional target to be set as an attribute to the &lt;avFile&gt;</span>
 <span class="sd">            element.</span>
 <span class="sd">        :param mei_tree: Optional ElementTree object to use as the base for the new file.</span>
 <span class="sd">            If this is not passed, then the original MEI file is used if the Score</span>
@@ -2274,7 +2425,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">performance</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="s1">&#39;performance&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;xml:id&#39;</span><span class="p">:</span> <span class="nb">next</span><span class="p">(</span><span class="n">idGen</span><span class="p">)})</span>
         <span class="n">recording</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">performance</span><span class="p">,</span> <span class="s1">&#39;recording&#39;</span><span class="p">,</span> <span class="p">{</span>
-                                  <span class="s1">&#39;xml:id&#39;</span><span class="p">:</span> <span class="nb">next</span><span class="p">(</span><span class="n">idGen</span><span class="p">)})</span>
+            <span class="s1">&#39;xml:id&#39;</span><span class="p">:</span> <span class="nb">next</span><span class="p">(</span><span class="n">idGen</span><span class="p">)})</span>
         <span class="n">avFile</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">recording</span><span class="p">,</span> <span class="s1">&#39;avFile&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;xml:id&#39;</span><span class="p">:</span> <span class="nb">next</span><span class="p">(</span><span class="n">idGen</span><span class="p">)})</span>
         <span class="k">if</span> <span class="n">mimetype</span><span class="p">:</span>
             <span class="n">avFile</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;mimetype&#39;</span><span class="p">,</span> <span class="n">mimetype</span><span class="p">)</span>
@@ -2285,7 +2436,7 @@
             <span class="k">for</span> <span class="n">part_name</span><span class="p">,</span> <span class="n">part_df</span> <span class="ow">in</span> <span class="n">jsonCDATA</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ndx</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">part_df</span><span class="o">.</span><span class="n">index</span><span class="p">):</span>
                     <span class="n">when</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">recording</span><span class="p">,</span> <span class="s1">&#39;when&#39;</span><span class="p">,</span> <span class="p">{</span>
-                                         <span class="s1">&#39;absolute&#39;</span><span class="p">:</span> <span class="n">part_df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">ndx</span><span class="p">,</span> <span class="s1">&#39;ONSET_SEC&#39;</span><span class="p">],</span> <span class="s1">&#39;xml:id&#39;</span><span class="p">:</span> <span class="nb">next</span><span class="p">(</span><span class="n">idGen</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;#</span><span class="si">{</span><span class="n">ndx</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">})</span>
+                        <span class="s1">&#39;absolute&#39;</span><span class="p">:</span> <span class="n">part_df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">ndx</span><span class="p">,</span> <span class="s1">&#39;ONSET_SEC&#39;</span><span class="p">],</span> <span class="s1">&#39;xml:id&#39;</span><span class="p">:</span> <span class="nb">next</span><span class="p">(</span><span class="n">idGen</span><span class="p">),</span> <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;#</span><span class="si">{</span><span class="n">ndx</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">})</span>
                     <span class="n">extData</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span>
                         <span class="n">when</span><span class="p">,</span> <span class="s1">&#39;extData&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;xml:id&#39;</span><span class="p">:</span> <span class="nb">next</span><span class="p">(</span><span class="n">idGen</span><span class="p">)})</span>
                     <span class="n">extData</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39; &lt;![CDATA[ </span><span class="si">{</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">part_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span><span class="si">}</span><span class="s1"> ]]&gt; &#39;</span>
@@ -2328,12 +2479,12 @@
 
 <div class="viewcode-block" id="Score.show">
 <a class="viewcode-back" href="../../symbolic.html#pyampact.symbolic.Score.show">[docs]</a>
-    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Print a VerovioHumdrumViewer link to the score in between the `start` and</span>
 <span class="sd">        `stop` measures (inclusive).</span>
 
-<span class="sd">        :param start: Optional integer representing the starting measure. If `start` </span>
+<span class="sd">        :param start: Optional integer representing the starting measure. If `start`</span>
 <span class="sd">            is greater than `stop`, they will be swapped.</span>
 <span class="sd">        :param stop: Optional integer representing the last measure.</span>
 <span class="sd">        :return: None but a url is printed out</span>
@@ -2346,7 +2497,8 @@
 <span class="sd">        -------</span>
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            piece = Score(&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
+<span class="sd">            piece = Score(</span>
+<span class="sd">                &#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;)</span>
 <span class="sd">            piece.show(5, 10)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stop</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="n">start</span> <span class="o">&gt;</span> <span class="n">stop</span><span class="p">:</span>
@@ -2382,23 +2534,23 @@
 
 <div class="viewcode-block" id="Score.toKern">
 <a class="viewcode-back" href="../../symbolic.html#pyampact.symbolic.Score.toKern">[docs]</a>
-    <span class="k">def</span> <span class="nf">toKern</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">lyrics</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dynamics</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">toKern</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">lyrics</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dynamics</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a kern representation of the score. If no `path_name` variable is</span>
-<span class="sd">        passed, then returns a pandas DataFrame of the kern representation. </span>
-<span class="sd">        Otherwise a file is created or overwritten at the `path_name` path. If </span>
-<span class="sd">        path_name does not end in &#39;.krn&#39; then this file extension will be added </span>
-<span class="sd">        to the path. If `lyrics` is `True` (default) then the lyrics for each part </span>
-<span class="sd">        will be added to the output, if there are lyrics. The same applies to </span>
+<span class="sd">        passed, then returns a pandas DataFrame of the kern representation.</span>
+<span class="sd">        Otherwise a file is created or overwritten at the `path_name` path. If</span>
+<span class="sd">        path_name does not end in &#39;.krn&#39; then this file extension will be added</span>
+<span class="sd">        to the path. If `lyrics` is `True` (default) then the lyrics for each part</span>
+<span class="sd">        will be added to the output, if there are lyrics. The same applies to</span>
 <span class="sd">        `dynamics`.</span>
 
-<span class="sd">        :param path_name: Optional string representing the path to save the kern </span>
+<span class="sd">        :param path_name: Optional string representing the path to save the kern</span>
 <span class="sd">            file.</span>
-<span class="sd">        :param data: Optional string representing the data to be converted to kern </span>
+<span class="sd">        :param data: Optional string representing the data to be converted to kern</span>
 <span class="sd">            format.</span>
-<span class="sd">        :param lyrics: Boolean, default True. If True, lyrics for each part will </span>
+<span class="sd">        :param lyrics: Boolean, default True. If True, lyrics for each part will</span>
 <span class="sd">            be added.</span>
-<span class="sd">        :param dynamics: Boolean, default True. If True, dynamics for each part </span>
+<span class="sd">        :param dynamics: Boolean, default True. If True, dynamics for each part</span>
 <span class="sd">            will be added.</span>
 <span class="sd">        :return: String of new kern score if no `path_name` is given, or None if</span>
 <span class="sd">            writing the new kern file to the location of `path_name`</span>
@@ -2412,7 +2564,8 @@
 <span class="sd">        .. code-block:: python</span>
 
 <span class="sd">            # create a kern file from a different symbolic notation file</span>
-<span class="sd">            piece = Score(&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/K179.xml&#39;)</span>
+<span class="sd">            piece = Score(</span>
+<span class="sd">                &#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/K179.xml&#39;)</span>
 <span class="sd">            piece.toKern()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;toKern&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
@@ -2526,7 +2679,7 @@
                 <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">[</span><span class="n">key</span><span class="p">])</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_meiStack</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_meiStack</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a DataFrame stacked to be a multi-indexed series containing the</span>
 <span class="sd">        score elements to be processed into the MEI format. This is used  for</span>
@@ -2579,7 +2732,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">[</span><span class="s1">&#39;_meiStack&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stack</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analyses</span><span class="p">[</span><span class="s1">&#39;_meiStack&#39;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">_coreMEIElements</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_coreMEIElements</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">root</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span>
             <span class="s1">&#39;mei&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;xmlns&#39;</span><span class="p">:</span> <span class="s1">&#39;http://www.music-encoding.org/ns/mei&#39;</span><span class="p">,</span> <span class="s1">&#39;meiversion&#39;</span><span class="p">:</span> <span class="s1">&#39;5.1-dev&#39;</span><span class="p">})</span>
 
@@ -2604,7 +2757,7 @@
 
 <div class="viewcode-block" id="Score.toMEI">
 <a class="viewcode-back" href="../../symbolic.html#pyampact.symbolic.Score.toMEI">[docs]</a>
-    <span class="k">def</span> <span class="nf">toMEI</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">indentation</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dfs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">analysis_tag</span><span class="o">=</span><span class="s1">&#39;annot&#39;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">toMEI</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">indentation</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dfs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">analysis_tag</span><span class="o">=</span><span class="s1">&#39;annot&#39;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Write or return an MEI score optionally including analysis data.</span>
 
@@ -2701,7 +2854,7 @@
                                     <span class="n">idGen</span><span class="p">),</span> <span class="s1">&#39;shape&#39;</span><span class="p">:</span> <span class="n">el</span><span class="o">.</span><span class="n">sign</span><span class="p">,</span> <span class="s1">&#39;line&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">el</span><span class="o">.</span><span class="n">line</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">})</span>
                             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">el</span><span class="p">,</span> <span class="n">m21</span><span class="o">.</span><span class="n">meter</span><span class="o">.</span><span class="n">TimeSignature</span><span class="p">):</span>
                                 <span class="n">attrs_el</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="s1">&#39;attributes&#39;</span><span class="p">,</span> <span class="p">{</span>
-                                                         <span class="s1">&#39;xml:id&#39;</span><span class="p">:</span> <span class="nb">next</span><span class="p">(</span><span class="n">idGen</span><span class="p">)})</span>
+                                    <span class="s1">&#39;xml:id&#39;</span><span class="p">:</span> <span class="nb">next</span><span class="p">(</span><span class="n">idGen</span><span class="p">)})</span>
                                 <span class="n">tsig_el</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span>
                                     <span class="n">attrs_el</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;xml:id&#39;</span><span class="p">:</span> <span class="nb">next</span><span class="p">(</span><span class="n">idGen</span><span class="p">)})</span>
                                 <span class="n">numerator_el</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">tsig_el</span><span class="p">,</span> <span class="s1">&#39;beats&#39;</span><span class="p">)</span>
@@ -2713,7 +2866,7 @@
                                 <span class="n">score_def_el</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span>
                                     <span class="s1">&#39;scoreDef&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;xml:id&#39;</span><span class="p">:</span> <span class="nb">next</span><span class="p">(</span><span class="n">idGen</span><span class="p">)})</span>
                                 <span class="n">key_sig_el</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">score_def_el</span><span class="p">,</span> <span class="s1">&#39;keySig&#39;</span><span class="p">,</span> <span class="p">{</span>
-                                                           <span class="s1">&#39;xml:id&#39;</span><span class="p">:</span> <span class="nb">next</span><span class="p">(</span><span class="n">idGen</span><span class="p">)})</span>
+                                    <span class="s1">&#39;xml:id&#39;</span><span class="p">:</span> <span class="nb">next</span><span class="p">(</span><span class="n">idGen</span><span class="p">)})</span>
                                 <span class="k">if</span> <span class="n">el</span><span class="o">.</span><span class="n">sharps</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
                                     <span class="n">key_sig_el</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;sig&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">el</span><span class="o">.</span><span class="n">sharps</span><span class="si">}</span><span class="s1">s&#39;</span><span class="p">)</span>
                                 <span class="k">else</span><span class="p">:</span>
@@ -2743,7 +2896,6 @@
                 <span class="k">if</span> <span class="nb">any</span><span class="p">((</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">)):</span>   <span class="c1"># trim _df to start and stop</span>
                     <span class="k">if</span> <span class="n">start</span> <span class="ow">and</span> <span class="n">stop</span><span class="p">:</span>
                         <span class="n">_df</span> <span class="o">=</span> <span class="n">_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">idx</span><span class="p">[:,</span> <span class="n">start</span><span class="p">:</span><span class="n">stop</span><span class="p">,</span> <span class="p">:]]</span>
-                        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;here&#39;</span><span class="p">)</span>
                     <span class="k">elif</span> <span class="n">start</span><span class="p">:</span>
                         <span class="n">_df</span> <span class="o">=</span> <span class="n">_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">idx</span><span class="p">[:,</span> <span class="n">start</span><span class="p">:,</span> <span class="p">:]]</span>
                     <span class="k">else</span><span class="p">:</span>

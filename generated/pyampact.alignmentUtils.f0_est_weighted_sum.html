@@ -6,20 +6,22 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyampact.alignmentUtils.f0_est_weighted_sum &mdash; pyAMPACT 0.0.2 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+  <title>pyampact.alignmentUtils.f0_est_weighted_sum &mdash; pyAMPACT 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
     <link rel="canonical" href="https://pyampact.github.io/generated/pyampact.alignmentUtils.f0_est_weighted_sum.html" />
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=e3a6060d"></script>
+      <script src="../_static/documentation_options.js?v=d45e8c67"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pyampact.alignmentUtils.f0_est_weighted_sum_spec" href="pyampact.alignmentUtils.f0_est_weighted_sum_spec.html" />
+    <link rel="prev" title="pyampact.alignmentUtils.maptimes" href="pyampact.alignmentUtils.maptimes.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -46,9 +48,28 @@
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../alignment.html">alignment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../alignmentUtils.html">alignmentUtils</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../alignmentUtils.html">alignmentUtils</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../alignmentUtils.html#id1">alignmentUtils</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pyampact.alignmentUtils.dpcore.html">pyampact.alignmentUtils.dpcore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.alignmentUtils.dp.html">pyampact.alignmentUtils.dp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.alignmentUtils.gh.html">pyampact.alignmentUtils.gh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.alignmentUtils.g.html">pyampact.alignmentUtils.g</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.alignmentUtils.orio_simmx.html">pyampact.alignmentUtils.orio_simmx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.alignmentUtils.simmx.html">pyampact.alignmentUtils.simmx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.alignmentUtils.maptimes.html">pyampact.alignmentUtils.maptimes</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">pyampact.alignmentUtils.f0_est_weighted_sum</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyampact.alignmentUtils.f0_est_weighted_sum"><code class="docutils literal notranslate"><span class="pre">f0_est_weighted_sum()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.alignmentUtils.f0_est_weighted_sum_spec.html">pyampact.alignmentUtils.f0_est_weighted_sum_spec</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.alignmentUtils.durations_from_midi_ticks.html">pyampact.alignmentUtils.durations_from_midi_ticks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.alignmentUtils.load_audiofile.html">pyampact.alignmentUtils.load_audiofile</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../dataCompilation.html">dataCompilation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../performance.html">performance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../symbolic.html">symbolic</a></li>
@@ -69,6 +90,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../alignmentUtils.html">alignmentUtils</a></li>
       <li class="breadcrumb-item active">pyampact.alignmentUtils.f0_est_weighted_sum</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/generated/pyampact.alignmentUtils.f0_est_weighted_sum.rst.txt" rel="nofollow"> View page source</a>
@@ -83,7 +105,7 @@
 <h1>pyampact.alignmentUtils.f0_est_weighted_sum<a class="headerlink" href="#pyampact-alignmentutils-f0-est-weighted-sum" title="Link to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyampact.alignmentUtils.f0_est_weighted_sum">
-<span class="sig-prename descclassname"><span class="pre">pyampact.alignmentUtils.</span></span><span class="sig-name descname"><span class="pre">f0_est_weighted_sum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f0i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fMax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fThresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyampact/alignmentUtils.html#f0_est_weighted_sum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignmentUtils.f0_est_weighted_sum" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyampact.alignmentUtils.</span></span><span class="sig-name descname"><span class="pre">f0_est_weighted_sum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f0i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fMax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fThresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyampact/alignmentUtils.html#f0_est_weighted_sum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignmentUtils.f0_est_weighted_sum" title="Link to this definition"></a></dt>
 <dd><p>Calculate F0, power, and spectrum for an inputted spectral representation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -114,7 +136,10 @@ will be applied.</p></li>
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pyampact.alignmentUtils.maptimes.html" class="btn btn-neutral float-left" title="pyampact.alignmentUtils.maptimes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pyampact.alignmentUtils.f0_est_weighted_sum_spec.html" class="btn btn-neutral float-right" title="pyampact.alignmentUtils.f0_est_weighted_sum_spec" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

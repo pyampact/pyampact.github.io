@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pyampact.performance &mdash; pyAMPACT 0.0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
@@ -92,9 +92,9 @@
 <span class="sd">    perceived_pitch    </span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">librosa</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">librosa</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;estimate_perceptual_parameters&quot;</span><span class="p">,</span>
@@ -109,7 +109,7 @@
 
 <div class="viewcode-block" id="estimate_perceptual_parameters">
 <a class="viewcode-back" href="../../performance.html#pyampact.performance.estimate_perceptual_parameters">[docs]</a>
-<span class="k">def</span> <span class="nf">estimate_perceptual_parameters</span><span class="p">(</span><span class="n">f0_vals</span><span class="p">,</span> <span class="n">pwr_vals</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">SR</span><span class="p">,</span> <span class="n">hop</span><span class="p">,</span> <span class="n">gt_flag</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">estimate_perceptual_parameters</span><span class="p">(</span><span class="n">f0_vals</span><span class="p">,</span> <span class="n">pwr_vals</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">SR</span><span class="p">,</span> <span class="n">hop</span><span class="p">,</span> <span class="n">gt_flag</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Estimates a range of performance parameters from the inputted fundamental</span>
 <span class="sd">    frequency (f0_vales), power (pwr_vals), and spectrum estimates (M)</span>
@@ -217,7 +217,7 @@
 
 <div class="viewcode-block" id="calculate_vibrato">
 <a class="viewcode-back" href="../../performance.html#pyampact.performance.calculate_vibrato">[docs]</a>
-<span class="k">def</span> <span class="nf">calculate_vibrato</span><span class="p">(</span><span class="n">note_vals</span><span class="p">,</span> <span class="n">sr</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_vibrato</span><span class="p">(</span><span class="n">note_vals</span><span class="p">,</span> <span class="n">sr</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate the vibrato depth and rate from a note&#39;s frequency signal.</span>
 
@@ -257,7 +257,7 @@
 
 <div class="viewcode-block" id="perceived_pitch">
 <a class="viewcode-back" href="../../performance.html#pyampact.performance.perceived_pitch">[docs]</a>
-<span class="k">def</span> <span class="nf">perceived_pitch</span><span class="p">(</span><span class="n">f0s</span><span class="p">,</span> <span class="n">sr</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mi">100000</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">perceived_pitch</span><span class="p">(</span><span class="n">f0s</span><span class="p">,</span> <span class="n">sr</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mi">100000</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate the perceived pitch of a note based on </span>
 <span class="sd">    Gockel, H., B.J.C. Moore,and R.P. Carlyon. 2001. </span>

@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pyampact.alignmentUtils &mdash; pyAMPACT 0.0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
@@ -100,12 +100,12 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">wave</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">librosa</span>
-<span class="kn">import</span> <span class="nn">mido</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">wave</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">librosa</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">mido</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
@@ -124,8 +124,8 @@
 
 
 <div class="viewcode-block" id="dpcore">
-<a class="viewcode-back" href="../../alignmentUtils.html#pyampact.alignmentUtils.dpcore">[docs]</a>
-<span class="k">def</span> <span class="nf">dpcore</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">pen</span><span class="p">):</span>
+<a class="viewcode-back" href="../../generated/pyampact.alignmentUtils.dpcore.html#pyampact.alignmentUtils.dpcore">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">dpcore</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">pen</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Core dynamic programming calculation of best path.</span>
 <span class="sd">       M[r,c] is the array of local costs.</span>
 <span class="sd">       Create D[r,c] as the array of costs-of-best-paths to r,c,</span>
@@ -178,8 +178,8 @@
 
 
 <div class="viewcode-block" id="dp">
-<a class="viewcode-back" href="../../alignmentUtils.html#pyampact.alignmentUtils.dp">[docs]</a>
-<span class="k">def</span> <span class="nf">dp</span><span class="p">(</span><span class="n">local_costs</span><span class="p">,</span> <span class="n">penalty</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">gutter</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">G</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+<a class="viewcode-back" href="../../generated/pyampact.alignmentUtils.dp.html#pyampact.alignmentUtils.dp">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">dp</span><span class="p">(</span><span class="n">local_costs</span><span class="p">,</span> <span class="n">penalty</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">gutter</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">G</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Use dynamic programming to find a min-cost path through a matrix</span>
 <span class="sd">    of local costs.</span>
@@ -270,8 +270,8 @@
 
 
 <div class="viewcode-block" id="gh">
-<a class="viewcode-back" href="../../alignmentUtils.html#pyampact.alignmentUtils.gh">[docs]</a>
-<span class="k">def</span> <span class="nf">gh</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">i1</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">i2</span><span class="p">,</span> <span class="n">domain</span><span class="p">,</span> <span class="n">frac</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+<a class="viewcode-back" href="../../generated/pyampact.alignmentUtils.gh.html#pyampact.alignmentUtils.gh">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">gh</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">i1</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">i2</span><span class="p">,</span> <span class="n">domain</span><span class="p">,</span> <span class="n">frac</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get an element that is `frac` fraction of the way between `v1[i1]` and `v2[i2]`,</span>
 <span class="sd">    but check bounds on both vectors. `frac` of 0 returns `v1[i1]`, `frac` of 1 returns `v2[i2]`,</span>
@@ -313,8 +313,8 @@
 
 
 <div class="viewcode-block" id="g">
-<a class="viewcode-back" href="../../alignmentUtils.html#pyampact.alignmentUtils.g">[docs]</a>
-<span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">domain</span><span class="p">):</span>
+<a class="viewcode-back" href="../../generated/pyampact.alignmentUtils.g.html#pyampact.alignmentUtils.g">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">g</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">domain</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get an element from `vec`, checking bounds. `Domain` is the set of points</span>
 <span class="sd">    that `vec` is a subset of.</span>
@@ -348,8 +348,8 @@
 
 
 <div class="viewcode-block" id="orio_simmx">
-<a class="viewcode-back" href="../../alignmentUtils.html#pyampact.alignmentUtils.orio_simmx">[docs]</a>
-<span class="k">def</span> <span class="nf">orio_simmx</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">D</span><span class="p">):</span>
+<a class="viewcode-back" href="../../generated/pyampact.alignmentUtils.orio_simmx.html#pyampact.alignmentUtils.orio_simmx">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">orio_simmx</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">D</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate an Orio&amp;Schwartz-style (Peak Structure Distance) similarity matrix.</span>
 
@@ -392,8 +392,8 @@
 
 
 <div class="viewcode-block" id="simmx">
-<a class="viewcode-back" href="../../alignmentUtils.html#pyampact.alignmentUtils.simmx">[docs]</a>
-<span class="k">def</span> <span class="nf">simmx</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
+<a class="viewcode-back" href="../../generated/pyampact.alignmentUtils.simmx.html#pyampact.alignmentUtils.simmx">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">simmx</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate a similarity matrix between feature matrices A and B.</span>
 
@@ -424,51 +424,65 @@
 
 
 <div class="viewcode-block" id="maptimes">
-<a class="viewcode-back" href="../../alignmentUtils.html#pyampact.alignmentUtils.maptimes">[docs]</a>
-<span class="k">def</span> <span class="nf">maptimes</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">intime</span><span class="p">,</span> <span class="n">outtime</span><span class="p">):</span>
+<a class="viewcode-back" href="../../generated/pyampact.alignmentUtils.maptimes.html#pyampact.alignmentUtils.maptimes">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">maptimes</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">intime</span><span class="p">,</span> <span class="n">outtime</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Map the times in t according to the mapping that each point in intime</span>
-<span class="sd">    corresponds to that value in outtime.</span>
+<span class="sd">    Map onset/offset times using linear interpolation from `intime` to `outtime`.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    t : array-like</span>
-<span class="sd">        The input times to be mapped. This can be a list or a numpy array of time values.</span>
-
-<span class="sd">    intime : array-like</span>
-<span class="sd">        The reference input time points. Each point corresponds to a value in `outtime`.</span>
-
-<span class="sd">    outtime : array-like</span>
-<span class="sd">        The corresponding output time points that map to the values in `intime`.</span>
+<span class="sd">    t : np.ndarray of shape (N, 2)</span>
+<span class="sd">        Each row contains [onset, offset].</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    np.ndarray</span>
-<span class="sd">        An array of the mapped times, where each time in `t` is replaced by its corresponding</span>
-<span class="sd">        value in `outtime` based on the mapping provided by `intime`. If a time in `t` does</span>
-<span class="sd">        not have a corresponding `intime`, it will be returned unchanged.</span>
+<span class="sd">    np.ndarray of shape (N, 2)</span>
+<span class="sd">        Mapped onset and offset times.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">intime</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">intime</span><span class="p">)</span>
+    <span class="n">outtime</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">outtime</span><span class="p">)</span>
 
-    <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-    <span class="n">intime</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">intime</span><span class="p">)</span>
-    <span class="n">outtime</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">outtime</span><span class="p">)</span>
-
-    <span class="c1"># Ensure that intime and outtime are sorted</span>
     <span class="n">sort_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">intime</span><span class="p">)</span>
     <span class="n">intime</span> <span class="o">=</span> <span class="n">intime</span><span class="p">[</span><span class="n">sort_idx</span><span class="p">]</span>
     <span class="n">outtime</span> <span class="o">=</span> <span class="n">outtime</span><span class="p">[</span><span class="n">sort_idx</span><span class="p">]</span>
 
-    <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">intime</span><span class="p">,</span> <span class="n">outtime</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="n">outtime</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">right</span><span class="o">=</span><span class="n">outtime</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-    <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">decimals</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">onset_mapped</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">t</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">intime</span><span class="p">,</span> <span class="n">outtime</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="n">outtime</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">right</span><span class="o">=</span><span class="n">outtime</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">offset_mapped</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">t</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">intime</span><span class="p">,</span> <span class="n">outtime</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="n">outtime</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">right</span><span class="o">=</span><span class="n">outtime</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
-    <span class="k">return</span> <span class="n">u</span></div>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">onset_mapped</span><span class="p">,</span> <span class="n">offset_mapped</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span></div>
 
+
+
+    <span class="c1"># &quot;&quot;&quot;</span>
+    <span class="c1"># Linearly interpolate output times for arbitrary t values using</span>
+    <span class="c1"># the mapping defined by (intime, outtime).</span>
+    <span class="c1"># &quot;&quot;&quot;</span>
+    <span class="c1"># return np.interp(t, intime, outtime)</span>
+
+    <span class="c1"># More to MATLAB function</span>
+    <span class="c1"># t = np.asarray(t)</span>
+    <span class="c1"># intime = np.asarray(intime)</span>
+    <span class="c1"># outtime = np.asarray(outtime)</span>
+
+    <span class="c1"># original_shape = t.shape</span>
+    <span class="c1"># t = t.flatten()</span>
+
+    <span class="c1"># u = np.empty_like(t, dtype=outtime.dtype)</span>
+
+    <span class="c1"># for i, ti in enumerate(t):</span>
+    <span class="c1">#     idx = np.searchsorted(intime, ti, side=&#39;right&#39;)</span>
+    <span class="c1">#     if idx &gt;= len(outtime):</span>
+    <span class="c1">#         idx = len(outtime) - 1</span>
+    <span class="c1">#     u[i] = outtime[idx]</span>
+
+    <span class="c1"># return u.reshape(original_shape)</span>
 
 
 <span class="c1"># These are the new functions to replace calculate_f0_est</span>
 <div class="viewcode-block" id="f0_est_weighted_sum">
-<a class="viewcode-back" href="../../alignmentUtils.html#pyampact.alignmentUtils.f0_est_weighted_sum">[docs]</a>
-<span class="k">def</span> <span class="nf">f0_est_weighted_sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">f0i</span><span class="p">,</span> <span class="n">fMax</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">fThresh</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<a class="viewcode-back" href="../../generated/pyampact.alignmentUtils.f0_est_weighted_sum.html#pyampact.alignmentUtils.f0_est_weighted_sum">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">f0_est_weighted_sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">f0i</span><span class="p">,</span> <span class="n">fMax</span><span class="o">=</span><span class="mi">20000</span><span class="p">,</span> <span class="n">fThresh</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate F0, power, and spectrum for an inputted spectral representation.</span>
 
@@ -514,8 +528,29 @@
     <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">x2</span><span class="p">)</span>
     <span class="n">wNum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">x2</span><span class="p">)</span>
     <span class="n">wDen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">x2</span><span class="p">)</span>
+    <span class="c1"># print(&#39;-----&#39;)</span>
+    <span class="c1"># print(&#39;fMax&#39;, fMax)</span>
+    <span class="c1"># print(&#39;f0i&#39;, f0i)</span>
+
+    <span class="c1"># PRINT TIMESTAMP OF CHUNK, what could be happening is audio is shorter (or longer)</span>
+    <span class="c1"># than notated seconds in column 1 of CSV</span>
+
+    <span class="c1"># This doesn&#39;t really work...</span>
+    <span class="c1"># f0i = np.nan_to_num(f0i, nan=0.0)</span>
+    <span class="c1"># valid_f0i = f0i[f0i &gt; 0]  # Only use positive values</span>
+    <span class="c1"># if valid_f0i.size == 0:</span>
+    <span class="c1">#     maxI = 1  # Safe default value</span>
+    <span class="c1"># else:</span>
+    <span class="c1">#     maxI = np.max(fMax / valid_f0i)</span>
+
+    <span class="c1"># Use conditionals to check for full array of nan&#39;s</span>
+    <span class="c1"># Remove nan&#39;s entirely</span>
+    <span class="c1"># If f0i.size == 0, then maxI = 1</span>
+
     <span class="n">maxI</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">fMax</span> <span class="o">/</span> <span class="n">f0i</span><span class="p">[</span><span class="n">f0i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">])</span>
     <span class="n">strips</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># print(&#39;f0i updated&#39;, f0i)</span>
 
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">maxI</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
         <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">f</span> <span class="o">-</span> <span class="p">(</span><span class="n">f0i</span> <span class="o">*</span> <span class="n">i</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">fThresh</span>
@@ -536,8 +571,8 @@
 
 
 <div class="viewcode-block" id="f0_est_weighted_sum_spec">
-<a class="viewcode-back" href="../../alignmentUtils.html#pyampact.alignmentUtils.f0_est_weighted_sum_spec">[docs]</a>
-<span class="k">def</span> <span class="nf">f0_est_weighted_sum_spec</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">noteStart_s</span><span class="p">,</span> <span class="n">noteEnd_s</span><span class="p">,</span> <span class="n">midiNote</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sr</span><span class="p">,</span> <span class="n">useIf</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<a class="viewcode-back" href="../../generated/pyampact.alignmentUtils.f0_est_weighted_sum_spec.html#pyampact.alignmentUtils.f0_est_weighted_sum_spec">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">f0_est_weighted_sum_spec</span><span class="p">(</span><span class="n">noteStart_s</span><span class="p">,</span> <span class="n">noteEnd_s</span><span class="p">,</span> <span class="n">midiNote</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sr</span><span class="p">,</span> <span class="n">useIf</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate F0, power, and spectrum for a single note.</span>
 
@@ -580,13 +615,20 @@
     <span class="n">win</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">win_s</span> <span class="o">*</span> <span class="n">sr</span><span class="p">)</span>
     <span class="n">hop</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">win</span> <span class="o">/</span> <span class="mi">8</span><span class="p">)</span>
 
+
     <span class="c1"># load if gram</span>
+    <span class="c1"># This should be moved outside of f0_est and passed in</span>
+    <span class="c1"># Also remove audio_file, redundant</span>
     <span class="n">freqs</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">reassigned_spectrogram</span><span class="p">(</span>
         <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">,</span> <span class="n">hop_length</span><span class="o">=</span><span class="n">hop</span><span class="p">)</span>
 
    <span class="c1"># indices for indexing into ifgram (D)</span>
     <span class="n">noteStart_hop</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">noteStart_s</span> <span class="o">*</span> <span class="n">sr</span> <span class="o">/</span> <span class="n">hop</span><span class="p">))</span>
     <span class="n">noteEnd_hop</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">noteEnd_s</span> <span class="o">*</span> <span class="n">sr</span> <span class="o">/</span> <span class="n">hop</span><span class="p">))</span>
+
+    <span class="c1"># # Cap noteEnd_hop to the maximum allowed index</span>
+    <span class="c1"># noteEnd_hop = min(noteEnd_hop, D.shape[1])</span>
+    
     <span class="n">inds</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">noteStart_hop</span><span class="p">,</span> <span class="n">noteEnd_hop</span><span class="p">)</span>
 
     <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">D</span><span class="p">[:,</span> <span class="n">inds</span><span class="p">])</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">6</span><span class="p">)</span>
@@ -618,8 +660,8 @@
 
 
 <div class="viewcode-block" id="durations_from_midi_ticks">
-<a class="viewcode-back" href="../../alignmentUtils.html#pyampact.alignmentUtils.durations_from_midi_ticks">[docs]</a>
-<span class="k">def</span> <span class="nf">durations_from_midi_ticks</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<a class="viewcode-back" href="../../generated/pyampact.alignmentUtils.durations_from_midi_ticks.html#pyampact.alignmentUtils.durations_from_midi_ticks">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">durations_from_midi_ticks</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extract note durations from a MIDI file using MIDI ticks. This function processes a MIDI file, calculates note onset and offset times </span>
 <span class="sd">    based on MIDI ticks and tempo, and returns the duration matrix (nmat). It handles </span>
@@ -684,8 +726,8 @@
 
 
 <div class="viewcode-block" id="load_audiofile">
-<a class="viewcode-back" href="../../alignmentUtils.html#pyampact.alignmentUtils.load_audiofile">[docs]</a>
-<span class="k">def</span> <span class="nf">load_audiofile</span><span class="p">(</span><span class="n">audio_file</span><span class="p">):</span>
+<a class="viewcode-back" href="../../generated/pyampact.alignmentUtils.load_audiofile.html#pyampact.alignmentUtils.load_audiofile">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_audiofile</span><span class="p">(</span><span class="n">audio_file</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Loads file for analysis. Currently only the WAV file format is allowed.  AIFF, MP3, etc. must be converted prior.</span>
 
@@ -718,6 +760,9 @@
 
         <span class="c1"># Flatten to a single channel if needed</span>
         <span class="n">audio_data</span> <span class="o">=</span> <span class="n">audio_data</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+        <span class="c1"># Convert to float32 in range [-1.0, 1.0]</span>
+        <span class="n">audio_data</span> <span class="o">=</span> <span class="n">audio_data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">/</span> <span class="mf">32768.0</span>
 
         <span class="k">return</span> <span class="n">audio_data</span><span class="p">,</span> <span class="n">sr</span></div>
 
