@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dataCompilation &mdash; pyAMPACT 0.0.1 documentation</title>
+  <title>dataCompilation &mdash; pyAMPACT 0.0.5 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
@@ -14,14 +14,14 @@
     <link rel="canonical" href="https://pyampact.github.io/dataCompilation.html" />
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="_static/documentation_options.js?v=282f96c0"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="pyampact.dataCompilation.data_compilation" href="generated/pyampact.dataCompilation.data_compilation.html" />
-    <link rel="prev" title="pyampact.alignmentUtils.load_audiofile" href="generated/pyampact.alignmentUtils.load_audiofile.html" /> 
+    <link rel="prev" title="pyampact.alignmentUtils.merge_grace_notes" href="generated/pyampact.alignmentUtils.merge_grace_notes.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -93,7 +93,7 @@
 <h2>dataCompilation<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.dataCompilation.data_compilation.html#pyampact.dataCompilation.data_compilation" title="pyampact.dataCompilation.data_compilation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">data_compilation</span></code></a>(y, original_sr, nmat, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.dataCompilation.data_compilation.html#pyampact.dataCompilation.data_compilation" title="pyampact.dataCompilation.data_compilation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">data_compilation</span></code></a>(y, original_sr, hop_length, ...)</p></td>
 <td><p>This function takes the results of the alignment and the note matrix and compiles the data into a JSON object that can be used to insert the audio analysis into the score.</p></td>
 </tr>
 </tbody>
@@ -101,16 +101,18 @@
 </section>
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">pyampact.dataCompilation.</span></span><span class="sig-name descname"><span class="pre">data_compilation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">original_sr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nmat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio_file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'output.mei'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/dataCompilation.html#data_compilation"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyampact.dataCompilation.</span></span><span class="sig-name descname"><span class="pre">data_compilation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">original_sr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop_length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">winms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tsr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nmat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio_file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'output'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/dataCompilation.html#data_compilation"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>This function takes the results of the alignment and the note matrix and compiles the data into a JSON object
 that can be used to insert the audio analysis into the score.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>nmat</strong> (<em>np.ndarray</em>) – The note matrix containing information about notes, including their timing and duration.</p></li>
+<li><p><strong>hop_length</strong> (<em>int</em>) – Hop length</p></li>
+<li><p><strong>spec</strong> (<em>np.ndarray</em>) – Spec (check type and fill out)</p></li>
 <li><p><strong>audio_file</strong> (<em>str</em>) – The path to the audio file associated with the performance data.</p></li>
 <li><p><strong>piece</strong> (<a class="reference internal" href="generated/pyampact.symbolic.Score.html#pyampact.symbolic.Score" title="pyampact.symbolic.Score"><em>Score</em></a>) – An instantiation of the original Score object containing the data input for the musical piece.</p></li>
-<li><p><strong>output_path</strong> (<em>str</em><em>, </em><em>optional</em>) – The file path for the output MEI file. Defaults to ‘./output.mei’.</p></li>
+<li><p><strong>output_path</strong> (<em>str</em><em>, </em><em>optional</em>) – The file path for the output MEI file. Defaults to ‘./output’.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -124,13 +126,57 @@ that can be used to insert the audio analysis into the score.</p>
 </dl>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">pyampact.dataCompilation.</span></span><span class="sig-name descname"><span class="pre">export_selected_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nmat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./output_selected_data.csv'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/dataCompilation.html#export_selected_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Export specified columns from a dictionary of DataFrames, a single DataFrame,
+or a NumPy array of DataFrames to a CSV. Missing columns are added as NaN.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nmat</strong> (<em>dict</em><em> of </em><em>DataFrames</em>) – The dictionary of nmat with all relevant onset, offset, duration, and pitch information,</p></li>
+<li><p><strong>columns</strong> (<em>array</em><em> of </em><em>strings</em>) – List of column names and order in which they are exported</p></li>
+<li><p><strong>output_path</strong> (<em>str</em><em>, </em><em>optional</em>) – The file path for the output CSV file. Defaults to ‘./output_selected_data’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>plt</strong> – A PNG image of the spectrogram, overlay, and information</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>png file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">pyampact.dataCompilation.</span></span><span class="sig-name descname"><span class="pre">visualise_alignment_from_nmat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nmat_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'output_visual'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/dataCompilation.html#visualise_alignment_from_nmat"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Creates a spectrogram with pitch, voice, and duration information overlaid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nmat_dict</strong> (<em>dict</em><em> of </em><em>DataFrames</em>) – The dictionary of nmat with all relevant onset, offset, duration, and pitch information,</p></li>
+<li><p><strong>y</strong> (<em>ndarray</em>) – Audio time series of the file.</p></li>
+<li><p><strong>sr</strong> (<em>int</em>) – Original sample rate of the audio file.</p></li>
+<li><p><strong>output_path</strong> (<em>str</em><em>, </em><em>optional</em>) – The file path for the output MEI file. Defaults to ‘./output_visual’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>plt</strong> – A PNG image of the spectrogram, overlay, and information</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>png file</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="generated/pyampact.alignmentUtils.load_audiofile.html" class="btn btn-neutral float-left" title="pyampact.alignmentUtils.load_audiofile" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="generated/pyampact.alignmentUtils.merge_grace_notes.html" class="btn btn-neutral float-left" title="pyampact.alignmentUtils.merge_grace_notes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="generated/pyampact.dataCompilation.data_compilation.html" class="btn btn-neutral float-right" title="pyampact.dataCompilation.data_compilation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

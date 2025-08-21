@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>alignmentUtils &mdash; pyAMPACT 0.0.1 documentation</title>
+  <title>alignmentUtils &mdash; pyAMPACT 0.0.5 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
@@ -14,7 +14,7 @@
     <link rel="canonical" href="https://pyampact.github.io/alignmentUtils.html" />
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="_static/documentation_options.js?v=282f96c0"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -57,12 +57,13 @@
 <li class="toctree-l3"><a class="reference internal" href="generated/pyampact.alignmentUtils.gh.html">pyampact.alignmentUtils.gh</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/pyampact.alignmentUtils.g.html">pyampact.alignmentUtils.g</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/pyampact.alignmentUtils.orio_simmx.html">pyampact.alignmentUtils.orio_simmx</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.alignmentUtils.simmx.html">pyampact.alignmentUtils.simmx</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/pyampact.alignmentUtils.maptimes.html">pyampact.alignmentUtils.maptimes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/pyampact.alignmentUtils.f0_est_weighted_sum.html">pyampact.alignmentUtils.f0_est_weighted_sum</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/pyampact.alignmentUtils.f0_est_weighted_sum_spec.html">pyampact.alignmentUtils.f0_est_weighted_sum_spec</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/pyampact.alignmentUtils.durations_from_midi_ticks.html">pyampact.alignmentUtils.durations_from_midi_ticks</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/pyampact.alignmentUtils.load_audiofile.html">pyampact.alignmentUtils.load_audiofile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.alignmentUtils.trim_silences.html">pyampact.alignmentUtils.trim_silences</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.alignmentUtils.merge_grace_notes.html">pyampact.alignmentUtils.merge_grace_notes</a></li>
 </ul>
 </li>
 </ul>
@@ -118,23 +119,26 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.alignmentUtils.orio_simmx.html#pyampact.alignmentUtils.orio_simmx" title="pyampact.alignmentUtils.orio_simmx"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orio_simmx</span></code></a>(M, D)</p></td>
 <td><p>Calculate an Orio&amp;Schwartz-style (Peak Structure Distance) similarity matrix.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/pyampact.alignmentUtils.simmx.html#pyampact.alignmentUtils.simmx" title="pyampact.alignmentUtils.simmx"><code class="xref py py-obj docutils literal notranslate"><span class="pre">simmx</span></code></a>(A, B)</p></td>
-<td><p>Calculate a similarity matrix between feature matrices A and B.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.alignmentUtils.maptimes.html#pyampact.alignmentUtils.maptimes" title="pyampact.alignmentUtils.maptimes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">maptimes</span></code></a>(t, intime, outtime)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pyampact.alignmentUtils.maptimes.html#pyampact.alignmentUtils.maptimes" title="pyampact.alignmentUtils.maptimes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">maptimes</span></code></a>(t, intime, outtime)</p></td>
 <td><p>Map onset/offset times using linear interpolation from <cite>intime</cite> to <cite>outtime</cite>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/pyampact.alignmentUtils.f0_est_weighted_sum.html#pyampact.alignmentUtils.f0_est_weighted_sum" title="pyampact.alignmentUtils.f0_est_weighted_sum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">f0_est_weighted_sum</span></code></a>(x, f, f0i[, fMax, fThresh])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.alignmentUtils.f0_est_weighted_sum.html#pyampact.alignmentUtils.f0_est_weighted_sum" title="pyampact.alignmentUtils.f0_est_weighted_sum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">f0_est_weighted_sum</span></code></a>(x, f, f0i[, fMax, fThresh])</p></td>
 <td><p>Calculate F0, power, and spectrum for an inputted spectral representation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.alignmentUtils.f0_est_weighted_sum_spec.html#pyampact.alignmentUtils.f0_est_weighted_sum_spec" title="pyampact.alignmentUtils.f0_est_weighted_sum_spec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">f0_est_weighted_sum_spec</span></code></a>(noteStart_s, ...[, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pyampact.alignmentUtils.f0_est_weighted_sum_spec.html#pyampact.alignmentUtils.f0_est_weighted_sum_spec" title="pyampact.alignmentUtils.f0_est_weighted_sum_spec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">f0_est_weighted_sum_spec</span></code></a>(noteStart_s, ...[, ...])</p></td>
 <td><p>Calculate F0, power, and spectrum for a single note.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/pyampact.alignmentUtils.durations_from_midi_ticks.html#pyampact.alignmentUtils.durations_from_midi_ticks" title="pyampact.alignmentUtils.durations_from_midi_ticks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">durations_from_midi_ticks</span></code></a>(filename)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.alignmentUtils.durations_from_midi_ticks.html#pyampact.alignmentUtils.durations_from_midi_ticks" title="pyampact.alignmentUtils.durations_from_midi_ticks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">durations_from_midi_ticks</span></code></a>(filename)</p></td>
 <td><p>Extract note durations from a MIDI file using MIDI ticks.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.alignmentUtils.load_audiofile.html#pyampact.alignmentUtils.load_audiofile" title="pyampact.alignmentUtils.load_audiofile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_audiofile</span></code></a>(audio_file)</p></td>
-<td><p>Loads file for analysis.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pyampact.alignmentUtils.load_audiofile.html#pyampact.alignmentUtils.load_audiofile" title="pyampact.alignmentUtils.load_audiofile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_audiofile</span></code></a>(audio_file[, mono_mode])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.alignmentUtils.trim_silences.html#pyampact.alignmentUtils.trim_silences" title="pyampact.alignmentUtils.trim_silences"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trim_silences</span></code></a>(nmat_dict, y, sr[, ...])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pyampact.alignmentUtils.merge_grace_notes.html#pyampact.alignmentUtils.merge_grace_notes" title="pyampact.alignmentUtils.merge_grace_notes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge_grace_notes</span></code></a>(nmat[, offset])</p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -254,7 +258,7 @@ will be applied.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">pyampact.alignmentUtils.</span></span><span class="sig-name descname"><span class="pre">f0_est_weighted_sum_spec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">noteStart_s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noteEnd_s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">midiNote</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">useIf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignmentUtils.html#f0_est_weighted_sum_spec"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyampact.alignmentUtils.</span></span><span class="sig-name descname"><span class="pre">f0_est_weighted_sum_spec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">noteStart_s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noteEnd_s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">midiNote</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freqs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">useIf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignmentUtils.html#f0_est_weighted_sum_spec"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Calculate F0, power, and spectrum for a single note.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -336,9 +340,8 @@ and <cite>v2[i2]</cite>, clipped to the specified domain bounds.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">pyampact.alignmentUtils.</span></span><span class="sig-name descname"><span class="pre">load_audiofile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignmentUtils.html#load_audiofile"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Loads file for analysis. Currently only the WAV file format is allowed.  AIFF, MP3, etc. must be converted prior.</p>
-<dl class="field-list simple">
+<span class="sig-prename descclassname"><span class="pre">pyampact.alignmentUtils.</span></span><span class="sig-name descname"><span class="pre">load_audiofile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mono_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignmentUtils.html#load_audiofile"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>audio_file</strong> (<em>str</em>) – The path to the wav file to be loaded.</p>
 </dd>
@@ -346,6 +349,13 @@ and <cite>v2[i2]</cite>, clipped to the specified domain bounds.</p>
 <dd class="field-even"><p><ul class="simple">
 <li><p><strong>audio_data</strong> (<em>The loaded wav file as a numpy array.</em>)</p></li>
 <li><p><strong>sr</strong> (<em>The original sample rate of the audio file.</em>)</p></li>
+<li><p><em>Load WAV and (optionally) mix to mono while preserving loudness.</em></p></li>
+<li><p><em>mono_mode</em> –</p>
+<ul>
+<li><p>“mean”: average channels (librosa-style; safest headroom) - do librosa.to_mono()</p></li>
+<li><p>”equal_power”: sum channels and divide by sqrt(C) (~keeps perceived power)</p></li>
+</ul>
+</li>
 </ul>
 </p>
 </dd>
@@ -384,27 +394,6 @@ This spectrogram represents the audio signal over time and frequency.</p></li>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The similarity matrix S, calculated based on the Peak Structure Distance between the binary mask M and the spectrogram D.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">pyampact.alignmentUtils.</span></span><span class="sig-name descname"><span class="pre">simmx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/alignmentUtils.html#simmx"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Calculate a similarity matrix between feature matrices A and B.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>A</strong> (<em>np.ndarray</em>) – The first feature matrix, where each row represents a sample and each column represents a feature.</p></li>
-<li><p><strong>B</strong> (<em>np.ndarray</em><em>, </em><em>optional</em>) – The second feature matrix. If not provided, B will be set to A, allowing for self-similarity calculation.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The similarity matrix between A and B, where the element at (i, j) represents the similarity
-between the i-th sample of A and the j-th sample of B.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>np.ndarray</p>
