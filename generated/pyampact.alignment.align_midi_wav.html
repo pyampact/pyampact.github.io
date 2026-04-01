@@ -6,21 +6,21 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyampact.alignment.align_midi_wav &mdash; pyAMPACT 0.0.5 documentation</title>
+  <title>pyampact.alignment.align_midi_wav &mdash; pyAMPACT 0.0.6 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
 
   
     <link rel="canonical" href="https://pyampact.github.io/generated/pyampact.alignment.align_midi_wav.html" />
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=282f96c0"></script>
-      <script src="../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/documentation_options.js?v=1fd71caa"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pyampact.alignment.alignment_visualiser" href="pyampact.alignment.alignment_visualiser.html" />
+    <link rel="next" title="alignmentUtils" href="../alignmentUtils.html" />
     <link rel="prev" title="pyampact.alignment.run_DTW_alignment" href="pyampact.alignment.run_DTW_alignment.html" /> 
 </head>
 
@@ -57,9 +57,6 @@
 <li class="toctree-l4"><a class="reference internal" href="#pyampact.alignment.align_midi_wav"><code class="docutils literal notranslate"><span class="pre">align_midi_wav()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="pyampact.alignment.alignment_visualiser.html">pyampact.alignment.alignment_visualiser</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pyampact.alignment.ifgram.html">pyampact.alignment.ifgram</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pyampact.alignment.get_ons_offs.html">pyampact.alignment.get_ons_offs</a></li>
 </ul>
 </li>
 </ul>
@@ -69,6 +66,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../performance.html">performance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../symbolic.html">symbolic</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../symbolicUtils.html">symbolicUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../speechDescriptors.html">speechDescriptors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../speechDescriptorsUtils.html">speechDescriptorsUtils</a></li>
 </ul>
 
         </div>
@@ -100,14 +99,14 @@
 <h1>pyampact.alignment.align_midi_wav<a class="headerlink" href="#pyampact-alignment-align-midi-wav" title="Link to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyampact.alignment.align_midi_wav">
-<span class="sig-prename descclassname"><span class="pre">pyampact.alignment.</span></span><span class="sig-name descname"><span class="pre">align_midi_wav</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">WF</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TH</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tsr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nhar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">showSpec</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyampact/alignment.html#align_midi_wav"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignment.align_midi_wav" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyampact.alignment.</span></span><span class="sig-name descname"><span class="pre">align_midi_wav</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nmat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">WF</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TH</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tsr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nhar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyampact/alignment.html#align_midi_wav"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignment.align_midi_wav" title="Link to this definition"></a></dt>
 <dd><p>Align a midi file to a wav file using the “peak structure
 distance” of Orio et al. that use the MIDI notes to build
 a mask that is compared against harmonics in the audio</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>piece</strong> (<a class="reference internal" href="pyampact.symbolic.Score.html#pyampact.symbolic.Score" title="pyampact.symbolic.Score"><em>Score</em></a>) – A <cite>Score</cite> instance containing the symbolic MIDI data.</p></li>
+<li><p><strong>piece</strong> (<em>Music21 Object</em>) – Object from load_score with all data and labels</p></li>
 <li><p><strong>WF</strong> (<em>ndarray</em>) – Audio time series of the WAV file.</p></li>
 <li><p><strong>sr</strong> (<em>int</em>) – Sampling rate of the audio file.</p></li>
 <li><p><strong>TH</strong> (<em>float</em>) – Time step resolution, typically in seconds (default is 0.025).</p></li>
@@ -117,7 +116,6 @@ a mask that is compared against harmonics in the audio</p>
 <li><p><strong>nhar</strong> (<em>int</em>) – Number of harmonics to include in the mask.</p></li>
 <li><p><strong>wms</strong> (<em>float</em>) – Window size in milliseconds.</p></li>
 <li><p><strong>hop</strong> (<em>int</em>) – Hop size for the analysis window.</p></li>
-<li><p><strong>showSpec</strong> (<em>bool</em>) – If True, displays the spectrogram.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -140,7 +138,7 @@ a mask that is compared against harmonics in the audio</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="pyampact.alignment.run_DTW_alignment.html" class="btn btn-neutral float-left" title="pyampact.alignment.run_DTW_alignment" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="pyampact.alignment.alignment_visualiser.html" class="btn btn-neutral float-right" title="pyampact.alignment.alignment_visualiser" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../alignmentUtils.html" class="btn btn-neutral float-right" title="alignmentUtils" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

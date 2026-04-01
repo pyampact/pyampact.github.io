@@ -1,0 +1,458 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>speechDescriptorsUtils &mdash; pyAMPACT 0.0.6 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+    <link rel="canonical" href="https://pyampact.github.io/speechDescriptorsUtils.html" />
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=1fd71caa"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pyampact.speechDescriptorsUtils.compute_avqi" href="generated/pyampact.speechDescriptorsUtils.compute_avqi.html" />
+    <link rel="prev" title="pyampact.speechDescriptors.get_speech_descriptors" href="generated/pyampact.speechDescriptors.get_speech_descriptors.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            pyAMPACT
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="alignment.html">alignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="alignmentUtils.html">alignmentUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataCompilation.html">dataCompilation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="symbolic.html">symbolic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="symbolicUtils.html">symbolicUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speechDescriptors.html">speechDescriptors</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">speechDescriptorsUtils</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">speechDescriptorsUtils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.speechDescriptorsUtils.compute_avqi.html">pyampact.speechDescriptorsUtils.compute_avqi</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pyAMPACT</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">speechDescriptorsUtils</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/speechDescriptorsUtils.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="speechdescriptorsutils">
+<h1>speechDescriptorsUtils<a class="headerlink" href="#speechdescriptorsutils" title="Link to this heading"></a></h1>
+<section id="id1">
+<h2>speechDescriptorsUtils<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.speechDescriptorsUtils.compute_avqi.html#pyampact.speechDescriptorsUtils.compute_avqi" title="pyampact.speechDescriptorsUtils.compute_avqi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_avqi</span></code></a>(shimmer_local, hnr_mean_db, ...)</p></td>
+<td><p>Compute the Acoustic Voice Quality Index (AVQI).</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">pyampact.speechDescriptorsUtils.</span></span><span class="sig-name descname"><span class="pre">compute_avqi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shimmer_local</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hnr_mean_db</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cpps_vowel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slope_vowel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cpps_speech</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slope_speech</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/speechDescriptorsUtils.html#compute_avqi"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Compute the Acoustic Voice Quality Index (AVQI).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">pyampact.speechDescriptorsUtils.</span></span><span class="sig-name descname"><span class="pre">compute_bark_band_energies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">S</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_bands</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">24</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean_energies</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/speechDescriptorsUtils.html#compute_bark_band_energies"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Compute bark band energies via bark_scale_freqs edges function</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>S</strong> (<em>ndraay</em>) – magnitude spectrum</p></li>
+<li><p><strong>sr</strong> (<em>float</em>) – sample rate of audio file</p></li>
+<li><p><strong>n_bands</strong> (<em>int</em>) – number of bark bands; default = 24</p></li>
+<li><p><strong>mean_energies</strong> (<em>bool</em>) – default (True) returns mean of band energies, False returns array of band energies</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>band_energies</strong> – mean of band energies as float, or array of band energies</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">pyampact.speechDescriptorsUtils.</span></span><span class="sig-name descname"><span class="pre">compute_correlation_dimension</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_frac</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/speechDescriptorsUtils.html#compute_correlation_dimension"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Compute Correlation Dimension (CD)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>array</em>) – time series values</p></li>
+<li><p><strong>m</strong> (<em>int</em>) – embedding dimension for phase-space reconstruction; default = 3</p></li>
+<li><p><strong>tau</strong> (<em>int</em>) – time delay (in samples); default = 2</p></li>
+<li><p><strong>r_frac</strong> (<em>float</em>) – fraction of the distance standard deviation used to set the radius threshold; default = 0.1</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>cd</strong> – estimated correlation dimenstion, or np.nan if insufficient data</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">pyampact.speechDescriptorsUtils.</span></span><span class="sig-name descname"><span class="pre">compute_dfa</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_windows</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/speechDescriptorsUtils.html#compute_dfa"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Compute DFA (Detrended Fluctuation Analysis) scaling component (alpha) for 1D signal y</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>array</em>) – speech segment waveform</p></li>
+<li><p><strong>min_window</strong> (<em>max_window</em>) – smallest window size (samples); default = 4</p></li>
+<li><p><strong>min_window</strong> – largest window size (samples); default = len(y)//4</p></li>
+<li><p><strong>n_windows</strong> (<em>int</em>) – number of window sizes to test; default = 20</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>alpha</strong> – DFA scaling exponent</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">pyampact.speechDescriptorsUtils.</span></span><span class="sig-name descname"><span class="pre">compute_dpi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">snd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pitch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intensity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intensity_thresh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_pause_dur</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.15</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/speechDescriptorsUtils.html#compute_dpi"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Compute Duration of Pause Intervals (DPI).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>snd</strong> (<em>Praat Sound Object</em>) – Parselmouth/Praat Sound Object</p></li>
+<li><p><strong>pitch</strong> (<em>Praat Pitch Object</em>) – Parselmouth/Praat Pitch Object</p></li>
+<li><p><strong>intensity</strong> (<em>Praat Intensity Object</em>) – time delay (in samples)</p></li>
+<li><p><strong>intensity_thresh</strong> (<em>int</em>) – dB SPL threshold for silence</p></li>
+<li><p><strong>time_step</strong> (<em>float</em>) – analysis step in seconds; default = 0.01</p></li>
+<li><p><strong>min_pause_dur</strong> (<em>float</em>) – minimum pause duration to count (sec); default = 0.15</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>pause_durations</strong> (<em>array</em>) – list of pause durations (s)</p></li>
+<li><p><strong>mean_dpi</strong> (<em>float</em>) – average pause duration</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">pyampact.speechDescriptorsUtils.</span></span><span class="sig-name descname"><span class="pre">compute_emd_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_imfs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_sift</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/speechDescriptorsUtils.html#compute_emd_features"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Empirical Mode Decomposition (EMD) features.
+Returns scalar complexity measures, not raw IMFs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>1D numpy array</em>) – input signal (e.g. gneVals or waveform)</p></li>
+<li><p><strong>max_imfs</strong> (<em>int</em>) – maximum IMFs to extract; default = 6</p></li>
+<li><p><strong>max_sift</strong> (<em>int</em>) – max sifting iterations per IMF; default = 10</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>emd_n_imfs</strong> (<em>int</em>) – number of imfs</p></li>
+<li><p><strong>emd_energy_ratio</strong> (<em>float</em>) – high-frequency IMF energy / total energy</p></li>
+<li><p><strong>emd_entropy</strong> (<em>float</em>) – Shannon entropy of IMF energy distribution</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">pyampact.speechDescriptorsUtils.</span></span><span class="sig-name descname"><span class="pre">compute_mfcc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_mfcc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">13</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_fft</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2048</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">512</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/speechDescriptorsUtils.html#compute_mfcc"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Compute Mel Frequency Cepstral Coefficients (MFCCs)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>seg</strong> (<em>Praat Sound Object</em>) – segment of Sound cut around onset and offset</p></li>
+<li><p><strong>n_mfcc</strong> (<em>int</em>) – number of coefficients to return; default = 13</p></li>
+<li><p><strong>n_fft</strong> (<em>int</em>) – FFT window size; default = 2048</p></li>
+<li><p><strong>hop_length</strong> (<em>int</em>) – number of samples of analysis advances between consecutive frames; default = 512</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>mfcc</strong> – list of MFCCs</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON Stringified list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">pyampact.speechDescriptorsUtils.</span></span><span class="sig-name descname"><span class="pre">compute_ppe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pitch_values_hz</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/speechDescriptorsUtils.html#compute_ppe"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Compute Pitch Period Entropy (PPE) from a 1D array of pitch values in Hz.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pitch_values_hz</strong> (<em>ndarray</em>) – array of pitch values</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>entropy</strong> – Pitch Period Entropy (PPE)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">pyampact.speechDescriptorsUtils.</span></span><span class="sig-name descname"><span class="pre">compute_recurrence_period_and_rpde</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">onset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_bins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/speechDescriptorsUtils.html#compute_recurrence_period_and_rpde"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Compute recurrence period (RP) and recurrence period density entropy (RPDE)</p>
+<p>RP is the mean inter-pulse interval within a segment.
+RPDE is the normalized entropy of the distribution of recurrence periods.</p>
+<p>Low = highly periodic/stable signal
+High = irregular, noisy, chaotic signal</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pp</strong> (<em>Praat Pitch Object</em>) – Periodic (cc) of the segment</p></li>
+<li><p><strong>onset</strong> (<em>float</em>)</p></li>
+<li><p><strong>offset</strong> (<em>float</em>) – segment boundaries in seconds</p></li>
+<li><p><strong>n_bins</strong> (<em>int</em>) – bin count for histogram calculation; default = 50</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>rp_ms</strong> (<em>float</em>) – recurrence period in ms</p></li>
+<li><p><strong>rpde</strong> (<em>float</em>) – normalized entropy of recurrence-period distribution</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">pyampact.speechDescriptorsUtils.</span></span><span class="sig-name descname"><span class="pre">compute_spectral_spread</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">S</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freqs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/speechDescriptorsUtils.html#compute_spectral_spread"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Compute spectral spread</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>S</strong> (<em>ndarray</em>) – magnitude spectrum</p></li>
+<li><p><strong>freqs</strong> (<em>array</em>) – frequency axis in Hz (freq_bins,)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>rp_ms</strong> (<em>float</em>) – recurrence period in ms</p></li>
+<li><p><strong>rpde</strong> (<em>float</em>) – normalized entropy of recurrence-period distribution</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">pyampact.speechDescriptorsUtils.</span></span><span class="sig-name descname"><span class="pre">compute_tqwt_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Q</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">J</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_keep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/speechDescriptorsUtils.html#compute_tqwt_features"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Compute a fixed-width feature vector from the Tunable Q-factor Wavelet Transform (TQWT).
+Features are derived from subband energies of the TQWT decomposition of a 1-D signal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>1D numpy array</em>) – input signal</p></li>
+<li><p><strong>sr</strong> (<em>float</em>) – sample rate of the signal in Hz. (Currently unused; included for API consistency.)</p></li>
+<li><p><strong>Q</strong> (<em>float</em>) – Q-factor controlling oscillatory behavior of the wavelets; default = 1.0</p></li>
+<li><p><strong>r</strong> (<em>float</em>) – redundancy factor of the TQWT; default = 3.0</p></li>
+<li><p><strong>J</strong> (<em>int</em>) – number of TQWT decomposition levels; default = 8</p></li>
+<li><p><strong>n_keep</strong> (<em>int</em>) – number of lowest-index subband log-energies to return; default = 5</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p><strong>features</strong> – Feature vector containing, in order:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>tqwt_e1 .. tqwt_e{n_keep}<span class="classifier">float</span></dt><dd><p>Log10 subband energies of the first <cite>n_keep</cite> TQWT bands.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>tqwt_entropy<span class="classifier">float</span></dt><dd><p>Normalized Shannon entropy of the subband energy distribution.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>tqwt_centroid<span class="classifier">float</span></dt><dd><p>Energy-weighted centroid of subband indices.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>tqwt_low_high_ratio<span class="classifier">float</span></dt><dd><p>Ratio of summed low-band energy to high-band energy.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>If insufficient valid data are available, all features are returned as NaN.</p>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">pyampact.speechDescriptorsUtils.</span></span><span class="sig-name descname"><span class="pre">compute_vot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pitch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/speechDescriptorsUtils.html#compute_vot"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Compute Voice Onset Time (VOT)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>seg</strong> (<em>Praat Sound Object</em>) – segment/slice of Snd object between onset and offset</p></li>
+<li><p><strong>pitch</strong> (<em>Pitch</em><em> (</em><em>CC</em><em>) </em><em>object</em>) – pitch object from Praat</p></li>
+<li><p><strong>sr</strong> (<em>float</em>) – sample rate of audio</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>entropy</strong> – voice onset time (in ms)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">pyampact.speechDescriptorsUtils.</span></span><span class="sig-name descname"><span class="pre">compute_wt_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'db4'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/speechDescriptorsUtils.html#compute_wt_features"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Compute wavelet-based features from a 1-D signal using discrete wavelet transform (DWT).</p>
+<p>Features are derived from the normalized energy distribution of wavelet subbands.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>1D numpy array</em>) – input signal</p></li>
+<li><p><strong>wavelet</strong> (<em>str</em>) – Wavelet family used for decomposition; default = “db4”</p></li>
+<li><p><strong>level</strong> (<em>int</em>) – Decomposition level; default = 5</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>wt_entropy</strong> (<em>float</em>) – Shannon entropy (base 2) of the normalized wavelet subband energies.</p></li>
+<li><p><strong>wt_low_high_ratio</strong> (<em>float</em>) – Ratio of high-frequency subband energy to low-frequency subband energy.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">pyampact.speechDescriptorsUtils.</span></span><span class="sig-name descname"><span class="pre">feature_spectral_flux</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f_s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/speechDescriptorsUtils.html#feature_spectral_flux"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Calculates spectral flux</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>ndarray</em>) – spectrogram</p></li>
+<li><p><strong>f_s</strong> (<em>float</em>) – sample rate of audio data</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>vsf</strong> – spectral_flux</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="generated/pyampact.speechDescriptors.get_speech_descriptors.html" class="btn btn-neutral float-left" title="pyampact.speechDescriptors.get_speech_descriptors" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="generated/pyampact.speechDescriptorsUtils.compute_avqi.html" class="btn btn-neutral float-right" title="pyampact.speechDescriptorsUtils.compute_avqi" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, AMPACT Research Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

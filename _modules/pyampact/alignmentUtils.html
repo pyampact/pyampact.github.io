@@ -5,17 +5,17 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyampact.alignmentUtils &mdash; pyAMPACT 0.0.5 documentation</title>
+  <title>pyampact.alignmentUtils &mdash; pyAMPACT 0.0.6 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
 
   
     <link rel="canonical" href="https://pyampact.github.io/_modules/pyampact/alignmentUtils.html" />
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=282f96c0"></script>
-      <script src="../../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/documentation_options.js?v=1fd71caa"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -52,6 +52,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../performance.html">performance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../symbolic.html">symbolic</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../symbolicUtils.html">symbolicUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../speechDescriptors.html">speechDescriptors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../speechDescriptorsUtils.html">speechDescriptorsUtils</a></li>
 </ul>
 
         </div>
@@ -86,7 +88,6 @@
 <span class="sd">.. autosummary::</span>
 <span class="sd">    :toctree: generated/</span>
 
-<span class="sd">    dpcore</span>
 <span class="sd">    dp</span>
 <span class="sd">    gh    </span>
 <span class="sd">    g</span>
@@ -94,8 +95,6 @@
 <span class="sd">    maptimes    </span>
 <span class="sd">    f0_est_weighted_sum</span>
 <span class="sd">    f0_est_weighted_sum_spec</span>
-<span class="sd">    durations_from_midi_ticks</span>
-<span class="sd">    load_audiofile</span>
 <span class="sd">    trim_silences</span>
 <span class="sd">    merge_grace_notes</span>
 
@@ -105,12 +104,10 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">librosa</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">mido</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;dpcore&quot;</span><span class="p">,</span>
     <span class="s2">&quot;dp&quot;</span><span class="p">,</span>
     <span class="s2">&quot;gh&quot;</span><span class="p">,</span>
     <span class="s2">&quot;g&quot;</span><span class="p">,</span>
@@ -118,157 +115,63 @@
     <span class="s2">&quot;maptimes&quot;</span><span class="p">,</span>
     <span class="s2">&quot;f0_est_weighted_sum&quot;</span><span class="p">,</span>
     <span class="s2">&quot;f0_est_weighted_sum_spec&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;durations_from_midi_ticks&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;load_audiofile&quot;</span><span class="p">,</span>
     <span class="s2">&quot;trim_silences&quot;</span><span class="p">,</span>
     <span class="s2">&quot;merge_grace_notes&quot;</span>
 <span class="p">]</span>
 
 
-<div class="viewcode-block" id="dpcore">
-<a class="viewcode-back" href="../../generated/pyampact.alignmentUtils.dpcore.html#pyampact.alignmentUtils.dpcore">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">dpcore</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">pen</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Core dynamic programming calculation of best path.</span>
-<span class="sd">       M[r,c] is the array of local costs.</span>
-<span class="sd">       Create D[r,c] as the array of costs-of-best-paths to r,c,</span>
-<span class="sd">       and phi[r,c] as the indicator of the point preceding [r,c] to</span>
-<span class="sd">       allow traceback; 0 = (r-1,c-1), 1 = (r,c-1), 2 = (r-1, c)</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    M : np.ndarray</span>
-<span class="sd">        A 2D array of local costs, where M[r, c] represents the cost at position (r, c).</span>
-
-<span class="sd">    pen : float</span>
-<span class="sd">        A penalty value applied for non-diagonal movements in the path.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    D : np.ndarray</span>
-<span class="sd">        A 2D array of cumulative best costs to each point (r,c), starting from (0,0).</span>
-
-<span class="sd">    phi : np.ndarray</span>
-<span class="sd">        A 2D array of integers used for traceback, where:</span>
-<span class="sd">        - 0 indicates the previous point was (r-1, c-1).</span>
-<span class="sd">        - 1 indicates the previous point was (r, c-1).</span>
-<span class="sd">        - 2 indicates the previous point was (r-1, c).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="c1"># Pure python equivalent</span>
-    <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-    <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
-    <span class="c1"># bottom edge can only come from preceding column</span>
-    <span class="n">D</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">:]</span><span class="o">+</span><span class="n">pen</span><span class="p">)</span>
-    <span class="n">phi</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="c1"># left edge can only come from preceding row</span>
-    <span class="n">D</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">pen</span><span class="p">)</span>
-    <span class="n">phi</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
-    <span class="c1"># initialize bottom left</span>
-    <span class="n">D</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-    <span class="n">phi</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="c1"># Calculate the rest recursively</span>
-    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">M</span><span class="p">)[</span><span class="mi">1</span><span class="p">]):</span>
-        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">M</span><span class="p">)[</span><span class="mi">0</span><span class="p">]):</span>
-            <span class="n">best_preceding_costs</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="n">D</span><span class="p">[</span><span class="n">r</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">pen</span><span class="o">+</span><span class="n">D</span><span class="p">[</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">pen</span><span class="o">+</span><span class="n">D</span><span class="p">[</span><span class="n">r</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="p">]]</span>
-            <span class="n">tb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">best_preceding_costs</span><span class="p">)</span>
-            <span class="n">D</span><span class="p">[</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_preceding_costs</span><span class="p">[</span><span class="n">tb</span><span class="p">]</span> <span class="o">+</span> <span class="n">M</span><span class="p">[</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span>
-            <span class="n">phi</span><span class="p">[</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">tb</span>
-
-    <span class="k">return</span> <span class="n">D</span><span class="p">,</span> <span class="n">phi</span></div>
-
-
-
 <div class="viewcode-block" id="dp">
 <a class="viewcode-back" href="../../generated/pyampact.alignmentUtils.dp.html#pyampact.alignmentUtils.dp">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">dp</span><span class="p">(</span><span class="n">local_costs</span><span class="p">,</span> <span class="n">penalty</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">gutter</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">G</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">dp</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Use dynamic programming to find a min-cost path through a matrix</span>
-<span class="sd">    of local costs.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    local_costs : np.ndarray</span>
-<span class="sd">        A 2D matrix of local costs, where each cell represents the cost associated </span>
-<span class="sd">        with that specific position.</span>
-
-<span class="sd">    penalty : float, optional</span>
-<span class="sd">        An additional cost incurred for moving in the horizontal or vertical direction </span>
-<span class="sd">        (i.e., (0,1) and (1,0) steps). Default is 0.1.</span>
-
-<span class="sd">    gutter : float, optional</span>
-<span class="sd">        A proportion of edge length that allows for deviations away from the </span>
-<span class="sd">        bottom-left corner (-1,-1) in the optimal path. Default is 0.0, meaning </span>
-<span class="sd">        the path must reach the top-right corner.</span>
-
-<span class="sd">    G : float, optional</span>
-<span class="sd">        A proportion of the edge length considered for identifying gulleys in the </span>
-<span class="sd">        cost matrix. Default is 0.5.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    p : np.ndarray</span>
-<span class="sd">        An array of row indices corresponding to the best path.</span>
-
-<span class="sd">    q : np.ndarray</span>
-<span class="sd">        An array of column indices corresponding to the best path.</span>
-
-<span class="sd">    total_costs : np.ndarray</span>
-<span class="sd">        A 2D array of minimum costs to reach each cell in the local costs matrix.</span>
-
-<span class="sd">    phi : np.ndarray</span>
-<span class="sd">        A traceback matrix indicating the preceding best-path step for each cell, where:</span>
-<span class="sd">        - 0 indicates a diagonal predecessor.</span>
-<span class="sd">        - 1 indicates the previous column (same row).</span>
-<span class="sd">        - 2 indicates the previous row (same column).</span>
+<span class="sd">    Port of Dan Ellis dp.m</span>
+<span class="sd">    [p,q,D] = dp(M)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">local_costs</span><span class="p">)</span>
-    <span class="n">total_costs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">rows</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">cols</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="nb">float</span><span class="p">)</span>
-    <span class="n">total_costs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
-    <span class="n">total_costs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
-    <span class="n">total_costs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">total_costs</span><span class="p">[</span><span class="mi">1</span><span class="p">:(</span><span class="n">rows</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">1</span><span class="p">:(</span><span class="n">cols</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> <span class="n">local_costs</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">r</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">shape</span>
 
-    <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">),</span> <span class="nb">int</span><span class="p">)</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">c</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">D</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">D</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">D</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">D</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">r</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="n">c</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">M</span>
 
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">rows</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">cols</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-            <span class="n">choices</span> <span class="o">=</span> <span class="p">[</span><span class="n">total_costs</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span>
-                       <span class="n">total_costs</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">penalty</span><span class="p">,</span>
-                       <span class="n">total_costs</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">penalty</span><span class="p">]</span>
-            <span class="n">tb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">choices</span><span class="p">)</span>
-            <span class="n">total_costs</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">choices</span><span class="p">[</span><span class="n">tb</span><span class="p">]</span>
-            <span class="n">phi</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">tb</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
 
-    <span class="n">total_costs</span> <span class="o">=</span> <span class="n">total_costs</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">1</span><span class="p">:]</span>
-    <span class="n">phi</span> <span class="o">=</span> <span class="n">phi</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">1</span><span class="p">:]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">r</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+            <span class="c1"># MATLAB: min([D(i,j), D(i,j+1), D(i+1,j)])</span>
+            <span class="n">choices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="p">]])</span>
+            <span class="n">tb</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanargmin</span><span class="p">(</span><span class="n">choices</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># 1..3</span>
+            <span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">choices</span><span class="p">[</span><span class="n">tb</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="n">phi</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">tb</span>
 
-    <span class="k">if</span> <span class="n">gutter</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">rows</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">cols</span> <span class="o">-</span> <span class="mi">1</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">best_top_pt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">total_costs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:</span><span class="nb">int</span><span class="p">(</span><span class="n">G</span> <span class="o">*</span> <span class="n">cols</span><span class="p">)])</span>
-        <span class="n">best_right_pt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">total_costs</span><span class="p">[:</span><span class="nb">int</span><span class="p">(</span><span class="n">G</span> <span class="o">*</span> <span class="n">rows</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-
-        <span class="k">if</span> <span class="n">total_costs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">best_top_pt</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">total_costs</span><span class="p">[</span><span class="n">best_right_pt</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
-            <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">rows</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">best_top_pt</span>
+    <span class="c1"># Traceback from bottom-right (r-1,c-1) to (0,0)</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">r</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">j</span> <span class="o">=</span> <span class="n">c</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="p">[</span><span class="n">j</span><span class="p">]</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">j</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">j</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">-=</span> <span class="mi">1</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">best_right_pt</span><span class="p">,</span> <span class="n">cols</span> <span class="o">-</span> <span class="mi">1</span>
-
-    <span class="n">p</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="p">[</span><span class="n">j</span><span class="p">]</span>
-    <span class="k">while</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">tb</span> <span class="o">=</span> <span class="n">phi</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">tb</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">i</span> <span class="o">-=</span> <span class="mi">1</span>
-            <span class="n">j</span> <span class="o">-=</span> <span class="mi">1</span>
-        <span class="k">elif</span> <span class="n">tb</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="n">i</span> <span class="o">-=</span> <span class="mi">1</span>
-        <span class="k">elif</span> <span class="n">tb</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-            <span class="n">j</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="n">tb</span> <span class="o">=</span> <span class="n">phi</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">tb</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">i</span> <span class="o">-=</span> <span class="mi">1</span>
+                <span class="n">j</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="k">elif</span> <span class="n">tb</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">i</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="k">elif</span> <span class="n">tb</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="n">j</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;bad traceback&quot;</span><span class="p">)</span>
         <span class="n">p</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
         <span class="n">q</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">:]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">:]),</span> <span class="n">total_costs</span></div>
-
+    <span class="n">D</span> <span class="o">=</span> <span class="n">D</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">r</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="n">c</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">),</span> <span class="n">D</span></div>
 
 
 <div class="viewcode-block" id="gh">
@@ -396,34 +299,35 @@
 <a class="viewcode-back" href="../../generated/pyampact.alignmentUtils.maptimes.html#pyampact.alignmentUtils.maptimes">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">maptimes</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">intime</span><span class="p">,</span> <span class="n">outtime</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Map onset/offset times using linear interpolation from `intime` to `outtime`.</span>
+<span class="sd">    Map onset/offset times using a monotone linear interpolation from `intime` to `outtime`.</span>
+<span class="sd">    Handles duplicate `intime` entries (DTW path repeats) by averaging their `outtime`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    t : np.ndarray of shape (N, 2)</span>
-<span class="sd">        Each row contains [onset, offset].</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    np.ndarray of shape (N, 2)</span>
-<span class="sd">        Mapped onset and offset times.</span>
-<span class="sd">    &quot;&quot;&quot;</span>    
-    <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-    <span class="n">intime</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">intime</span><span class="p">)</span>
-    <span class="n">outtime</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">outtime</span><span class="p">)</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">intime</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">intime</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">outtime</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">outtime</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 
     <span class="n">original_shape</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">shape</span>
-    <span class="n">t</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
-    <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">outtime</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="c1"># Sort by intime</span>
+    <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">intime</span><span class="p">)</span>
+    <span class="n">intime</span> <span class="o">=</span> <span class="n">intime</span><span class="p">[</span><span class="n">order</span><span class="p">]</span>
+    <span class="n">outtime</span> <span class="o">=</span> <span class="n">outtime</span><span class="p">[</span><span class="n">order</span><span class="p">]</span>
 
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ti</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
-        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">intime</span><span class="p">,</span> <span class="n">ti</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">idx</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">outtime</span><span class="p">):</span>
-            <span class="n">idx</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">outtime</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
-        <span class="n">u</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">outtime</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="c1"># Collapse duplicate intime values by averaging outtime</span>
+    <span class="n">uniq</span><span class="p">,</span> <span class="n">inv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">intime</span><span class="p">,</span> <span class="n">return_inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">out_sum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">inv</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">outtime</span><span class="p">)</span>
+    <span class="n">out_cnt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">inv</span><span class="p">)</span>
+    <span class="n">out_u</span> <span class="o">=</span> <span class="n">out_sum</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">out_cnt</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">u</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">original_shape</span><span class="p">)</span></div>
+    <span class="c1"># Enforce nondecreasing outtime (DTW should be monotone; this prevents tiny inversions)</span>
+    <span class="n">out_u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="o">.</span><span class="n">accumulate</span><span class="p">(</span><span class="n">out_u</span><span class="p">)</span>
+
+    <span class="c1"># Linear interpolation with endpoint clamping</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">uniq</span><span class="p">,</span> <span class="n">out_u</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="n">out_u</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">right</span><span class="o">=</span><span class="n">out_u</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">y</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">original_shape</span><span class="p">)</span></div>
 
 
 
@@ -581,119 +485,38 @@
 
 
 
-<div class="viewcode-block" id="durations_from_midi_ticks">
-<a class="viewcode-back" href="../../generated/pyampact.alignmentUtils.durations_from_midi_ticks.html#pyampact.alignmentUtils.durations_from_midi_ticks">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">durations_from_midi_ticks</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Extract note durations from a MIDI file using MIDI ticks. This function processes a MIDI file, calculates note onset and offset times </span>
-<span class="sd">    based on MIDI ticks and tempo, and returns the duration matrix (nmat). It handles </span>
-<span class="sd">    tempo changes and computes times by converting MIDI ticks to seconds.</span>
-
-<span class="sd">    Assumes a default pulses-per-quarter-note (PPQN) value of 96.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    filename : str</span>
-<span class="sd">        Path to the MIDI file to be processed.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    np.ndarray</span>
-<span class="sd">        A numpy array where each row contains the start and end times of notes </span>
-<span class="sd">        (in seconds) based on MIDI ticks and tempo changes.</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="c1"># symbolic.py converts the files beforehand</span>
-    <span class="n">mid</span> <span class="o">=</span> <span class="n">mido</span><span class="o">.</span><span class="n">MidiFile</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-
-    <span class="n">nmat</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="c1"># Set PPQN to 96</span>
-    <span class="n">ppqn</span> <span class="o">=</span> <span class="mi">96</span>
-
-    <span class="c1"># Convert ticks per beat to seconds per tick</span>
-    <span class="n">seconds_per_tick</span> <span class="o">=</span> <span class="mi">60</span> <span class="o">/</span> <span class="p">(</span><span class="mi">500000</span> <span class="o">/</span> <span class="n">ppqn</span><span class="p">)</span>
-
-    <span class="c1"># Default tempo in microseconds per quarter note (500000 µs = 120 BPM)</span>
-    <span class="n">current_tempo</span> <span class="o">=</span> <span class="mi">500000</span>
-
-    <span class="k">for</span> <span class="n">track</span> <span class="ow">in</span> <span class="n">mid</span><span class="o">.</span><span class="n">tracks</span><span class="p">:</span>
-        <span class="n">cum_time</span> <span class="o">=</span> <span class="mi">0</span>
-
-        <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">track</span><span class="p">:</span>
-            <span class="n">cum_time</span> <span class="o">+=</span> <span class="n">msg</span><span class="o">.</span><span class="n">time</span>
-
-            <span class="k">if</span> <span class="n">msg</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;set_tempo&#39;</span><span class="p">:</span>
-                <span class="n">current_tempo</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">tempo</span>
-                <span class="c1"># Update seconds per tick based on new tempo</span>
-                <span class="n">seconds_per_tick</span> <span class="o">=</span> <span class="n">current_tempo</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1_000_000</span> <span class="o">*</span> <span class="n">ppqn</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="n">msg</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;note_on&#39;</span> <span class="ow">and</span> <span class="n">msg</span><span class="o">.</span><span class="n">velocity</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">note</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">note</span>
-                <span class="n">velocity</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">velocity</span>
-                <span class="n">start_time</span> <span class="o">=</span> <span class="n">cum_time</span> <span class="o">*</span> <span class="n">seconds_per_tick</span>
-                <span class="n">nmat</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">start_time</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-
-            <span class="k">if</span> <span class="n">msg</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;note_off&#39;</span> <span class="ow">or</span> <span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;note_on&#39;</span> <span class="ow">and</span> <span class="n">msg</span><span class="o">.</span><span class="n">velocity</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
-                <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">nmat</span><span class="p">):</span>
-                    <span class="k">if</span> <span class="n">event</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">event</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">cum_time</span> <span class="o">*</span> <span class="n">seconds_per_tick</span><span class="p">:</span>
-                        <span class="n">end_time</span> <span class="o">=</span> <span class="n">cum_time</span> <span class="o">*</span> <span class="n">seconds_per_tick</span>
-                        <span class="n">event</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">end_time</span>
-                        <span class="k">break</span>
-
-    <span class="c1"># Convert nmat to np.array and return only the 3rd and 4th columns</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">nmat</span><span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="load_audiofile">
-<a class="viewcode-back" href="../../generated/pyampact.alignmentUtils.load_audiofile.html#pyampact.alignmentUtils.load_audiofile">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">load_audiofile</span><span class="p">(</span><span class="n">audio_file</span><span class="p">,</span> <span class="n">mono_mode</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">):</span>    
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    audio_file : str</span>
-<span class="sd">        The path to the wav file to be loaded.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    audio_data : The loaded wav file as a numpy array.</span>
-<span class="sd">    sr : The original sample rate of the audio file.</span>
-<span class="sd">        </span>
-<span class="sd">    Load WAV and (optionally) mix to mono while preserving loudness.</span>
-<span class="sd">    mono_mode:</span>
-<span class="sd">      - &quot;mean&quot;: average channels (librosa-style; safest headroom) - do librosa.to_mono()</span>
-<span class="sd">      - &quot;equal_power&quot;: sum channels and divide by sqrt(C) (~keeps perceived power)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">with</span> <span class="n">wave</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">audio_file</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">wf</span><span class="p">:</span>
-        <span class="n">sr</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">getframerate</span><span class="p">()</span>
-        <span class="n">n_channels</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">getnchannels</span><span class="p">()</span>
-        <span class="n">n_frames</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">getnframes</span><span class="p">()</span>
-        <span class="n">sampwidth</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">getsampwidth</span><span class="p">()</span>  <span class="c1"># bytes per sample</span>
-
-        <span class="n">raw</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">readframes</span><span class="p">(</span><span class="n">n_frames</span><span class="p">)</span>
-
-    <span class="c1"># ---- decode to float32 in [-1, 1] (16-bit PCM assumed, like your code) ----</span>
-    <span class="k">if</span> <span class="n">sampwidth</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Only 16-bit PCM supported here (got </span><span class="si">{</span><span class="mi">8</span><span class="o">*</span><span class="n">sampwidth</span><span class="si">}</span><span class="s2">-bit).&quot;</span><span class="p">)</span>
-
-    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">/</span> <span class="mf">32768.0</span>
-
-    <span class="c1"># shape to (n_frames, n_channels) if multichannel</span>
-    <span class="k">if</span> <span class="n">n_channels</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">to_mono</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>        
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="n">x</span>  <span class="c1"># already mono (shape: (n_frames,))</span>
-    
-
-    <span class="k">return</span> <span class="n">y</span><span class="p">,</span> <span class="n">sr</span></div>
-
-
 <span class="c1"># Internal utility function, no documentation</span>
 <div class="viewcode-block" id="trim_silences">
 <a class="viewcode-back" href="../../generated/pyampact.alignmentUtils.trim_silences.html#pyampact.alignmentUtils.trim_silences">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">trim_silences</span><span class="p">(</span><span class="n">nmat_dict</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sr</span><span class="p">,</span> <span class="n">rms_thresh_db</span><span class="o">=-</span><span class="mf">40.0</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.25</span><span class="p">):</span>       
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Remove or clamp note events in a note matrix that fall outside the active</span>
+<span class="sd">    audio region, as determined by an RMS energy threshold.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    nmat_dict : pd.DataFrame</span>
+<span class="sd">        Note matrix dictionary keyed by part name.</span>
+
+<span class="sd">    y : np.ndarray</span>
+<span class="sd">        Audio time series at sample rate ``sr``.</span>
+
+<span class="sd">    sr : int</span>
+<span class="sd">        Sample rate of ``y`` in Hz.</span>
+
+<span class="sd">    rms_thresh_db : float, optional</span>
+<span class="sd">        RMS energy threshold in dBFS below which frames are considered silent.</span>
+<span class="sd">        Default is ``-40.0``.</span>
+
+<span class="sd">    pad : float, optional</span>
+<span class="sd">        Reserved for future use. Currently unused. Default is ``0.25``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    nmat_dict : pd.DataFrame</span>
+<span class="sd">        The input dictionary with each part&#39;s DataFrame trimmed in-place to the</span>
+<span class="sd">        active audio window.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Compute RMS and active time window</span>
     <span class="n">rms</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">rms</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">times</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">frames_to_time</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rms</span><span class="p">)),</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">)</span>
@@ -738,7 +561,26 @@
 <span class="c1"># Merges grace notes and odd polyrhythmic values into one voice and orders them</span>
 <div class="viewcode-block" id="merge_grace_notes">
 <a class="viewcode-back" href="../../generated/pyampact.alignmentUtils.merge_grace_notes.html#pyampact.alignmentUtils.merge_grace_notes">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">merge_grace_notes</span><span class="p">(</span><span class="n">nmat</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mf">0.025</span><span class="p">):</span>    
+<span class="k">def</span><span class="w"> </span><span class="nf">merge_grace_notes</span><span class="p">(</span><span class="n">nmat</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mf">0.025</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Merge grace-note sub-parts back into their parent voice and resolve any</span>
+<span class="sd">    resulting onset overlaps.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    nmat : pd.DataFrame</span>
+<span class="sd">        Note matrix dictionary keyed by part name.</span>
+
+<span class="sd">    offset : float, optional</span>
+<span class="sd">        Time in seconds added to the ``ONSET_SEC`` and ``OFFSET_SEC`` of every</span>
+<span class="sd">        grace-note sub-part before merging. Default is ``0.025``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    nmat : dict of str → pd.DataFrame</span>
+<span class="sd">        The updated note matrix with all grace-note sub-parts folded into their</span>
+<span class="sd">        respective base parts and removed as separate keys.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">base_parts</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">nmat</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
         <span class="n">base</span> <span class="o">=</span> <span class="n">part</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
@@ -752,26 +594,45 @@
         <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">parts</span><span class="p">:</span>
             <span class="n">df</span> <span class="o">=</span> <span class="n">nmat</span><span class="p">[</span><span class="n">part</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">part</span> <span class="o">!=</span> <span class="n">base</span><span class="p">:</span>
-                <span class="n">df</span><span class="p">[</span><span class="s1">&#39;ONSET&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">offset</span>
+                <span class="c1"># Apply offset to ONSET_SEC (time in seconds), not ONSET (beats)</span>
+                <span class="n">df</span><span class="p">[</span><span class="s1">&#39;ONSET_SEC&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">offset</span>
+                <span class="n">df</span><span class="p">[</span><span class="s1">&#39;OFFSET_SEC&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">offset</span>
             <span class="n">dfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
-        <span class="n">merged</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">dfs</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;ONSET&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="c1"># Sort by ONSET_SEC (time in seconds) instead of ONSET (beats)</span>
+        <span class="n">merged</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">dfs</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;ONSET_SEC&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-        <span class="c1"># Recalculate DURATION</span>
-        <span class="n">merged</span><span class="p">[</span><span class="s1">&#39;DURATION&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">merged</span><span class="p">[</span><span class="s1">&#39;ONSET&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">merged</span><span class="p">[</span><span class="s1">&#39;ONSET&#39;</span><span class="p">]</span>
-        <span class="n">merged</span><span class="p">[</span><span class="s1">&#39;DURATION&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">merged</span><span class="p">[</span><span class="s1">&#39;DURATION&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+        <span class="c1"># Remove duplicate indices that might cause reindexing issues</span>
+        <span class="n">merged</span> <span class="o">=</span> <span class="n">merged</span><span class="p">[</span><span class="o">~</span><span class="n">merged</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">duplicated</span><span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="s1">&#39;first&#39;</span><span class="p">)]</span>
 
-        <span class="c1"># Recalculate ONSET_SEC and OFFSET_SEC directly from ONSET and DURATION</span>
-        <span class="n">merged</span><span class="p">[</span><span class="s1">&#39;ONSET_SEC&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">merged</span><span class="p">[</span><span class="s1">&#39;ONSET&#39;</span><span class="p">]</span>
-        <span class="n">merged</span><span class="p">[</span><span class="s1">&#39;OFFSET_SEC&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">merged</span><span class="p">[</span><span class="s1">&#39;ONSET&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">merged</span><span class="p">[</span><span class="s1">&#39;DURATION&#39;</span><span class="p">]</span>
+        <span class="c1"># Recalculate DURATION in beats based on the new ordering</span>
+        <span class="c1"># But preserve the original ONSET_SEC and OFFSET_SEC timing</span>
+        <span class="c1"># Only update DURATION to match the time-based values</span>
+        <span class="n">merged</span><span class="p">[</span><span class="s1">&#39;DURATION&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">merged</span><span class="p">[</span><span class="s1">&#39;OFFSET_SEC&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">merged</span><span class="p">[</span><span class="s1">&#39;ONSET_SEC&#39;</span><span class="p">]</span>
+
+        <span class="c1"># Ensure minimum duration to prevent zero-duration notes</span>
+        <span class="n">merged</span><span class="p">[</span><span class="s1">&#39;DURATION&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">merged</span><span class="p">[</span><span class="s1">&#39;DURATION&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">lower</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>  <span class="c1"># Minimum 10ms</span>
+        <span class="n">merged</span><span class="p">[</span><span class="s1">&#39;OFFSET_SEC&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">merged</span><span class="p">[</span><span class="s1">&#39;ONSET_SEC&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">merged</span><span class="p">[</span><span class="s1">&#39;DURATION&#39;</span><span class="p">]</span>
+
+        <span class="c1"># Ensure no overlapping notes by adjusting onset times if necessary</span>
+        <span class="n">merged</span> <span class="o">=</span> <span class="n">merged</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;ONSET_SEC&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">merged</span><span class="p">)):</span>
+            <span class="n">prev_offset</span> <span class="o">=</span> <span class="n">merged</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;OFFSET_SEC&#39;</span><span class="p">]</span>
+            <span class="n">curr_onset</span> <span class="o">=</span> <span class="n">merged</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;ONSET_SEC&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">curr_onset</span> <span class="o">&lt;</span> <span class="n">prev_offset</span><span class="p">:</span>
+                <span class="c1"># Adjust current onset to avoid overlap</span>
+                <span class="n">merged</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">merged</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="s1">&#39;ONSET_SEC&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">prev_offset</span> <span class="o">+</span> <span class="mf">0.001</span>
+                <span class="n">merged</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">merged</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="s1">&#39;OFFSET_SEC&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">merged</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;ONSET_SEC&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">merged</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;DURATION&#39;</span><span class="p">]</span>
 
         <span class="c1"># Replace in dict</span>
         <span class="n">nmat</span><span class="p">[</span><span class="n">base</span><span class="p">]</span> <span class="o">=</span> <span class="n">merged</span>
         <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">parts</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">part</span> <span class="o">!=</span> <span class="n">base</span><span class="p">:</span>
                 <span class="k">del</span> <span class="n">nmat</span><span class="p">[</span><span class="n">part</span><span class="p">]</span>
-    
+
     <span class="k">return</span> <span class="n">nmat</span>    </div>
+
+
 
 </pre></div>
 

@@ -6,21 +6,21 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>symbolic &mdash; pyAMPACT 0.0.5 documentation</title>
+  <title>symbolic &mdash; pyAMPACT 0.0.6 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
   
     <link rel="canonical" href="https://pyampact.github.io/symbolic.html" />
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=282f96c0"></script>
-      <script src="_static/doctools.js?v=9bcbadda"></script>
-      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/documentation_options.js?v=1fd71caa"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pyampact.symbolic.Score" href="generated/pyampact.symbolic.Score.html" />
+    <link rel="next" title="pyampact.symbolic.load_score" href="generated/pyampact.symbolic.load_score.html" />
     <link rel="prev" title="pyampact.performance.perceived_pitch" href="generated/pyampact.performance.perceived_pitch.html" /> 
 </head>
 
@@ -55,12 +55,58 @@
 <li class="toctree-l1"><a class="reference internal" href="performance.html">performance</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">symbolic</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#id1">symbolic</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic.Score.html">pyampact.symbolic.Score</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic.load_score.html">pyampact.symbolic.load_score</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic.convert_attribs_to_str.html">pyampact.symbolic.convert_attribs_to_str</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic._assignM21Attributes.html">pyampact.symbolic._assignM21Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic._import_other_spines.html">pyampact.symbolic._import_other_spines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic._partList.html">pyampact.symbolic._partList</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic._parts.html">pyampact.symbolic._parts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic.insertScoreDef.html">pyampact.symbolic.insertScoreDef</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic.xmlIDs.html">pyampact.symbolic.xmlIDs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic._lyricHelper.html">pyampact.symbolic._lyricHelper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic.lyrics.html">pyampact.symbolic.lyrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic._m21Clefs.html">pyampact.symbolic._m21Clefs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic._clefs.html">pyampact.symbolic._clefs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic.dynamics.html">pyampact.symbolic.dynamics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic._priority.html">pyampact.symbolic._priority</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic.keys.html">pyampact.symbolic.keys</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic.harm.html">pyampact.symbolic.harm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic.functions.html">pyampact.symbolic.functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic.chords.html">pyampact.symbolic.chords</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic.cdata.html">pyampact.symbolic.cdata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic.getSpines.html">pyampact.symbolic.getSpines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic.dez.html">pyampact.symbolic.dez</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic.form.html">pyampact.symbolic.form</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic.romanNumerals.html">pyampact.symbolic.romanNumerals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic._m21ObjectsNoTies.html">pyampact.symbolic._m21ObjectsNoTies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic._measures.html">pyampact.symbolic._measures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic._barlines.html">pyampact.symbolic._barlines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic._keySignatures.html">pyampact.symbolic._keySignatures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic._timeSignatures.html">pyampact.symbolic._timeSignatures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic._beats.html">pyampact.symbolic._beats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic.durations.html">pyampact.symbolic.durations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic.midi_ticks_durations.html">pyampact.symbolic.midi_ticks_durations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic.midiPitches.html">pyampact.symbolic.midiPitches</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic.notes.html">pyampact.symbolic.notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic.kernNotes.html">pyampact.symbolic.kernNotes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic.nmats.html">pyampact.symbolic.nmats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic.contextualize.html">pyampact.symbolic.contextualize</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic.pianoRoll.html">pyampact.symbolic.pianoRoll</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic.sampled.html">pyampact.symbolic.sampled</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic.mask.html">pyampact.symbolic.mask</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic.jsonCDATA.html">pyampact.symbolic.jsonCDATA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic.insertAudioAnalysis.html">pyampact.symbolic.insertAudioAnalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic.toKern.html">pyampact.symbolic.toKern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic.toMEI.html">pyampact.symbolic.toMEI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic.show.html">pyampact.symbolic.show</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/pyampact.symbolic.build_mask_from_nmat_seconds.html">pyampact.symbolic.build_mask_from_nmat_seconds</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="symbolicUtils.html">symbolicUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speechDescriptors.html">speechDescriptors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speechDescriptorsUtils.html">speechDescriptorsUtils</a></li>
 </ul>
 
         </div>
@@ -93,165 +139,204 @@
 <h2>symbolic<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.symbolic.Score.html#pyampact.symbolic.Score" title="pyampact.symbolic.Score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Score</span></code></a>(score_path)</p></td>
-<td><p>A class to import a score via music21 and expose pyAMPACT's analysis utilities.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.symbolic.load_score.html#pyampact.symbolic.load_score" title="pyampact.symbolic.load_score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_score</span></code></a>(score_path)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pyampact.symbolic.convert_attribs_to_str.html#pyampact.symbolic.convert_attribs_to_str" title="pyampact.symbolic.convert_attribs_to_str"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_attribs_to_str</span></code></a>(element)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.symbolic._assignM21Attributes.html#pyampact.symbolic._assignM21Attributes" title="pyampact.symbolic._assignM21Attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_assignM21Attributes</span></code></a>(piece[, path])</p></td>
+<td><p>Assign music21 attributes to a given object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pyampact.symbolic._import_other_spines.html#pyampact.symbolic._import_other_spines" title="pyampact.symbolic._import_other_spines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_import_other_spines</span></code></a>(piece[, path])</p></td>
+<td><p>Import the harmonic function spines from a given path.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.symbolic._partList.html#pyampact.symbolic._partList" title="pyampact.symbolic._partList"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_partList</span></code></a>(piece)</p></td>
+<td><p>Return a list of series of the note, rest, and chord objects in each part.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pyampact.symbolic._parts.html#pyampact.symbolic._parts" title="pyampact.symbolic._parts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_parts</span></code></a>(piece[, multi_index, kernStrands, ...])</p></td>
+<td><p>Return a DataFrame of the note, rest, and chord objects in the score.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.symbolic.insertScoreDef.html#pyampact.symbolic.insertScoreDef" title="pyampact.symbolic.insertScoreDef"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insertScoreDef</span></code></a>(piece, root)</p></td>
+<td><p>Insert a scoreDef element into an MEI (Music Encoding Initiative) document.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pyampact.symbolic.xmlIDs.html#pyampact.symbolic.xmlIDs" title="pyampact.symbolic.xmlIDs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xmlIDs</span></code></a>(piece)</p></td>
+<td><p>Return xml ids per part in a pandas.DataFrame time-aligned with the objects offset.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.symbolic._lyricHelper.html#pyampact.symbolic._lyricHelper" title="pyampact.symbolic._lyricHelper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_lyricHelper</span></code></a>(piece, cell, strip)</p></td>
+<td><p>Helper function for the lyrics method.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pyampact.symbolic.lyrics.html#pyampact.symbolic.lyrics" title="pyampact.symbolic.lyrics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lyrics</span></code></a>(piece[, strip])</p></td>
+<td><p>Extract the lyrics from the score.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.symbolic._m21Clefs.html#pyampact.symbolic._m21Clefs" title="pyampact.symbolic._m21Clefs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_m21Clefs</span></code></a>(piece)</p></td>
+<td><p>Extract the clefs from the score.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pyampact.symbolic._clefs.html#pyampact.symbolic._clefs" title="pyampact.symbolic._clefs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_clefs</span></code></a>(piece)</p></td>
+<td><p>Extract the clefs from the score.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.symbolic.dynamics.html#pyampact.symbolic.dynamics" title="pyampact.symbolic.dynamics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dynamics</span></code></a>(piece)</p></td>
+<td><p>Extract the dynamics from the score.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pyampact.symbolic._priority.html#pyampact.symbolic._priority" title="pyampact.symbolic._priority"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_priority</span></code></a>(piece)</p></td>
+<td><p>For .krn files, get the line numbers of the events in the piece, which music21 often calls &quot;priority&quot;.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.symbolic.keys.html#pyampact.symbolic.keys" title="pyampact.symbolic.keys"><code class="xref py py-obj docutils literal notranslate"><span class="pre">keys</span></code></a>(piece[, snap_to, filler, output])</p></td>
+<td><p>Get the key signature portion of the <a href="#id2"><span class="problematic" id="id3">**</span></a>harm spine in a kern file if there is one and return it as an array or a time-aligned pandas Series. This is similar to the .harm, .functions, .chords, and .cdata methods. The default is for the results to be returned as a 1-d array, but you can set <cite>output='series'</cite> for a pandas series instead. If want to get the results of a different spine type (i.e. not one of the ones listed above), see <a class="reference internal" href="generated/pyampact.symbolic.getSpines.html#pyampact.symbolic.getSpines" title="pyampact.symbolic.getSpines"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getSpines()</span></code></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pyampact.symbolic.harm.html#pyampact.symbolic.harm" title="pyampact.symbolic.harm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">harm</span></code></a>(piece[, snap_to, filler, output])</p></td>
+<td><p>Get the harmonic analysis portion of the <a href="#id4"><span class="problematic" id="id5">**</span></a>harm spine in a kern file if there is one and return it as an array or a time-aligned pandas Series. The prevailing key signature information is not included here from the harm spine, but that key information is available in the .keys method. This is similar to the .keys, .functions, .chords, and .cdata methods. The default is for the results to be returned as a 1-d array, but you can set <cite>output='series'</cite> for a pandas series instead which is helpful if you're going to concatenate the results to a dataframe. If want to get the results of a different spine type (i.e. not one of the ones listed above), see <a class="reference internal" href="generated/pyampact.symbolic.getSpines.html#pyampact.symbolic.getSpines" title="pyampact.symbolic.getSpines"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getSpines()</span></code></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.symbolic.functions.html#pyampact.symbolic.functions" title="pyampact.symbolic.functions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">functions</span></code></a>(piece[, snap_to, filler, output])</p></td>
+<td><p>Get the harmonic function labels from a <a href="#id6"><span class="problematic" id="id7">**</span></a>function spine in a kern file if there is one and return it as an array or a time-aligned pandas Series. This is similar to the .harm, .keys, .chords, and .cdata methods. The default is for the results to be returned as a 1-d array, but you can set <cite>output='series'</cite> for a pandas series instead. If want to get the results of a different spine type (i.e. not one of the ones listed above), see <a class="reference internal" href="generated/pyampact.symbolic.getSpines.html#pyampact.symbolic.getSpines" title="pyampact.symbolic.getSpines"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getSpines()</span></code></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pyampact.symbolic.chords.html#pyampact.symbolic.chords" title="pyampact.symbolic.chords"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chords</span></code></a>(piece[, snap_to, filler, output])</p></td>
+<td><p>Get the chord labels from the <a href="#id8"><span class="problematic" id="id9">**</span></a>chord spine in a kern file if there is one and return it as an array or a time-aligned pandas Series. This is similar to the .functions, .harm, .keys, and .cdata methods. The default is for the results to be returned as a 1-d array, but you can set <cite>output='series'</cite> for a pandas series instead. If want to get the results of a different spine type (i.e. not one of the ones listed above), see <a class="reference internal" href="generated/pyampact.symbolic.getSpines.html#pyampact.symbolic.getSpines" title="pyampact.symbolic.getSpines"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getSpines()</span></code></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.symbolic.cdata.html#pyampact.symbolic.cdata" title="pyampact.symbolic.cdata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cdata</span></code></a>(piece[, snap_to, filler, output])</p></td>
+<td><p>Get the cdata records from <a href="#id10"><span class="problematic" id="id11">**</span></a>cdata spines in a kern file if there are any and return it as a pandas DataFrame. This is similar to the .harm, .functions, .chords, and .keys methods, with the exception that this method defaults to returning a dataframe since there are often more than one cdata spine in a kern score. If want to get the results of a different spine type (i.e. not one of the ones listed above), see <a class="reference internal" href="generated/pyampact.symbolic.getSpines.html#pyampact.symbolic.getSpines" title="pyampact.symbolic.getSpines"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getSpines()</span></code></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pyampact.symbolic.getSpines.html#pyampact.symbolic.getSpines" title="pyampact.symbolic.getSpines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getSpines</span></code></a>(piece, spineType)</p></td>
+<td><p>Return a pandas DataFrame of a less common spine type.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.symbolic.dez.html#pyampact.symbolic.dez" title="pyampact.symbolic.dez"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dez</span></code></a>(piece[, path])</p></td>
+<td><p>Get the labels data from a .dez file/url and return it as a dataframe.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pyampact.symbolic.form.html#pyampact.symbolic.form" title="pyampact.symbolic.form"><code class="xref py py-obj docutils literal notranslate"><span class="pre">form</span></code></a>(piece[, snap_to, filler, output, dez_path])</p></td>
+<td><p>Get the &quot;Structure&quot; labels from a .dez file/url and return it as an array or a time-aligned pandas Series.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.symbolic.romanNumerals.html#pyampact.symbolic.romanNumerals" title="pyampact.symbolic.romanNumerals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">romanNumerals</span></code></a>(piece[, snap_to, filler, ...])</p></td>
+<td><p>Get the roman numeral labels from a .dez file/url or <a href="#id12"><span class="problematic" id="id13">**</span></a>harm spine and return it as an array or a time-aligned pandas Series. The default is for the results to be returned as a 1-d array, but you can set <cite>output='series'</cite> for a pandas series instead. If you want to align these results so that they match the columnar (time) axis of the pianoRoll, sampled, or mask results, you can pass the pianoRoll or mask that you want to align to as the <cite>snap_to</cite> parameter. Doing that makes it easier to combine these results with any of the pianoRoll, sampled, or mask tables to have both in a single table which can make data analysis easier. This example shows how to get the roman numeral analysis from a kern score that has a <a href="#id14"><span class="problematic" id="id15">**</span></a>harm spine.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pyampact.symbolic._m21ObjectsNoTies.html#pyampact.symbolic._m21ObjectsNoTies" title="pyampact.symbolic._m21ObjectsNoTies"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_m21ObjectsNoTies</span></code></a>(piece)</p></td>
+<td><p>Remove tied notes in a given voice.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.symbolic._measures.html#pyampact.symbolic._measures" title="pyampact.symbolic._measures"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_measures</span></code></a>(piece[, compact])</p></td>
+<td><p>Return a DataFrame of the measure starting points.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pyampact.symbolic._barlines.html#pyampact.symbolic._barlines" title="pyampact.symbolic._barlines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_barlines</span></code></a>(piece)</p></td>
+<td><p>Return a DataFrame of barlines specifying which barline type.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.symbolic._keySignatures.html#pyampact.symbolic._keySignatures" title="pyampact.symbolic._keySignatures"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_keySignatures</span></code></a>(piece[, kern])</p></td>
+<td><p>Return a DataFrame of key signatures for each part in the score.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pyampact.symbolic._timeSignatures.html#pyampact.symbolic._timeSignatures" title="pyampact.symbolic._timeSignatures"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_timeSignatures</span></code></a>(piece[, ratio])</p></td>
+<td><p>Return a DataFrame of time signatures for each part in the score.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.symbolic._beats.html#pyampact.symbolic._beats" title="pyampact.symbolic._beats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_beats</span></code></a>(piece)</p></td>
+<td><p>Return a DataFrame of beat numbers for each part in the score.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pyampact.symbolic.durations.html#pyampact.symbolic.durations" title="pyampact.symbolic.durations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">durations</span></code></a>(piece[, multi_index, df])</p></td>
+<td><p>Return a DataFrame of durations of note and rest objects in the piece.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.symbolic.midi_ticks_durations.html#pyampact.symbolic.midi_ticks_durations" title="pyampact.symbolic.midi_ticks_durations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">midi_ticks_durations</span></code></a>(piece[, i, df])</p></td>
+<td><p>Replaces the placeholder ONSET_SEC and OFFSET_SEC columns with timing information directly extracted from the music21 stream.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pyampact.symbolic.midiPitches.html#pyampact.symbolic.midiPitches" title="pyampact.symbolic.midiPitches"><code class="xref py py-obj docutils literal notranslate"><span class="pre">midiPitches</span></code></a>(piece[, multi_index])</p></td>
+<td><p>Return a DataFrame of notes and rests as MIDI pitches.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.symbolic.notes.html#pyampact.symbolic.notes" title="pyampact.symbolic.notes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">notes</span></code></a>(piece[, combine_rests, combine_unisons])</p></td>
+<td><p>Return a DataFrame of the notes and rests given in American Standard Pitch Notation where middle C is C4.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pyampact.symbolic.kernNotes.html#pyampact.symbolic.kernNotes" title="pyampact.symbolic.kernNotes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kernNotes</span></code></a>(piece)</p></td>
+<td><p>Return a DataFrame of the notes and rests given in kern notation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.symbolic.nmats.html#pyampact.symbolic.nmats" title="pyampact.symbolic.nmats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nmats</span></code></a>(piece[, json_path, include_cdata])</p></td>
+<td><p>Return a dictionary of DataFrames, one for each voice, with information about the notes and rests in that voice.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pyampact.symbolic.contextualize.html#pyampact.symbolic.contextualize" title="pyampact.symbolic.contextualize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">contextualize</span></code></a>(piece, df[, offsets, ...])</p></td>
+<td><p>Add measure and beat numbers to a DataFrame.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.symbolic.pianoRoll.html#pyampact.symbolic.pianoRoll" title="pyampact.symbolic.pianoRoll"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pianoRoll</span></code></a>(piece)</p></td>
+<td><p>Construct a MIDI piano roll.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pyampact.symbolic.sampled.html#pyampact.symbolic.sampled" title="pyampact.symbolic.sampled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sampled</span></code></a>(piece[, bpm, obs])</p></td>
+<td><p>Sample the score according to the given beats per minute (bpm) and the desired observations per second (obs).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.symbolic.mask.html#pyampact.symbolic.mask" title="pyampact.symbolic.mask"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mask</span></code></a>(piece[, winms, sample_rate, ...])</p></td>
+<td><p>Construct a mask from the sampled piano roll using width and harmonics.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pyampact.symbolic.jsonCDATA.html#pyampact.symbolic.jsonCDATA" title="pyampact.symbolic.jsonCDATA"><code class="xref py py-obj docutils literal notranslate"><span class="pre">jsonCDATA</span></code></a>(piece, json_path)</p></td>
+<td><p>Return a dictionary of pandas DataFrames, one for each voice.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.symbolic.insertAudioAnalysis.html#pyampact.symbolic.insertAudioAnalysis" title="pyampact.symbolic.insertAudioAnalysis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insertAudioAnalysis</span></code></a>(piece, output_path, data)</p></td>
+<td><p>Insert a &lt;performance&gt; element into the MEI score given the analysis data (<cite>data</cite>) in the format of a json file or an nmat dictionary with audio data already included.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pyampact.symbolic.toKern.html#pyampact.symbolic.toKern" title="pyampact.symbolic.toKern"><code class="xref py py-obj docutils literal notranslate"><span class="pre">toKern</span></code></a>(piece[, path_name, data, ...])</p></td>
+<td><p>Create a kern representation of the score.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.symbolic.toMEI.html#pyampact.symbolic.toMEI" title="pyampact.symbolic.toMEI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">toMEI</span></code></a>(piece[, file_name, indentation, data, ...])</p></td>
+<td><p>Write or return an MEI score optionally including analysis data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/pyampact.symbolic.show.html#pyampact.symbolic.show" title="pyampact.symbolic.show"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show</span></code></a>(piece[, start, stop])</p></td>
+<td><p>Print a VerovioHumdrumViewer link to the score in between the <cite>start</cite> and <cite>stop</cite> measures (inclusive).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.symbolic.build_mask_from_nmat_seconds.html#pyampact.symbolic.build_mask_from_nmat_seconds" title="pyampact.symbolic.build_mask_from_nmat_seconds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_mask_from_nmat_seconds</span></code></a>(nmat, ...)</p></td>
+<td><p>Build a binary harmonic mask matrix from a note matrix for use in DTW alignment.</p></td>
 </tr>
 </tbody>
 </table>
 </section>
-<dl class="py class">
+<dl class="py function">
 <dt class="sig sig-object py">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyampact.symbolic.</span></span><span class="sig-name descname"><span class="pre">Score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">score_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>A class to import a score via music21 and expose pyAMPACT’s analysis utilities.</p>
-<p>The analysis utilities are generally formatted as pandas dataframes. This
-class also ports over some matlab code to help with alignment of scores in
-symbolic notation and audio analysis of recordings of those scores. <cite>Score</cite>
-objects can insert analysis into an MEI file, and can export any type of
-file to a kern format, optionally also including analysis from a JSON file.
-Similarly, <cite>Score</cite> objects can serve clickable URLs of short excerpts of
-their associated score in symbolic notation. These links open in the Verovio
-Humdrum Viewer.</p>
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolic.</span></span><span class="sig-name descname"><span class="pre">build_mask_from_nmat_seconds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nmat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_harmonics</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tres</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_freqs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#build_mask_from_nmat_seconds"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Build a binary harmonic mask matrix from a note matrix for use in DTW alignment.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>score_path</strong> – A string representing the path to the score file.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nmat</strong> (<em>pd.DataFrame</em>) – Note matrix dictionary keyed by part name.</p></li>
+<li><p><strong>sample_rate</strong> (<em>int</em>) – Sample rate in Hz used to determine the Nyquist frequency</p></li>
+<li><p><strong>num_harmonics</strong> (<em>int</em>) – Number of harmonic partials (including the fundamental)</p></li>
+<li><p><strong>width</strong> (<em>int</em>) – Base half-width in frequency bins around each partial centre.</p></li>
+<li><p><strong>tres</strong> (<em>float</em>) – Time resolution in seconds per column of the mask matrix. Should match
+the hop size used in the corresponding STFT.</p></li>
+<li><p><strong>n_freqs</strong> (<em>int</em>) – Number of frequency bins in the mask (i.e. number of rows), matching
+the frequency axis of the spectrogram it will be compared against.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A Score object.</p>
+<dd class="field-even"><p><strong>M</strong> – The harmonic mask matrix as a float32 array</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray, shape (n_freqs, n_cols)</p>
 </dd>
 </dl>
-<p class="rubric">Example</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">url_or_path</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;</span>
-<span class="n">piece</span> <span class="o">=</span> <span class="n">Score</span><span class="p">(</span><span class="n">url_or_path</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl class="py method">
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">cdata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">snap_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'forward'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dataframe'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.cdata"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Get the cdata records from <a href="#id2"><span class="problematic" id="id3">**</span></a>cdata spines in a kern file if there
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolic.</span></span><span class="sig-name descname"><span class="pre">cdata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snap_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'forward'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dataframe'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#cdata"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Get the cdata records from <a href="#id16"><span class="problematic" id="id17">**</span></a>cdata spines in a kern file if there
 are any and return it as a pandas DataFrame. This is
 similar to the .harm, .functions, .chords, and .keys methods, with the
 exception that this method defaults to returning a dataframe since there are
 often more than one cdata spine in a kern score. If want to get the results
 of a different spine type (i.e. not one of the ones listed above), see
-<code class="xref py py-meth docutils literal notranslate"><span class="pre">getSpines()</span></code>.</p>
-<p class="rubric">Example</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">piece</span> <span class="o">=</span> <span class="n">Score</span><span class="p">(</span>
-    <span class="s1">&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;</span><span class="p">)</span>
-<span class="n">piece</span><span class="o">.</span><span class="n">cdata</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>If you want to align these results so that they match the columnar (time) axis
-of the pianoRoll, sampled, or mask results, you can pass the pianoRoll or mask
-that you want to align to as the <cite>snap_to</cite> parameter. Doing that makes it easier
-to combine these results with any of the pianoRoll, sampled, or mask tables to
-have both in a single table which can make data analysis easier. Passing a <cite>snap_to</cite>
-argument will automatically cause the return value to be a pandas series since
-that’s facilitates combining the two. Here’s how you would use the <cite>snap_to</cite>
-parameter and then combine the results with the pianoRoll to create a single table.</p>
-<p class="rubric">Example</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">piece</span> <span class="o">=</span> <span class="n">Score</span><span class="p">(</span>
-    <span class="s1">&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;</span><span class="p">)</span>
-<span class="n">pianoRoll</span> <span class="o">=</span> <span class="n">piece</span><span class="o">.</span><span class="n">pianoRoll</span><span class="p">()</span>
-<span class="n">cdata</span> <span class="o">=</span> <span class="n">piece</span><span class="o">.</span><span class="n">cdata</span><span class="p">(</span><span class="n">snap_to</span><span class="o">=</span><span class="n">pianoRoll</span><span class="p">)</span>
-<span class="n">combined</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">pianoRoll</span><span class="p">,</span> <span class="n">cdata</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>The <cite>sampled</cite> and <cite>mask</cite> dfs often have more observations than the spine
-contents, so you may want to fill in these new empty slots somehow. The kern
-format uses ‘.’ as a filler token so you can pass this as the <cite>filler</cite>
-parameter to fill all the new empty slots with this as well. If you choose
-some other value, say <cite>filler=’_’</cite>, then in addition to filling in the empty
-slots with underscores, this will also replace the kern ‘.’ observations with
-‘_’. If you want to fill them in with NaN’s as pandas usually does, you can
-pass <cite>filler=’nan’</cite> as a convenience. If you want to “forward fill” these
-results, you can pass <cite>filler=’forward’</cite> (default). This will propagate the
-last non-period (‘.’) observation until a new one is found. Finally, you can
-pass filler=’drop’ to drop all empty observations (both NaNs and humdrum
-periods).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>snap_to</strong> – A pandas DataFrame to align the results to. Default is None.</p></li>
-<li><p><strong>filler</strong> – A string representing the filler token. Default is ‘forward’.</p></li>
-<li><p><strong>output</strong> – A string representing the output format. Default is ‘array’.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A numpy array or pandas Series representing the harmonic keys
-analysis.</p>
-</dd>
-</dl>
+<a class="reference internal" href="generated/pyampact.symbolic.getSpines.html#pyampact.symbolic.getSpines" title="pyampact.symbolic.getSpines"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getSpines()</span></code></a>.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">chords()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">functions()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">harm()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">keys()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">getSpines()</span></code></p>
+<p><a class="reference internal" href="generated/pyampact.symbolic.chords.html#pyampact.symbolic.chords" title="pyampact.symbolic.chords"><code class="xref py py-meth docutils literal notranslate"><span class="pre">chords()</span></code></a>, <a class="reference internal" href="generated/pyampact.symbolic.functions.html#pyampact.symbolic.functions" title="pyampact.symbolic.functions"><code class="xref py py-meth docutils literal notranslate"><span class="pre">functions()</span></code></a>, <a class="reference internal" href="generated/pyampact.symbolic.harm.html#pyampact.symbolic.harm" title="pyampact.symbolic.harm"><code class="xref py py-meth docutils literal notranslate"><span class="pre">harm()</span></code></a>, <a class="reference internal" href="generated/pyampact.symbolic.keys.html#pyampact.symbolic.keys" title="pyampact.symbolic.keys"><code class="xref py py-meth docutils literal notranslate"><span class="pre">keys()</span></code></a>, <a class="reference internal" href="generated/pyampact.symbolic.getSpines.html#pyampact.symbolic.getSpines" title="pyampact.symbolic.getSpines"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getSpines()</span></code></a></p>
 </div>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">chords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">snap_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'forward'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'array'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.chords"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Get the chord labels from the <a href="#id4"><span class="problematic" id="id5">**</span></a>chord spine in a kern file if there
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolic.</span></span><span class="sig-name descname"><span class="pre">chords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snap_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'forward'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'array'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#chords"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Get the chord labels from the <a href="#id18"><span class="problematic" id="id19">**</span></a>chord spine in a kern file if there
 is one and return it as an array or a time-aligned pandas Series. This is
 similar to the .functions, .harm, .keys, and .cdata methods. The default
 is for the results to be returned as a 1-d array, but you can set <cite>output=’series’</cite>
 for a pandas series instead. If want to get the results of a different spine
-type (i.e. not one of the ones listed above), see <code class="xref py py-meth docutils literal notranslate"><span class="pre">getSpines()</span></code>.</p>
-<p class="rubric">Example</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">piece</span> <span class="o">=</span> <span class="n">Score</span><span class="p">(</span>
-    <span class="s1">&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;</span><span class="p">)</span>
-<span class="n">piece</span><span class="o">.</span><span class="n">chords</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>If you want to align these results so that they match the columnar (time) axis
-of the pianoRoll, sampled, or mask results, you can pass the pianoRoll or mask
-that you want to align to as the <cite>snap_to</cite> parameter. Doing that makes it easier
-to combine these results with any of the pianoRoll, sampled, or mask tables to
-have both in a single table which can make data analysis easier. Passing a <cite>snap_to</cite>
-argument will automatically cause the return value to be a pandas series since
-that’s facilitates combining the two. Here’s how you would use the <cite>snap_to</cite>
-parameter and then combine the results with the pianoRoll to create a single table.</p>
-<p class="rubric">Example</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">piece</span> <span class="o">=</span> <span class="n">Score</span><span class="p">(</span>
-    <span class="s1">&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;</span><span class="p">)</span>
-<span class="n">pianoRoll</span> <span class="o">=</span> <span class="n">piece</span><span class="o">.</span><span class="n">pianoRoll</span><span class="p">()</span>
-<span class="n">chords</span> <span class="o">=</span> <span class="n">piece</span><span class="o">.</span><span class="n">chords</span><span class="p">(</span><span class="n">snap_to</span><span class="o">=</span><span class="n">pianoRoll</span><span class="p">)</span>
-<span class="n">combined</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">pianoRoll</span><span class="p">,</span> <span class="n">chords</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>The <cite>sampled</cite> and <cite>mask</cite> dfs often have more observations than the spine
-contents, so you may want to fill in these new empty slots somehow. The kern
-format uses ‘.’ as a filler token so you can pass this as the <cite>filler</cite>
-parameter to fill all the new empty slots with this as well. If you choose
-some other value, say <cite>filler=’_’</cite>, then in addition to filling in the empty
-slots with underscores, this will also replace the kern ‘.’ observations with
-‘_’. If you want to fill them in with NaN’s as pandas usually does, you can
-pass <cite>filler=’nan’</cite> as a convenience. If you want to “forward fill” these
-results, you can pass <cite>filler=’forward’</cite> (default). This will propagate the
-last non-period (‘.’) observation until a new one is found. Finally, you can
-pass filler=’drop’ to drop all empty observations (both NaNs and humdrum
-periods).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>snap_to</strong> – A pandas DataFrame to align the results to. Default is None.</p></li>
-<li><p><strong>filler</strong> – A string representing the filler token. Default is ‘forward’.</p></li>
-<li><p><strong>output</strong> – A string representing the output format. Default is ‘array’.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A numpy array or pandas Series representing the harmonic keys
-analysis.</p>
-</dd>
-</dl>
+type (i.e. not one of the ones listed above), see <a class="reference internal" href="generated/pyampact.symbolic.getSpines.html#pyampact.symbolic.getSpines" title="pyampact.symbolic.getSpines"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getSpines()</span></code></a>.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">cdata()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">functions()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">harm()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">keys()</span></code></p>
+<p><a class="reference internal" href="generated/pyampact.symbolic.cdata.html#pyampact.symbolic.cdata" title="pyampact.symbolic.cdata"><code class="xref py py-meth docutils literal notranslate"><span class="pre">cdata()</span></code></a>, <a class="reference internal" href="generated/pyampact.symbolic.functions.html#pyampact.symbolic.functions" title="pyampact.symbolic.functions"><code class="xref py py-meth docutils literal notranslate"><span class="pre">functions()</span></code></a>, <a class="reference internal" href="generated/pyampact.symbolic.harm.html#pyampact.symbolic.harm" title="pyampact.symbolic.harm"><code class="xref py py-meth docutils literal notranslate"><span class="pre">harm()</span></code></a>, <a class="reference internal" href="generated/pyampact.symbolic.keys.html#pyampact.symbolic.keys" title="pyampact.symbolic.keys"><code class="xref py py-meth docutils literal notranslate"><span class="pre">keys()</span></code></a></p>
 </div>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">contextualize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offsets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measures</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beats</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.contextualize"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolic.</span></span><span class="sig-name descname"><span class="pre">contextualize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offsets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measures</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beats</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#contextualize"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Add measure and beat numbers to a DataFrame.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -267,9 +352,9 @@ analysis.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">dez</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.dez"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolic.</span></span><span class="sig-name descname"><span class="pre">dez</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#dez"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Get the labels data from a .dez file/url and return it as a dataframe. Calls
 fromJSON to do this. The “meta” portion of the dez file is ignored. If no
 path is provided, the last dez table imported with this method is returned.</p>
@@ -283,9 +368,9 @@ path is provided, the last dez table imported with this method is returned.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">durations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">multi_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.durations"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolic.</span></span><span class="sig-name descname"><span class="pre">durations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multi_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#durations"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Return a DataFrame of durations of note and rest objects in the piece.</p>
 <p>If a DataFrame is provided as <cite>df</cite>, the method calculates the difference
 between cell offsets per column in the passed DataFrame, skipping
@@ -306,21 +391,15 @@ difference between cell offsets per column in this DataFrame.</p></li>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><code class="xref py py-meth docutils literal notranslate"><span class="pre">notes()</span></code></dt><dd><p>Return a DataFrame of the notes and rests given in American Standard Pitch Notation</p>
+<dt><a class="reference internal" href="generated/pyampact.symbolic.notes.html#pyampact.symbolic.notes" title="pyampact.symbolic.notes"><code class="xref py py-meth docutils literal notranslate"><span class="pre">notes()</span></code></a></dt><dd><p>Return a DataFrame of the notes and rests given in American Standard Pitch Notation</p>
 </dd>
 </dl>
 </div>
-<p class="rubric">Example</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">piece</span> <span class="o">=</span> <span class="n">Score</span><span class="p">(</span>
-    <span class="s1">&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;</span><span class="p">)</span>
-<span class="n">piece</span><span class="o">.</span><span class="n">durations</span><span class="p">()</span>
-</pre></div>
-</div>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">dynamics</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.dynamics"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolic.</span></span><span class="sig-name descname"><span class="pre">dynamics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">piece</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#dynamics"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Extract the dynamics from the score.</p>
 <p>The dynamics are extracted from each part and returned as a pandas DataFrame
 where each column represents a part and each row represents a dynamic
@@ -332,19 +411,13 @@ marking. The DataFrame is indexed by the offset of the dynamic markings.</p>
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">lyrics()</span></code></p>
-</div>
-<p class="rubric">Example</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">piece</span> <span class="o">=</span> <span class="n">Score</span><span class="p">(</span>
-    <span class="s1">&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;</span><span class="p">)</span>
-<span class="n">piece</span><span class="o">.</span><span class="n">dynamics</span><span class="p">()</span>
-</pre></div>
+<p><a class="reference internal" href="generated/pyampact.symbolic.lyrics.html#pyampact.symbolic.lyrics" title="pyampact.symbolic.lyrics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lyrics()</span></code></a></p>
 </div>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">form</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">snap_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'forward'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'array'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dez_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.form"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolic.</span></span><span class="sig-name descname"><span class="pre">form</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snap_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'forward'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'array'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dez_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#form"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Get the “Structure” labels from a .dez file/url and return it as an array or a
 time-aligned pandas Series. The default is for the results to be returned as a 1-d
 array, but you can set <cite>output=’series’</cite> for a pandas series instead. If you want to align
@@ -353,78 +426,26 @@ mask results, you can pass the pianoRoll or mask that you want to align to as th
 parameter. Doing that makes it easier to combine these results with any of the pianoRoll,
 sampled, or mask tables to have both in a single table which can make data analysis easier.
 This example shows how to get the form analysis from a .dez file.</p>
-<p class="rubric">Example</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">piece</span> <span class="o">=</span> <span class="n">Score</span><span class="p">(</span><span class="s1">&#39;test_files/K279-1.krn&#39;</span><span class="p">)</span>
-<span class="n">form</span> <span class="o">=</span> <span class="n">piece</span><span class="o">.</span><span class="n">form</span><span class="p">(</span><span class="n">dez_path</span><span class="o">=</span><span class="s1">&#39;test_files/K279-1_harmony_texture.dez&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">functions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">snap_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'forward'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'array'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.functions"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Get the harmonic function labels from a <a href="#id6"><span class="problematic" id="id7">**</span></a>function spine in a kern file if there
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolic.</span></span><span class="sig-name descname"><span class="pre">functions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snap_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'forward'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'array'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#functions"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Get the harmonic function labels from a <a href="#id20"><span class="problematic" id="id21">**</span></a>function spine in a kern file if there
 is one and return it as an array or a time-aligned pandas Series. This is
 similar to the .harm, .keys, .chords, and .cdata methods. The default
 is for the results to be returned as a 1-d array, but you can set <cite>output=’series’</cite>
 for a pandas series instead. If want to get the results of a different spine
-type (i.e. not one of the ones listed above), see <code class="xref py py-meth docutils literal notranslate"><span class="pre">getSpines()</span></code>.</p>
-<p class="rubric">Example</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">piece</span> <span class="o">=</span> <span class="n">Score</span><span class="p">(</span>
-    <span class="s1">&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;</span><span class="p">)</span>
-<span class="n">piece</span><span class="o">.</span><span class="n">functions</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>If you want to align these results so that they match the columnar (time) axis
-of the pianoRoll, sampled, or mask results, you can pass the pianoRoll or mask
-that you want to align to as the <cite>snap_to</cite> parameter. Doing that makes it easier
-to combine these results with any of the pianoRoll, sampled, or mask tables to
-have both in a single table which can make data analysis easier. Passing a <cite>snap_to</cite>
-argument will automatically cause the return value to be a pandas series since
-that’s facilitates combining the two. Here’s how you would use the <cite>snap_to</cite>
-parameter and then combine the results with the pianoRoll to create a single table.</p>
-<p class="rubric">Example</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">piece</span> <span class="o">=</span> <span class="n">Score</span><span class="p">(</span>
-    <span class="s1">&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;</span><span class="p">)</span>
-<span class="n">pianoRoll</span> <span class="o">=</span> <span class="n">piece</span><span class="o">.</span><span class="n">pianoRoll</span><span class="p">()</span>
-<span class="n">functions</span> <span class="o">=</span> <span class="n">piece</span><span class="o">.</span><span class="n">functions</span><span class="p">(</span><span class="n">snap_to</span><span class="o">=</span><span class="n">pianoRoll</span><span class="p">)</span>
-<span class="n">combined</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">pianoRoll</span><span class="p">,</span> <span class="n">functions</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>The <cite>sampled</cite> and <cite>mask</cite> dfs often have more observations than the spine
-contents, so you may want to fill in these new empty slots somehow. The kern
-format uses ‘.’ as a filler token so you can pass this as the <cite>filler</cite>
-parameter to fill all the new empty slots with this as well. If you choose
-some other value, say <cite>filler=’_’</cite>, then in addition to filling in the empty
-slots with underscores, this will also replace the kern ‘.’ observations with
-‘_’. If you want to fill them in with NaN’s as pandas usually does, you can
-pass <cite>filler=’nan’</cite> as a convenience. If you want to “forward fill” these
-results, you can pass <cite>filler=’forward’</cite> (default). This will propagate the
-last non-period (‘.’) observation until a new one is found. Finally, you can
-pass filler=’drop’ to drop all empty observations (both NaNs and humdrum
-periods).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>snap_to</strong> – A pandas DataFrame to align the results to. Default is None.</p></li>
-<li><p><strong>filler</strong> – A string representing the filler token. Default is ‘forward’.</p></li>
-<li><p><strong>output</strong> – A string representing the output format. Default is ‘array’.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A numpy array or pandas Series representing the harmonic keys
-analysis.</p>
-</dd>
-</dl>
+type (i.e. not one of the ones listed above), see <a class="reference internal" href="generated/pyampact.symbolic.getSpines.html#pyampact.symbolic.getSpines" title="pyampact.symbolic.getSpines"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getSpines()</span></code></a>.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">cdata()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">chords()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">harm()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">keys()</span></code></p>
+<p><a class="reference internal" href="generated/pyampact.symbolic.cdata.html#pyampact.symbolic.cdata" title="pyampact.symbolic.cdata"><code class="xref py py-meth docutils literal notranslate"><span class="pre">cdata()</span></code></a>, <a class="reference internal" href="generated/pyampact.symbolic.chords.html#pyampact.symbolic.chords" title="pyampact.symbolic.chords"><code class="xref py py-meth docutils literal notranslate"><span class="pre">chords()</span></code></a>, <a class="reference internal" href="generated/pyampact.symbolic.harm.html#pyampact.symbolic.harm" title="pyampact.symbolic.harm"><code class="xref py py-meth docutils literal notranslate"><span class="pre">harm()</span></code></a>, <a class="reference internal" href="generated/pyampact.symbolic.keys.html#pyampact.symbolic.keys" title="pyampact.symbolic.keys"><code class="xref py py-meth docutils literal notranslate"><span class="pre">keys()</span></code></a></p>
 </div>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">getSpines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spineType</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.getSpines"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolic.</span></span><span class="sig-name descname"><span class="pre">getSpines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spineType</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#getSpines"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Return a pandas DataFrame of a less common spine type. This method is a
 window into the vast ecosystem of Humdrum tools making them accessible to
 pyAMPACT.</p>
@@ -440,35 +461,29 @@ pass the spine type with or without the “**” prefix.</p>
 <p>Similar to the .harm, .keys, .functions, .chords, and .cdata methods, this
 method returns the contents of a specific spine type from a kern file. This is
 a generic method that can be used to get the contents of any spine type other
-than: <a href="#id8"><span class="problematic" id="id9">**</span></a>kern, <a href="#id10"><span class="problematic" id="id11">**</span></a>dynam, <a href="#id12"><span class="problematic" id="id13">**</span></a>text, <a href="#id14"><span class="problematic" id="id15">**</span></a>cdata, <a href="#id16"><span class="problematic" id="id17">**</span></a>chord, <a href="#id18"><span class="problematic" id="id19">**</span></a>harm, or <a href="#id20"><span class="problematic" id="id21">**</span></a>function. Many
+than: <a href="#id22"><span class="problematic" id="id23">**</span></a>kern, <a href="#id24"><span class="problematic" id="id25">**</span></a>dynam, <a href="#id26"><span class="problematic" id="id27">**</span></a>text, <a href="#id28"><span class="problematic" id="id29">**</span></a>cdata, <a href="#id30"><span class="problematic" id="id31">**</span></a>chord, <a href="#id32"><span class="problematic" id="id33">**</span></a>harm, or <a href="#id34"><span class="problematic" id="id35">**</span></a>function. Many
 of the other spine types that you may be interested provide partwise data.
 For example, the results of Humlib’s Renaissance dissonance analysis are given
-as one “<a href="#id22"><span class="problematic" id="id23">**</span></a>cdata-rdiss” spine per part. Note that a <a href="#id24"><span class="problematic" id="id25">**</span></a>cdata-rdiss spine is not
-the same as a <a href="#id26"><span class="problematic" id="id27">**</span></a>cdata spine. This is why we return a DataFrame rather than
+as one “<a href="#id36"><span class="problematic" id="id37">**</span></a>cdata-rdiss” spine per part. Note that a <a href="#id38"><span class="problematic" id="id39">**</span></a>cdata-rdiss spine is not
+the same as a <a href="#id40"><span class="problematic" id="id41">**</span></a>cdata spine. This is why we return a DataFrame rather than
 an array or series. If there is just one spine of the spine type you request,
 the data will still be given as a 1-column dataframe. When you import a kern
 file, it automatically gets scanned for other spine types and if any are found
 you can see them with the <cite>foundSpines</cite> attribute.</p>
-<p>This example takes a score with <a href="#id28"><span class="problematic" id="id29">**</span></a>cdata-rdiss spines (Renaissance dissonance
-analysis), and makes a DataFrame of just the <a href="#id30"><span class="problematic" id="id31">**</span></a>cdata-rdiss spines. The full
+<p>This example takes a score with <a href="#id42"><span class="problematic" id="id43">**</span></a>cdata-rdiss spines (Renaissance dissonance
+analysis), and makes a DataFrame of just the <a href="#id44"><span class="problematic" id="id45">**</span></a>cdata-rdiss spines. The full
 score with color-coded dissonance labels can be seen on the Verovio Humdrum
 Viewer <a class="reference external" href="https://verovio.humdrum.org/?k=ey&amp;filter=dissonant%20--color&amp;file=jrp:Tin2004">here</a>.</p>
-<p class="rubric">Example</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">piece</span> <span class="o">=</span> <span class="n">Score</span><span class="p">(</span>
-    <span class="s1">&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/O_Virgo_Miserere.krn&#39;</span><span class="p">)</span>
-<span class="n">rdiss</span> <span class="o">=</span> <span class="n">piece</span><span class="o">.</span><span class="n">getSpines</span><span class="p">(</span><span class="s1">&#39;cdata-rdiss&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">cdata()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">chords()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">dynamics()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">functions()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">harm()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">keys()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">lyrics()</span></code></p>
+<p><a class="reference internal" href="generated/pyampact.symbolic.cdata.html#pyampact.symbolic.cdata" title="pyampact.symbolic.cdata"><code class="xref py py-meth docutils literal notranslate"><span class="pre">cdata()</span></code></a>, <a class="reference internal" href="generated/pyampact.symbolic.chords.html#pyampact.symbolic.chords" title="pyampact.symbolic.chords"><code class="xref py py-meth docutils literal notranslate"><span class="pre">chords()</span></code></a>, <a class="reference internal" href="generated/pyampact.symbolic.dynamics.html#pyampact.symbolic.dynamics" title="pyampact.symbolic.dynamics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">dynamics()</span></code></a>, <a class="reference internal" href="generated/pyampact.symbolic.functions.html#pyampact.symbolic.functions" title="pyampact.symbolic.functions"><code class="xref py py-meth docutils literal notranslate"><span class="pre">functions()</span></code></a>, <a class="reference internal" href="generated/pyampact.symbolic.harm.html#pyampact.symbolic.harm" title="pyampact.symbolic.harm"><code class="xref py py-meth docutils literal notranslate"><span class="pre">harm()</span></code></a>, <a class="reference internal" href="generated/pyampact.symbolic.keys.html#pyampact.symbolic.keys" title="pyampact.symbolic.keys"><code class="xref py py-meth docutils literal notranslate"><span class="pre">keys()</span></code></a>, <a class="reference internal" href="generated/pyampact.symbolic.lyrics.html#pyampact.symbolic.lyrics" title="pyampact.symbolic.lyrics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lyrics()</span></code></a></p>
 </div>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">harm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">snap_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'forward'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'array'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.harm"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Get the harmonic analysis portion of the <a href="#id32"><span class="problematic" id="id33">**</span></a>harm spine in a kern file if there
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolic.</span></span><span class="sig-name descname"><span class="pre">harm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snap_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'forward'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'array'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#harm"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Get the harmonic analysis portion of the <a href="#id46"><span class="problematic" id="id47">**</span></a>harm spine in a kern file if there
 is one and return it as an array or a time-aligned pandas Series. The prevailing
 key signature information is not included here from the harm spine, but that key
 information is available in the .keys method. This is similar to the
@@ -476,7 +491,7 @@ information is available in the .keys method. This is similar to the
 results to be returned as a 1-d array, but you can set <cite>output=’series’</cite>
 for a pandas series instead which is helpful if you’re going to concatenate
 the results to a dataframe. If want to get the results of a different spine
-type (i.e. not one of the ones listed above), see <code class="xref py py-meth docutils literal notranslate"><span class="pre">getSpines()</span></code>.</p>
+type (i.e. not one of the ones listed above), see <a class="reference internal" href="generated/pyampact.symbolic.getSpines.html#pyampact.symbolic.getSpines" title="pyampact.symbolic.getSpines"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getSpines()</span></code></a>.</p>
 <p>If you want to align these results so that they match the columnar (time) axis
 of the pianoRoll, sampled, or mask results, you can pass the pianoRoll or mask
 that you want to align to as the <cite>snap_to</cite> parameter. Doing that makes it easier
@@ -485,48 +500,15 @@ have both in a single table which can make data analysis easier. Passing a <cite
 argument will automatically cause the return value to be a pandas series since
 that’s facilitates combining the two. Here’s how you would use the <cite>snap_to</cite>
 parameter and then combine the results with the pianoRoll to create a single table.</p>
-<p class="rubric">Example</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">piece</span> <span class="o">=</span> <span class="n">Score</span><span class="p">(</span>
-    <span class="s1">&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;</span><span class="p">)</span>
-<span class="n">pianoRoll</span> <span class="o">=</span> <span class="n">piece</span><span class="o">.</span><span class="n">pianoRoll</span><span class="p">()</span>
-<span class="n">harm</span> <span class="o">=</span> <span class="n">piece</span><span class="o">.</span><span class="n">harm</span><span class="p">(</span><span class="n">snap_to</span><span class="o">=</span><span class="n">pianoRoll</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="s1">&#39;series&#39;</span><span class="p">)</span>
-<span class="n">combined</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">pianoRoll</span><span class="p">,</span> <span class="n">harm</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>The <cite>sampled</cite> and <cite>mask</cite> dfs often have more observations than the spine
-contents, so you may want to fill in these new empty slots somehow. The kern
-format uses ‘.’ as a filler token so you can pass this as the <cite>filler</cite>
-parameter to fill all the new empty slots with this as well. If you choose
-some other value, say <cite>filler=’_’</cite>, then in addition to filling in the empty
-slots with underscores, this will also replace the kern ‘.’ observations with
-‘_’. If you want to fill them in with NaN’s as pandas usually does, you can
-pass <cite>filler=’nan’</cite> as a convenience. If you want to “forward fill” these
-results, you can pass <cite>filler=’forward’</cite> (default). This will propagate the
-last non-period (‘.’) observation until a new one is found. Finally, you can
-pass filler=’drop’ to drop all empty observations (both NaNs and humdrum
-periods).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>snap_to</strong> – A pandas DataFrame to align the results to. Default is None.</p></li>
-<li><p><strong>filler</strong> – A string representing the filler token. Default is ‘forward’.</p></li>
-<li><p><strong>output</strong> – A string representing the output format. Default is ‘array’.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A numpy array or pandas Series representing the harmonic keys
-analysis.</p>
-</dd>
-</dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">cdata()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">chords()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">functions()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">keys()</span></code></p>
+<p><a class="reference internal" href="generated/pyampact.symbolic.cdata.html#pyampact.symbolic.cdata" title="pyampact.symbolic.cdata"><code class="xref py py-meth docutils literal notranslate"><span class="pre">cdata()</span></code></a>, <a class="reference internal" href="generated/pyampact.symbolic.chords.html#pyampact.symbolic.chords" title="pyampact.symbolic.chords"><code class="xref py py-meth docutils literal notranslate"><span class="pre">chords()</span></code></a>, <a class="reference internal" href="generated/pyampact.symbolic.functions.html#pyampact.symbolic.functions" title="pyampact.symbolic.functions"><code class="xref py py-meth docutils literal notranslate"><span class="pre">functions()</span></code></a>, <a class="reference internal" href="generated/pyampact.symbolic.keys.html#pyampact.symbolic.keys" title="pyampact.symbolic.keys"><code class="xref py py-meth docutils literal notranslate"><span class="pre">keys()</span></code></a></p>
 </div>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">insertAudioAnalysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mimetype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mei_tree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.insertAudioAnalysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolic.</span></span><span class="sig-name descname"><span class="pre">insertAudioAnalysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mimetype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mei_tree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#insertAudioAnalysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Insert a &lt;performance&gt; element into the MEI score given the analysis data
 (<cite>data</cite>) in the format of a json file or an nmat dictionary with audio data
 already included. If the original score is not an MEI file, a new MEI file
@@ -566,9 +548,7 @@ and a sibling of &lt;body&gt;. A new file will be saved to the
 element.</p></li>
 <li><p><strong>target</strong> – Optional target to be set as an attribute to the &lt;avFile&gt;
 element.</p></li>
-<li><p><strong>mei_tree</strong> – Optional ElementTree object to use as the base for the new file.
-If this is not passed, then the original MEI file is used if the Score
-is an MEI file. Otherwise a new MEI file is created with .toMEI().</p></li>
+<li><p><strong>mei_tree</strong> – Optional ElementTree object to use as the base for the new file.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -577,21 +557,13 @@ is an MEI file. Otherwise a new MEI file is created with .toMEI().</p></li>
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">nmats()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">toKern()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">toMEI()</span></code></p>
-</div>
-<p class="rubric">Example</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">piece</span> <span class="o">=</span> <span class="n">Score</span><span class="p">(</span><span class="s1">&#39;./test_files/CloseToYou.mei.xml&#39;</span><span class="p">)</span>
-<span class="n">piece</span><span class="o">.</span><span class="n">insertAudioAnalysis</span><span class="p">(</span><span class="n">output_filename</span><span class="o">=</span><span class="s1">&#39;newfile.mei.xml&#39;</span>
-    <span class="n">data</span><span class="o">=</span><span class="s1">&#39;./test_files/CloseToYou.json&#39;</span><span class="p">,</span>
-    <span class="n">mimetype</span><span class="o">=</span><span class="s1">&#39;audio/aiff&#39;</span><span class="p">,</span>
-    <span class="n">target</span><span class="o">=</span><span class="s1">&#39;Close to You vocals.wav&#39;</span><span class="p">)</span>
-</pre></div>
+<p><a class="reference internal" href="generated/pyampact.symbolic.nmats.html#pyampact.symbolic.nmats" title="pyampact.symbolic.nmats"><code class="xref py py-meth docutils literal notranslate"><span class="pre">nmats()</span></code></a>, <a class="reference internal" href="generated/pyampact.symbolic.toKern.html#pyampact.symbolic.toKern" title="pyampact.symbolic.toKern"><code class="xref py py-meth docutils literal notranslate"><span class="pre">toKern()</span></code></a>, <a class="reference internal" href="generated/pyampact.symbolic.toMEI.html#pyampact.symbolic.toMEI" title="pyampact.symbolic.toMEI"><code class="xref py py-meth docutils literal notranslate"><span class="pre">toMEI()</span></code></a></p>
 </div>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">insertScoreDef</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.insertScoreDef"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolic.</span></span><span class="sig-name descname"><span class="pre">insertScoreDef</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#insertScoreDef"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Insert a scoreDef element into an MEI (Music Encoding Initiative) document.</p>
 <p>This function inserts a scoreDef element into an MEI document if one is
 not already present. It modifies the input element in-place.</p>
@@ -606,9 +578,9 @@ MEI document.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">jsonCDATA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.jsonCDATA"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolic.</span></span><span class="sig-name descname"><span class="pre">jsonCDATA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#jsonCDATA"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Return a dictionary of pandas DataFrames, one for each voice. These
 DataFrames contain the cdata from the JSON file designated in <cite>json_path</cite>
 with each nested key in the JSON object becoming a column name in the
@@ -625,18 +597,13 @@ DataFrames as there are in those of the nmats DataFrames for each voice.</p>
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">fromJSON()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">insertAudioAnalysis()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">nmats()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">xmlIDs()</span></code></p>
-</div>
-<p class="rubric">Example</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">piece</span> <span class="o">=</span> <span class="n">Score</span><span class="p">(</span><span class="s1">&#39;./test_files/CloseToYou.mei.xml&#39;</span><span class="p">)</span>
-<span class="n">piece</span><span class="o">.</span><span class="n">jsonCDATA</span><span class="p">(</span><span class="n">json_path</span><span class="o">=</span><span class="s1">&#39;./test_files/CloseToYou.json&#39;</span><span class="p">)</span>
-</pre></div>
+<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">fromJSON()</span></code>, <a class="reference internal" href="generated/pyampact.symbolic.insertAudioAnalysis.html#pyampact.symbolic.insertAudioAnalysis" title="pyampact.symbolic.insertAudioAnalysis"><code class="xref py py-meth docutils literal notranslate"><span class="pre">insertAudioAnalysis()</span></code></a>, <a class="reference internal" href="generated/pyampact.symbolic.nmats.html#pyampact.symbolic.nmats" title="pyampact.symbolic.nmats"><code class="xref py py-meth docutils literal notranslate"><span class="pre">nmats()</span></code></a>, <a class="reference internal" href="generated/pyampact.symbolic.xmlIDs.html#pyampact.symbolic.xmlIDs" title="pyampact.symbolic.xmlIDs"><code class="xref py py-meth docutils literal notranslate"><span class="pre">xmlIDs()</span></code></a></p>
 </div>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">kernNotes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.kernNotes"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolic.</span></span><span class="sig-name descname"><span class="pre">kernNotes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">piece</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#kernNotes"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Return a DataFrame of the notes and rests given in kern notation.</p>
 <p>This is not the same as creating a kern format of a score, but is an
 important step in that process.</p>
@@ -653,84 +620,31 @@ important step in that process.</p>
 </dd>
 </dl>
 <dl class="simple">
-<dt><code class="xref py py-meth docutils literal notranslate"><span class="pre">notes()</span></code></dt><dd><p>Return a DataFrame of the notes and rests given in American Standard
+<dt><a class="reference internal" href="generated/pyampact.symbolic.notes.html#pyampact.symbolic.notes" title="pyampact.symbolic.notes"><code class="xref py py-meth docutils literal notranslate"><span class="pre">notes()</span></code></a></dt><dd><p>Return a DataFrame of the notes and rests given in American Standard
 Pitch Notation</p>
 </dd>
 </dl>
 </div>
-<p class="rubric">Example</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">piece</span> <span class="o">=</span> <span class="n">Score</span><span class="p">(</span>
-    <span class="s1">&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;</span><span class="p">)</span>
-<span class="n">piece</span><span class="o">.</span><span class="n">kernNotes</span><span class="p">()</span>
-</pre></div>
-</div>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">snap_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'forward'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'array'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.keys"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Get the key signature portion of the <a href="#id34"><span class="problematic" id="id35">**</span></a>harm spine in a kern file if there
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolic.</span></span><span class="sig-name descname"><span class="pre">keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snap_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'forward'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'array'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#keys"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Get the key signature portion of the <a href="#id48"><span class="problematic" id="id49">**</span></a>harm spine in a kern file if there
 is one and return it as an array or a time-aligned pandas Series. This is
 similar to the .harm, .functions, .chords, and .cdata methods. The default
 is for the results to be returned as a 1-d array, but you can set <cite>output=’series’</cite>
 for a pandas series instead. If want to get the results of a different spine
-type (i.e. not one of the ones listed above), see <code class="xref py py-meth docutils literal notranslate"><span class="pre">getSpines()</span></code>.</p>
-<p class="rubric">Example</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">piece</span> <span class="o">=</span> <span class="n">Score</span><span class="p">(</span>
-    <span class="s1">&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;</span><span class="p">)</span>
-<span class="n">piece</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>If you want to align these results so that they match the columnar (time) axis
-of the pianoRoll, sampled, or mask results, you can pass the pianoRoll or mask
-that you want to align to as the <cite>snap_to</cite> parameter. Doing that makes it easier
-to combine these results with any of the pianoRoll, sampled, or mask tables to
-have both in a single table which can make data analysis easier. Passing a <cite>snap_to</cite>
-argument will automatically cause the return value to be a pandas series since
-that’s facilitates combining the two. Here’s how you would use the <cite>snap_to</cite>
-parameter and then combine the results with the pianoRoll to create a single table.</p>
-<p class="rubric">Example</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">piece</span> <span class="o">=</span> <span class="n">Score</span><span class="p">(</span>
-    <span class="s1">&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;</span><span class="p">)</span>
-<span class="n">pianoRoll</span> <span class="o">=</span> <span class="n">piece</span><span class="o">.</span><span class="n">pianoRoll</span><span class="p">()</span>
-<span class="n">keys</span> <span class="o">=</span> <span class="n">piece</span><span class="o">.</span><span class="n">keys</span><span class="p">(</span><span class="n">snap_to</span><span class="o">=</span><span class="n">pianoRoll</span><span class="p">)</span>
-<span class="n">combined</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">pianoRoll</span><span class="p">,</span> <span class="n">keys</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>The <cite>sampled</cite> and <cite>mask</cite> dfs often have more observations than the spine
-contents, so you may want to fill in these new empty slots somehow. The kern
-format uses ‘.’ as a filler token so you can pass this as the <cite>filler</cite>
-parameter to fill all the new empty slots with this as well. If you choose
-some other value, say <cite>filler=’_’</cite>, then in addition to filling in the empty
-slots with underscores, this will also replace the kern ‘.’ observations with
-‘_’. If you want to fill them in with NaN’s as pandas usually does, you can
-pass <cite>filler=’nan’</cite> as a convenience. If you want to “forward fill” these
-results, you can pass <cite>filler=’forward’</cite> (default). This will propagate the
-last non-period (‘.’) observation until a new one is found. Finally, you can
-pass filler=’drop’ to drop all empty observations (both NaNs and humdrum
-periods).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>snap_to</strong> – A pandas DataFrame to align the results to. Default is None.</p></li>
-<li><p><strong>filler</strong> – A string representing the filler token. Default is ‘forward’.</p></li>
-<li><p><strong>output</strong> – A string representing the output format. Default is ‘array’.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A numpy array or pandas Series representing the harmonic keys
-analysis.</p>
-</dd>
-</dl>
+type (i.e. not one of the ones listed above), see <a class="reference internal" href="generated/pyampact.symbolic.getSpines.html#pyampact.symbolic.getSpines" title="pyampact.symbolic.getSpines"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getSpines()</span></code></a>.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">cdata()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">chords()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">functions()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">harm()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">getSpines()</span></code></p>
+<p><a class="reference internal" href="generated/pyampact.symbolic.cdata.html#pyampact.symbolic.cdata" title="pyampact.symbolic.cdata"><code class="xref py py-meth docutils literal notranslate"><span class="pre">cdata()</span></code></a>, <a class="reference internal" href="generated/pyampact.symbolic.chords.html#pyampact.symbolic.chords" title="pyampact.symbolic.chords"><code class="xref py py-meth docutils literal notranslate"><span class="pre">chords()</span></code></a>, <a class="reference internal" href="generated/pyampact.symbolic.functions.html#pyampact.symbolic.functions" title="pyampact.symbolic.functions"><code class="xref py py-meth docutils literal notranslate"><span class="pre">functions()</span></code></a>, <a class="reference internal" href="generated/pyampact.symbolic.harm.html#pyampact.symbolic.harm" title="pyampact.symbolic.harm"><code class="xref py py-meth docutils literal notranslate"><span class="pre">harm()</span></code></a>, <a class="reference internal" href="generated/pyampact.symbolic.getSpines.html#pyampact.symbolic.getSpines" title="pyampact.symbolic.getSpines"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getSpines()</span></code></a></p>
 </div>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">lyrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.lyrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolic.</span></span><span class="sig-name descname"><span class="pre">lyrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#lyrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Extract the lyrics from the score.</p>
 <p>The lyrics are extracted from each part and returned as a pandas DataFrame
 where each column represents a part and each row represents a lyric. The
@@ -746,19 +660,13 @@ and trailing whitespace from the lyrics.</p>
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">dynamics()</span></code></p>
-</div>
-<p class="rubric">Example</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">piece</span> <span class="o">=</span> <span class="n">Score</span><span class="p">(</span>
-    <span class="s1">&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/Busnoys_In_hydraulis.krn&#39;</span><span class="p">)</span>
-<span class="n">piece</span><span class="o">.</span><span class="n">lyrics</span><span class="p">()</span>
-</pre></div>
+<p><a class="reference internal" href="generated/pyampact.symbolic.dynamics.html#pyampact.symbolic.dynamics" title="pyampact.symbolic.dynamics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">dynamics()</span></code></a></p>
 </div>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">winms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_harmonics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bpm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aFreq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">440</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_note</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tuning_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">24</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolic.</span></span><span class="sig-name descname"><span class="pre">mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">winms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_harmonics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bpm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aFreq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">440</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_note</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tuning_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">24</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Construct a mask from the sampled piano roll using width and harmonics. This
 builds on the intermediate representations of the pianoRoll and sampled
 methods. The sampled method already put the x-axis (columns) in regular
@@ -795,19 +703,13 @@ sampled score. The values are 1 for a note onset and 0 otherwise.</p>
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">pianoRoll()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">sampled()</span></code></p>
-</div>
-<p class="rubric">Example</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">piece</span> <span class="o">=</span> <span class="n">Score</span><span class="p">(</span>
-    <span class="s1">&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;</span><span class="p">)</span>
-<span class="n">piece</span><span class="o">.</span><span class="n">mask</span><span class="p">()</span>
-</pre></div>
+<p><a class="reference internal" href="generated/pyampact.symbolic.pianoRoll.html#pyampact.symbolic.pianoRoll" title="pyampact.symbolic.pianoRoll"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pianoRoll()</span></code></a>, <a class="reference internal" href="generated/pyampact.symbolic.sampled.html#pyampact.symbolic.sampled" title="pyampact.symbolic.sampled"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sampled()</span></code></a></p>
 </div>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">midiPitches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">multi_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.midiPitches"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolic.</span></span><span class="sig-name descname"><span class="pre">midiPitches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multi_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#midiPitches"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Return a DataFrame of notes and rests as MIDI pitches.</p>
 <p>MIDI does not have a representation for rests, so -1 is used as a
 placeholder.</p>
@@ -824,25 +726,19 @@ represented as -1.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><code class="xref py py-meth docutils literal notranslate"><span class="pre">kernNotes()</span></code></dt><dd><p>Return a DataFrame of the notes and rests given in kern notation.</p>
+<dt><a class="reference internal" href="generated/pyampact.symbolic.kernNotes.html#pyampact.symbolic.kernNotes" title="pyampact.symbolic.kernNotes"><code class="xref py py-meth docutils literal notranslate"><span class="pre">kernNotes()</span></code></a></dt><dd><p>Return a DataFrame of the notes and rests given in kern notation.</p>
 </dd>
-<dt><code class="xref py py-meth docutils literal notranslate"><span class="pre">notes()</span></code></dt><dd><p>Return a DataFrame of the notes and rests given in American Standard Pitch Notation</p>
+<dt><a class="reference internal" href="generated/pyampact.symbolic.notes.html#pyampact.symbolic.notes" title="pyampact.symbolic.notes"><code class="xref py py-meth docutils literal notranslate"><span class="pre">notes()</span></code></a></dt><dd><p>Return a DataFrame of the notes and rests given in American Standard Pitch Notation</p>
 </dd>
 </dl>
 </div>
-<p class="rubric">Example</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">piece</span> <span class="o">=</span> <span class="n">Score</span><span class="p">(</span>
-    <span class="s1">&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;</span><span class="p">)</span>
-<span class="n">piece</span><span class="o">.</span><span class="n">midiPitches</span><span class="p">()</span>
-</pre></div>
-</div>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">midi_ticks_durations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.midi_ticks_durations"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolic.</span></span><span class="sig-name descname"><span class="pre">midi_ticks_durations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#midi_ticks_durations"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Replaces the placeholder ONSET_SEC and OFFSET_SEC columns with timing information
-directly extracted from the music21 stream. No MIDI export or roundtrip needed.</p>
+directly extracted from the music21 stream.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -851,24 +747,17 @@ directly extracted from the music21 stream. No MIDI export or roundtrip needed.<
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Updated DataFrame with ONSET_SEC, OFFSET_SEC, and DURATION columns.</p>
+<dd class="field-even"><p>Updated DataFrame with ONSET_SEC, OFFSET_SEC, DURATION, and TEMPO columns.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>pd.DataFrame</p>
 </dd>
 </dl>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<dl class="simple">
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">self.notes</span></code></dt><dd><p>generates the original symbolic note dataframe.</p>
-</dd>
-</dl>
-</div>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">nmats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_cdata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.nmats"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolic.</span></span><span class="sig-name descname"><span class="pre">nmats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_cdata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#nmats"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Return a dictionary of DataFrames, one for each voice, with information
 about the notes and rests in that voice.</p>
 <p>Each DataFrame has the following columns:</p>
@@ -893,19 +782,13 @@ provided, the cdata from the json file is included in the DataFrame.</p></li>
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">fromJSON()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">insertAudioAnalysis()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">jsonCDATA()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">xmlIDs()</span></code></p>
-</div>
-<p class="rubric">Example</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">piece</span> <span class="o">=</span> <span class="n">Score</span><span class="p">(</span>
-    <span class="s1">&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/Mozart_K179_seg.krn&#39;</span><span class="p">)</span>
-<span class="n">piece</span><span class="o">.</span><span class="n">nmats</span><span class="p">()</span>
-</pre></div>
+<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">fromJSON()</span></code>, <a class="reference internal" href="generated/pyampact.symbolic.insertAudioAnalysis.html#pyampact.symbolic.insertAudioAnalysis" title="pyampact.symbolic.insertAudioAnalysis"><code class="xref py py-meth docutils literal notranslate"><span class="pre">insertAudioAnalysis()</span></code></a>, <a class="reference internal" href="generated/pyampact.symbolic.jsonCDATA.html#pyampact.symbolic.jsonCDATA" title="pyampact.symbolic.jsonCDATA"><code class="xref py py-meth docutils literal notranslate"><span class="pre">jsonCDATA()</span></code></a>, <a class="reference internal" href="generated/pyampact.symbolic.xmlIDs.html#pyampact.symbolic.xmlIDs" title="pyampact.symbolic.xmlIDs"><code class="xref py py-meth docutils literal notranslate"><span class="pre">xmlIDs()</span></code></a></p>
 </div>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">notes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">combine_rests</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">combine_unisons</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.notes"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolic.</span></span><span class="sig-name descname"><span class="pre">notes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">combine_rests</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">combine_unisons</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#notes"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Return a DataFrame of the notes and rests given in American Standard Pitch
 Notation where middle C is C4. Rests are designated with the string “r”.</p>
 <p>If <cite>combine_rests</cite> is True (default), non-first consecutive rests will be
@@ -928,22 +811,16 @@ on the same pitch in a given voice will be combined.</p></li>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><code class="xref py py-meth docutils literal notranslate"><span class="pre">kernNotes()</span></code></dt><dd><p>Return a DataFrame of the notes and rests given in kern notation.</p>
+<dt><a class="reference internal" href="generated/pyampact.symbolic.kernNotes.html#pyampact.symbolic.kernNotes" title="pyampact.symbolic.kernNotes"><code class="xref py py-meth docutils literal notranslate"><span class="pre">kernNotes()</span></code></a></dt><dd><p>Return a DataFrame of the notes and rests given in kern notation.</p>
 </dd>
 </dl>
-<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">midiPitches()</span></code></p>
-</div>
-<p class="rubric">Example</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">piece</span> <span class="o">=</span> <span class="n">Score</span><span class="p">(</span>
-    <span class="s1">&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;</span><span class="p">)</span>
-<span class="n">piece</span><span class="o">.</span><span class="n">notes</span><span class="p">()</span>
-</pre></div>
+<p><a class="reference internal" href="generated/pyampact.symbolic.midiPitches.html#pyampact.symbolic.midiPitches" title="pyampact.symbolic.midiPitches"><code class="xref py py-meth docutils literal notranslate"><span class="pre">midiPitches()</span></code></a></p>
 </div>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">pianoRoll</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.pianoRoll"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolic.</span></span><span class="sig-name descname"><span class="pre">pianoRoll</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">piece</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#pianoRoll"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Construct a MIDI piano roll. This representation of a score plots midi pitches
 on the y-axis (rows) and time on the x-axis (columns). Midi pitches are given
 as integers from 0 to 127 inclusive, and time is given in quarter notes counting
@@ -964,46 +841,26 @@ the score. The values are 1 for a note onset and 0 otherwise.</p>
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">mask()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">sampled()</span></code></p>
-</div>
-<p class="rubric">Example</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">piece</span> <span class="o">=</span> <span class="n">Score</span><span class="p">(</span>
-    <span class="s1">&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;</span><span class="p">)</span>
-<span class="n">piece</span><span class="o">.</span><span class="n">pianoRoll</span><span class="p">()</span>
-</pre></div>
+<p><a class="reference internal" href="generated/pyampact.symbolic.mask.html#pyampact.symbolic.mask" title="pyampact.symbolic.mask"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mask()</span></code></a>, <a class="reference internal" href="generated/pyampact.symbolic.sampled.html#pyampact.symbolic.sampled" title="pyampact.symbolic.sampled"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sampled()</span></code></a></p>
 </div>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">romanNumerals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">snap_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'forward'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'array'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dez_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.romanNumerals"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Get the roman numeral labels from a .dez file/url or <a href="#id36"><span class="problematic" id="id37">**</span></a>harm spine and return it as an array
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolic.</span></span><span class="sig-name descname"><span class="pre">romanNumerals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snap_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'forward'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'array'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dez_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#romanNumerals"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Get the roman numeral labels from a .dez file/url or <a href="#id50"><span class="problematic" id="id51">**</span></a>harm spine and return it as an array
 or a time-aligned pandas Series. The default is for the results to be returned as a 1-d
 array, but you can set <cite>output=’series’</cite> for a pandas series instead. If you want to align
 these results so that they match the columnar (time) axis of the pianoRoll, sampled, or mask
 results, you can pass the pianoRoll or mask that you want to align to as the <cite>snap_to</cite> parameter.
 Doing that makes it easier to combine these results with any of the pianoRoll, sampled, or mask
 tables to have both in a single table which can make data analysis easier. This example shows
-how to get the roman numeral analysis from a kern score that has a <a href="#id38"><span class="problematic" id="id39">**</span></a>harm spine.</p>
-<p class="rubric">Example</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">piece</span> <span class="o">=</span> <span class="n">Score</span><span class="p">(</span>
-    <span class="s1">&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;</span><span class="p">)</span>
-<span class="n">pianoRoll</span> <span class="o">=</span> <span class="n">piece</span><span class="o">.</span><span class="n">pianoRoll</span><span class="p">()</span>
-<span class="n">romanNumerals</span> <span class="o">=</span> <span class="n">piece</span><span class="o">.</span><span class="n">romanNumerals</span><span class="p">(</span><span class="n">snap_to</span><span class="o">=</span><span class="n">pianoRoll</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>The next example shows how to get the roman numeral analysis from a .dez file.</p>
-<p class="rubric">Example</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">piece</span> <span class="o">=</span> <span class="n">Score</span><span class="p">(</span><span class="s1">&#39;test_files/K279-1.krn&#39;</span><span class="p">)</span>
-<span class="n">romanNumerals</span> <span class="o">=</span> <span class="n">piece</span><span class="o">.</span><span class="n">romanNumerals</span><span class="p">(</span>
-    <span class="n">dez_path</span><span class="o">=</span><span class="s1">&#39;test_files/K279-1_harmony_texture.dez&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
+how to get the roman numeral analysis from a kern score that has a <a href="#id52"><span class="problematic" id="id53">**</span></a>harm spine.</p>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">sampled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bpm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">24</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.sampled"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolic.</span></span><span class="sig-name descname"><span class="pre">sampled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bpm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">24</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#sampled"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Sample the score according to the given beats per minute (bpm) and the
 desired observations per second (obs). This method is primarily used as an
 intermediate step in the construction of a mask. It builds on the pianoRoll
@@ -1027,19 +884,13 @@ in the sampled score. The values are 1 for a note onset and 0 otherwise.</p>
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">mask()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">pianoRoll()</span></code></p>
-</div>
-<p class="rubric">Example</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">piece</span> <span class="o">=</span> <span class="n">Score</span><span class="p">(</span>
-    <span class="s1">&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;</span><span class="p">)</span>
-<span class="n">piece</span><span class="o">.</span><span class="n">sampled</span><span class="p">()</span>
-</pre></div>
+<p><a class="reference internal" href="generated/pyampact.symbolic.mask.html#pyampact.symbolic.mask" title="pyampact.symbolic.mask"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mask()</span></code></a>, <a class="reference internal" href="generated/pyampact.symbolic.pianoRoll.html#pyampact.symbolic.pianoRoll" title="pyampact.symbolic.pianoRoll"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pianoRoll()</span></code></a></p>
 </div>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.show"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolic.</span></span><span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#show"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Print a VerovioHumdrumViewer link to the score in between the <cite>start</cite> and
 <cite>stop</cite> measures (inclusive).</p>
 <dl class="field-list simple">
@@ -1056,19 +907,13 @@ is greater than <cite>stop</cite>, they will be swapped.</p></li>
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">toKern()</span></code></p>
-</div>
-<p class="rubric">Example</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">piece</span> <span class="o">=</span> <span class="n">Score</span><span class="p">(</span>
-    <span class="s1">&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;</span><span class="p">)</span>
-<span class="n">piece</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-</pre></div>
+<p><a class="reference internal" href="generated/pyampact.symbolic.toKern.html#pyampact.symbolic.toKern" title="pyampact.symbolic.toKern"><code class="xref py py-meth docutils literal notranslate"><span class="pre">toKern()</span></code></a></p>
 </div>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">toKern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lyrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dynamics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.toKern"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolic.</span></span><span class="sig-name descname"><span class="pre">toKern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_lyrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_dynamics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">analysis_dfs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#toKern"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Create a kern representation of the score. If no <cite>path_name</cite> variable is
 passed, then returns a pandas DataFrame of the kern representation.
 Otherwise a file is created or overwritten at the <cite>path_name</cite> path. If
@@ -1096,20 +941,13 @@ writing the new kern file to the location of <cite>path_name</cite></p>
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">show()</span></code></p>
-</div>
-<p class="rubric">Example</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a kern file from a different symbolic notation file</span>
-<span class="n">piece</span> <span class="o">=</span> <span class="n">Score</span><span class="p">(</span>
-    <span class="s1">&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/K179.xml&#39;</span><span class="p">)</span>
-<span class="n">piece</span><span class="o">.</span><span class="n">toKern</span><span class="p">()</span>
-</pre></div>
+<p><a class="reference internal" href="generated/pyampact.symbolic.show.html#pyampact.symbolic.show" title="pyampact.symbolic.show"><code class="xref py py-meth docutils literal notranslate"><span class="pre">show()</span></code></a></p>
 </div>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">toMEI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indentation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\t'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dfs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">analysis_tag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'annot'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.toMEI"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolic.</span></span><span class="sig-name descname"><span class="pre">toMEI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indentation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\t'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dfs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">analysis_tag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'annot'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#toMEI"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Write or return an MEI score optionally including analysis data.</p>
 <p>If no <cite>file_name</cite> is passed then returns a string of the MEI representation.
 Otherwise a file called <cite>file_name</cite> is created or overwritten in the current working
@@ -1139,19 +977,13 @@ writing the new MEI file to the current working directory.</p>
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">toKern()</span></code></p>
-</div>
-<p class="rubric">Example</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create an MEI file from a different symbolic notation file</span>
-<span class="n">piece</span> <span class="o">=</span> <span class="n">Score</span><span class="p">(</span><span class="s1">&#39;kerntest.krn&#39;</span><span class="p">)</span>
-<span class="n">piece</span><span class="o">.</span><span class="n">toMEI</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="s1">&#39;meiFile.mei.xml&#39;</span><span class="p">)</span>
-</pre></div>
+<p><a class="reference internal" href="generated/pyampact.symbolic.toKern.html#pyampact.symbolic.toKern" title="pyampact.symbolic.toKern"><code class="xref py py-meth docutils literal notranslate"><span class="pre">toKern()</span></code></a></p>
 </div>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">xmlIDs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#Score.xmlIDs"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolic.</span></span><span class="sig-name descname"><span class="pre">xmlIDs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">piece</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/symbolic.html#xmlIDs"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Return xml ids per part in a pandas.DataFrame time-aligned with the
 objects offset. If the file is not xml or mei, or an idString wasn’t found,
 return a DataFrame of the ids of the music21 objects.</p>
@@ -1162,16 +994,8 @@ return a DataFrame of the ids of the music21 objects.</p>
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">nmats()</span></code></p>
+<p><a class="reference internal" href="generated/pyampact.symbolic.nmats.html#pyampact.symbolic.nmats" title="pyampact.symbolic.nmats"><code class="xref py py-meth docutils literal notranslate"><span class="pre">nmats()</span></code></a></p>
 </div>
-<p class="rubric">Example</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">piece</span> <span class="o">=</span> <span class="n">Score</span><span class="p">(</span>
-    <span class="s1">&#39;https://github.com/pyampact/pyAMPACTtutorials/blob/main/test_files/M025_00_01a_a.krn&#39;</span><span class="p">)</span>
-<span class="n">piece</span><span class="o">.</span><span class="n">xmlIDs</span><span class="p">()</span>
-</pre></div>
-</div>
-</dd></dl>
-
 </dd></dl>
 
 </section>
@@ -1181,7 +1005,7 @@ return a DataFrame of the ids of the music21 objects.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="generated/pyampact.performance.perceived_pitch.html" class="btn btn-neutral float-left" title="pyampact.performance.perceived_pitch" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="generated/pyampact.symbolic.Score.html" class="btn btn-neutral float-right" title="pyampact.symbolic.Score" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="generated/pyampact.symbolic.load_score.html" class="btn btn-neutral float-right" title="pyampact.symbolic.load_score" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

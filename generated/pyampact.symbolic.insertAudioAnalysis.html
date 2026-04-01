@@ -1,0 +1,230 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyampact.symbolic.insertAudioAnalysis &mdash; pyAMPACT 0.0.6 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+    <link rel="canonical" href="https://pyampact.github.io/generated/pyampact.symbolic.insertAudioAnalysis.html" />
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1fd71caa"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pyampact.symbolic.toKern" href="pyampact.symbolic.toKern.html" />
+    <link rel="prev" title="pyampact.symbolic.jsonCDATA" href="pyampact.symbolic.jsonCDATA.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            pyAMPACT
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../alignment.html">alignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../alignmentUtils.html">alignmentUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dataCompilation.html">dataCompilation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance.html">performance</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../symbolic.html">symbolic</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../symbolic.html#id1">symbolic</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic.load_score.html">pyampact.symbolic.load_score</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic.convert_attribs_to_str.html">pyampact.symbolic.convert_attribs_to_str</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic._assignM21Attributes.html">pyampact.symbolic._assignM21Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic._import_other_spines.html">pyampact.symbolic._import_other_spines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic._partList.html">pyampact.symbolic._partList</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic._parts.html">pyampact.symbolic._parts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic.insertScoreDef.html">pyampact.symbolic.insertScoreDef</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic.xmlIDs.html">pyampact.symbolic.xmlIDs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic._lyricHelper.html">pyampact.symbolic._lyricHelper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic.lyrics.html">pyampact.symbolic.lyrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic._m21Clefs.html">pyampact.symbolic._m21Clefs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic._clefs.html">pyampact.symbolic._clefs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic.dynamics.html">pyampact.symbolic.dynamics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic._priority.html">pyampact.symbolic._priority</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic.keys.html">pyampact.symbolic.keys</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic.harm.html">pyampact.symbolic.harm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic.functions.html">pyampact.symbolic.functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic.chords.html">pyampact.symbolic.chords</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic.cdata.html">pyampact.symbolic.cdata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic.getSpines.html">pyampact.symbolic.getSpines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic.dez.html">pyampact.symbolic.dez</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic.form.html">pyampact.symbolic.form</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic.romanNumerals.html">pyampact.symbolic.romanNumerals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic._m21ObjectsNoTies.html">pyampact.symbolic._m21ObjectsNoTies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic._measures.html">pyampact.symbolic._measures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic._barlines.html">pyampact.symbolic._barlines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic._keySignatures.html">pyampact.symbolic._keySignatures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic._timeSignatures.html">pyampact.symbolic._timeSignatures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic._beats.html">pyampact.symbolic._beats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic.durations.html">pyampact.symbolic.durations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic.midi_ticks_durations.html">pyampact.symbolic.midi_ticks_durations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic.midiPitches.html">pyampact.symbolic.midiPitches</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic.notes.html">pyampact.symbolic.notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic.kernNotes.html">pyampact.symbolic.kernNotes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic.nmats.html">pyampact.symbolic.nmats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic.contextualize.html">pyampact.symbolic.contextualize</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic.pianoRoll.html">pyampact.symbolic.pianoRoll</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic.sampled.html">pyampact.symbolic.sampled</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic.mask.html">pyampact.symbolic.mask</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic.jsonCDATA.html">pyampact.symbolic.jsonCDATA</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">pyampact.symbolic.insertAudioAnalysis</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyampact.symbolic.insertAudioAnalysis"><code class="docutils literal notranslate"><span class="pre">insertAudioAnalysis()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic.toKern.html">pyampact.symbolic.toKern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic.toMEI.html">pyampact.symbolic.toMEI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic.show.html">pyampact.symbolic.show</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyampact.symbolic.build_mask_from_nmat_seconds.html">pyampact.symbolic.build_mask_from_nmat_seconds</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../symbolicUtils.html">symbolicUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../speechDescriptors.html">speechDescriptors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../speechDescriptorsUtils.html">speechDescriptorsUtils</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyAMPACT</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../symbolic.html">symbolic</a></li>
+      <li class="breadcrumb-item active">pyampact.symbolic.insertAudioAnalysis</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/generated/pyampact.symbolic.insertAudioAnalysis.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pyampact-symbolic-insertaudioanalysis">
+<h1>pyampact.symbolic.insertAudioAnalysis<a class="headerlink" href="#pyampact-symbolic-insertaudioanalysis" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyampact.symbolic.insertAudioAnalysis">
+<span class="sig-prename descclassname"><span class="pre">pyampact.symbolic.</span></span><span class="sig-name descname"><span class="pre">insertAudioAnalysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mimetype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mei_tree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyampact/symbolic.html#insertAudioAnalysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.symbolic.insertAudioAnalysis" title="Link to this definition"></a></dt>
+<dd><p>Insert a &lt;performance&gt; element into the MEI score given the analysis data
+(<cite>data</cite>) in the format of a json file or an nmat dictionary with audio data
+already included. If the original score is not an MEI file, a new MEI file
+will be created and used. The JSON data will be extracted via the <cite>.nmats()</cite>
+method. If provided, the <cite>mimetype</cite> and <cite>target</cite> get passed as
+attributes to the &lt;avFile&gt; element. The performance element will nest
+the DataFrame data in the &lt;performance&gt; element as a child of  &lt;music&gt;
+and a sibling of &lt;body&gt;. A new file will be saved to the
+<cite>output_filename</cite> in the current working directory.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;music&gt;
+    &lt;performance xml:id=&quot;pyAMPACT-1&quot;&gt;
+        &lt;recording xml:id=&quot;pyAMPACT-2&quot;&gt;
+            &lt;avFile mimetype=&quot;audio/aiff&quot; target=&quot;song.wav&quot; xml:id=&quot;pyAMPACT-3&quot; /&gt;
+            &lt;when absolute=&quot;00:00:12:428&quot; xml:id=&quot;pyAMPACT-4&quot; data=&quot;#note_1&quot;&gt;
+                &lt;extData xml:id=&quot;pyAMPACT-5&quot;&gt;
+                    &lt;![CDATA[&gt;
+                        {&quot;ppitch&quot;:221.30926295063591, &quot;jitter&quot;:0.7427361, ...}
+                    ]]&gt;
+                &lt;/extData&gt;
+            &lt;/when&gt;
+            &lt;when absolute=&quot;00:00:12:765&quot; xml:id=&quot;pyAMPACT-6&quot; data=&quot;#note_2&quot;&gt;
+            ...
+        &lt;/recording&gt;
+    &lt;/performance&gt;
+    &lt;body&gt;
+        ...
+    &lt;/body&gt;
+&lt;/music&gt;
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>output_filename</strong> – The name of the output file.</p></li>
+<li><p><strong>data</strong> – Path to a JSON file containing analysis data or an nmats dictionary.</p></li>
+<li><p><strong>mimetype</strong> – Optional MIME type to be set as an attribute to the &lt;avFile&gt;
+element.</p></li>
+<li><p><strong>target</strong> – Optional target to be set as an attribute to the &lt;avFile&gt;
+element.</p></li>
+<li><p><strong>mei_tree</strong> – Optional ElementTree object to use as the base for the new file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None but a new file is written</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="pyampact.symbolic.nmats.html#pyampact.symbolic.nmats" title="pyampact.symbolic.nmats"><code class="xref py py-meth docutils literal notranslate"><span class="pre">nmats()</span></code></a>, <a class="reference internal" href="pyampact.symbolic.toKern.html#pyampact.symbolic.toKern" title="pyampact.symbolic.toKern"><code class="xref py py-meth docutils literal notranslate"><span class="pre">toKern()</span></code></a>, <a class="reference internal" href="pyampact.symbolic.toMEI.html#pyampact.symbolic.toMEI" title="pyampact.symbolic.toMEI"><code class="xref py py-meth docutils literal notranslate"><span class="pre">toMEI()</span></code></a></p>
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pyampact.symbolic.jsonCDATA.html" class="btn btn-neutral float-left" title="pyampact.symbolic.jsonCDATA" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pyampact.symbolic.toKern.html" class="btn btn-neutral float-right" title="pyampact.symbolic.toKern" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, AMPACT Research Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

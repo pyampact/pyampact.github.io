@@ -1,6 +1,0 @@
-﻿pyampact.alignmentUtils.load\_audiofile
-=======================================
-
-.. currentmodule:: pyampact.alignmentUtils
-
-.. autofunction:: load_audiofile

@@ -5,17 +5,17 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyampact.symbolicUtils &mdash; pyAMPACT 0.0.5 documentation</title>
+  <title>pyampact.symbolicUtils &mdash; pyAMPACT 0.0.6 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
 
   
     <link rel="canonical" href="https://pyampact.github.io/_modules/pyampact/symbolicUtils.html" />
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=282f96c0"></script>
-      <script src="../../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/documentation_options.js?v=1fd71caa"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -52,6 +52,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../performance.html">performance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../symbolic.html">symbolic</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../symbolicUtils.html">symbolicUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../speechDescriptors.html">speechDescriptors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../speechDescriptorsUtils.html">speechDescriptorsUtils</a></li>
 </ul>
 
         </div>
@@ -81,75 +83,67 @@
   <h1>Source code for pyampact.symbolicUtils</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">symbolicUtils</span>
-<span class="sd">==============</span>
-
+<span class="sd">=======================</span>
 
 <span class="sd">.. autosummary::</span>
-<span class="sd">    :toctree: generated/</span>
+<span class="sd">   :toctree: generated/</span>
 
-<span class="sd">    _escape_cdata</span>
-<span class="sd">    addMEINote</span>
-<span class="sd">    addTieBreakers</span>
-<span class="sd">    kernClefHelper</span>
-<span class="sd">    combineRests</span>
-<span class="sd">    combineUnisons</span>
-<span class="sd">    fromJSON</span>
-<span class="sd">    _id_gen</span>
-<span class="sd">    indentMEI</span>
-<span class="sd">    _kernChordHelper</span>
-<span class="sd">    kernFooter</span>
-<span class="sd">    kernHeader</span>
-<span class="sd">    _kernNoteHelper</span>
-<span class="sd">    kernNRCHelper</span>
-<span class="sd">    noteRestHelper</span>
-<span class="sd">    remove_namespaces</span>
-<span class="sd">    removeTied</span>
-<span class="sd">    snapTo</span>
-<span class="sd">    truncate_and_scale_onsOffsList</span>
-<span class="sd">    githubURLtoRaw</span>
-
+<span class="sd">   _escape_cdata</span>
+<span class="sd">   addMEINote</span>
+<span class="sd">   addTieBreakers</span>
+<span class="sd">   kernClefHelper</span>
+<span class="sd">   combineRests</span>
+<span class="sd">   combineUnisons</span>
+<span class="sd">   fromJSON</span>
+<span class="sd">   _id_gen</span>
+<span class="sd">   indentMEI</span>
+<span class="sd">   _kernChordHelper</span>
+<span class="sd">   kernFooter</span>
+<span class="sd">   kernHeader</span>
+<span class="sd">   _kernNoteHelper</span>
+<span class="sd">   kernNRCHelper</span>
+<span class="sd">   noteRestHelper</span>
+<span class="sd">   remove_namespaces</span>
+<span class="sd">   removeTied</span>
+<span class="sd">   snapTo</span>
+<span class="sd">   truncate_and_scale_onsOffsList</span>
+<span class="sd">   githubURLtoRaw</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span><span class="o">,</span><span class="w"> </span><span class="nn">re</span><span class="o">,</span><span class="w"> </span><span class="nn">requests</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">_re</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">xml.etree.ElementTree</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ET</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fractions</span><span class="w"> </span><span class="kn">import</span> <span class="n">Fraction</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;_escape_cdata&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;addMEINote&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;addTieBreakers&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;kernClefHelper&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;combineRests&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;combineUnisons&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;fromJSON&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;_id_gen&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;indentMEI&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;_kernChordHelper&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;kernFooter&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;kernHeader&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;_kernNoteHelper&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;kernNRCHelper&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;noteRestHelper&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;remove_namespaces&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;removeTied&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;snapTo&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;truncate_and_scale_onsOffsList&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;_duration2Kern&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;duration2MEI&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;function_pattern&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;imported_scores&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;tinyNotation_pattern&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;volpiano_pattern&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;meiDeclaration&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;idGen&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;githubURLtoRaw&quot;</span>
-
+    <span class="s1">&#39;_escape_cdata&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;addMEINote&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;addTieBreakers&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;kernClefHelper&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;combineRests&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;combineUnisons&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;fromJSON&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;_id_gen&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;idGen&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;indentMEI&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;_kernChordHelper&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;kernFooter&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;kernHeader&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;_kernNoteHelper&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;kernNRCHelper&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;noteRestHelper&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;remove_namespaces&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;removeTied&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;snapTo&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;truncate_and_scale_onsOffsList&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;githubURLtoRaw&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;duration2MEI&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;_duration2Kern&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;meiDeclaration&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;explode_kern_chords&#39;</span><span class="p">,</span>
 <span class="p">]</span>
-
 
 <div class="viewcode-block" id="_escape_cdata">
 <a class="viewcode-back" href="../../generated/pyampact.symbolicUtils._escape_cdata.html#pyampact.symbolicUtils._escape_cdata">[docs]</a>
@@ -352,14 +346,6 @@
 <span class="sd">    Add tie-breaker level to index. Changes parts in partList in place and </span>
 <span class="sd">    returns None. </span>
 
-<span class="sd">    This is particularly useful to disambiguate the order of events that </span>
-<span class="sd">    happen at the same offset, which is an issue most commonly encountered </span>
-<span class="sd">    with grace notes since they have no duration. This is needed in several </span>
-<span class="sd">    `Score` methods because you cannot append multiple pandas series (parts) </span>
-<span class="sd">    if they have non-unique indices. So this method is needed internally to </span>
-<span class="sd">    be able to use pd.concat to turn a list of series into a single dataframe </span>
-<span class="sd">    if any of those series has a repeated value in its index.</span>
-
 <span class="sd">    :param partList: A list of pandas Series, each representing a part in </span>
 <span class="sd">        the score.</span>
 <span class="sd">    :return: None</span>
@@ -460,13 +446,6 @@
 <span class="sd">    --------</span>
 <span class="sd">    :meth:`jsonCDATA`</span>
 <span class="sd">    :meth:`nmats`</span>
-
-<span class="sd">    Example</span>
-<span class="sd">    -------</span>
-<span class="sd">    .. code-block:: python</span>
-
-<span class="sd">        piece = Score(&#39;./test_files/CloseToYou.mei.xml&#39;)</span>
-<span class="sd">        piece.fromJSON(json_path=&#39;./test_files/CloseToYou.json&#39;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">json_path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;https://&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">json_path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;http://&#39;</span><span class="p">):</span>
         <span class="n">json_path</span> <span class="o">=</span> <span class="n">githubURLtoRaw</span><span class="p">(</span><span class="n">json_path</span><span class="p">)</span>
@@ -494,9 +473,7 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a unique ID for each instance of the Score class.</span>
 
-<span class="sd">    This function generates a unique ID for each instance of the Score class </span>
-<span class="sd">    by incrementing a counter starting from the provided start value. The ID </span>
-<span class="sd">    is in the format &#39;pyAMPACT-{start}&#39;. This isn&#39;t meant to be used directly</span>
+<span class="sd">    The ID is in the format &#39;pyAMPACT-{start}&#39;. This isn&#39;t meant to be used directly</span>
 <span class="sd">    so see the example below for usage.</span>
 
 <span class="sd">    :param start: An integer representing the starting value for the ID </span>
@@ -873,6 +850,121 @@
                 <span class="p">])</span>
 
         <span class="k">return</span> <span class="n">new_onsOffsList</span></div>
+
+
+
+<div class="viewcode-block" id="explode_kern_chords">
+<a class="viewcode-back" href="../../symbolicUtils.html#pyampact.symbolicUtils.explode_kern_chords">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">explode_kern_chords</span><span class="p">(</span><span class="n">krn_text</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Given Humdrum **kern file text, return (new_text, spine_groups) where:</span>
+<span class="sd">      - new_text: every kern spine with chord tokens split into monophonic spines</span>
+<span class="sd">      - spine_groups: list of lists mapping each original spine index to its</span>
+<span class="sd">        output column indices, e.g. [[0],[1],[2,3,4],[5]] for a file with</span>
+<span class="sd">        **function **harm **kern(3-voice) **kern(1-voice).</span>
+<span class="sd">    Non-kern spines pass through unchanged.</span>
+<span class="sd">    Returns (original_text, 1-to-1 groups) if all kern spines are monophonic.</span>
+<span class="sd">    Files with spine-split (*^) or spine-merge (*v) operators are returned</span>
+<span class="sd">    unchanged — music21 handles those natively and exploding would corrupt them.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">re</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">_re</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="n">krn_text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+
+    <span class="c1"># If file uses spine splits/merges, return as-is with 1:1 groups</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;!&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;**&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">cell</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;*^&#39;</span><span class="p">,</span> <span class="s1">&#39;*v&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)):</span>
+            <span class="n">spine_types</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">ln</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">ln</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;**&#39;</span><span class="p">):</span>
+                    <span class="n">spine_types</span> <span class="o">=</span> <span class="n">ln</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+                    <span class="k">break</span>
+            <span class="n">sg</span> <span class="o">=</span> <span class="p">[[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">spine_types</span><span class="p">))]</span>
+            <span class="k">return</span> <span class="n">krn_text</span><span class="p">,</span> <span class="n">sg</span>
+    <span class="n">spine_types</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">kern_indices</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">max_voices</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;!!!&#39;</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;**&#39;</span><span class="p">):</span>
+            <span class="n">spine_types</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">spine_types</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">t</span> <span class="o">==</span> <span class="s1">&#39;**kern&#39;</span><span class="p">:</span>
+                    <span class="n">kern_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                    <span class="n">max_voices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">spine_types</span> <span class="ow">or</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;!&#39;</span><span class="p">)):</span>
+            <span class="k">continue</span>
+        <span class="n">cols</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ki</span> <span class="ow">in</span> <span class="n">kern_indices</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ki</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+                <span class="n">tok</span> <span class="o">=</span> <span class="n">cols</span><span class="p">[</span><span class="n">ki</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">tok</span> <span class="ow">and</span> <span class="n">tok</span> <span class="o">!=</span> <span class="s1">&#39;.&#39;</span><span class="p">:</span>
+                    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tok</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="n">max_voices</span><span class="p">[</span><span class="n">ki</span><span class="p">]:</span>
+                        <span class="n">max_voices</span><span class="p">[</span><span class="n">ki</span><span class="p">]</span> <span class="o">=</span> <span class="n">n</span>
+
+    <span class="c1"># Build output column map (needed even for no-op to return spine_groups)</span>
+    <span class="n">out_col_map</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">out_types</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">out_idx</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">st</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">spine_types</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">st</span> <span class="o">==</span> <span class="s1">&#39;**kern&#39;</span><span class="p">:</span>
+            <span class="n">voices</span> <span class="o">=</span> <span class="n">max_voices</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">out_col_map</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">out_idx</span><span class="p">,</span> <span class="n">out_idx</span> <span class="o">+</span> <span class="n">voices</span><span class="p">))</span>
+            <span class="n">out_types</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s1">&#39;**kern&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">voices</span><span class="p">)</span>
+            <span class="n">out_idx</span> <span class="o">+=</span> <span class="n">voices</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">out_col_map</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">out_idx</span><span class="p">]</span>
+            <span class="n">out_types</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">st</span><span class="p">)</span>
+            <span class="n">out_idx</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="n">spine_groups</span> <span class="o">=</span> <span class="p">[</span><span class="n">out_col_map</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">spine_types</span><span class="p">))]</span>
+
+    <span class="c1"># Fast exit if nothing to explode</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">max_voices</span> <span class="ow">or</span> <span class="nb">all</span><span class="p">(</span><span class="n">v</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">max_voices</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+        <span class="k">return</span> <span class="n">krn_text</span><span class="p">,</span> <span class="n">spine_groups</span>
+
+    <span class="n">total</span> <span class="o">=</span> <span class="n">out_idx</span>
+    <span class="n">out_lines</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;!!!&#39;</span><span class="p">):</span>
+            <span class="n">out_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">);</span> <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;**&#39;</span><span class="p">):</span>
+            <span class="n">out_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_types</span><span class="p">));</span> <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;*-&#39;</span><span class="p">):</span>
+            <span class="n">out_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;*-&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">total</span><span class="p">));</span> <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;!&#39;</span><span class="p">)):</span>
+            <span class="n">cols</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">tok</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">out_col_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="p">[</span><span class="n">i</span><span class="p">]):</span>
+                    <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tok</span><span class="p">)</span>
+            <span class="n">out_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">row</span><span class="p">));</span> <span class="k">continue</span>
+        <span class="n">cols</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;.&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">total</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">tok</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">out_col_map</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">positions</span> <span class="o">=</span> <span class="n">out_col_map</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">tok</span> <span class="o">=</span> <span class="n">tok</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">kern_indices</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">tok</span> <span class="ow">and</span> <span class="n">tok</span> <span class="o">!=</span> <span class="s1">&#39;.&#39;</span><span class="p">:</span>
+                    <span class="n">notes</span> <span class="o">=</span> <span class="n">tok</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">pos</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">positions</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">notes</span><span class="p">):</span>
+                            <span class="n">row</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span> <span class="o">=</span> <span class="n">notes</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">dur</span> <span class="o">=</span> <span class="n">_re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(\d+\.?)&#39;</span><span class="p">,</span> <span class="n">notes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                            <span class="n">row</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">dur</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">dur</span> <span class="k">else</span> <span class="s1">&#39;4&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;r&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">row</span><span class="p">[</span><span class="n">positions</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">tok</span>
+        <span class="n">out_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">row</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_lines</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">spine_groups</span></div>
 
 </pre></div>
 

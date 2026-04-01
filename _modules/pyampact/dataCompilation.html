@@ -5,17 +5,17 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyampact.dataCompilation &mdash; pyAMPACT 0.0.5 documentation</title>
+  <title>pyampact.dataCompilation &mdash; pyAMPACT 0.0.6 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
 
   
     <link rel="canonical" href="https://pyampact.github.io/_modules/pyampact/dataCompilation.html" />
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=282f96c0"></script>
-      <script src="../../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/documentation_options.js?v=1fd71caa"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -52,6 +52,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../performance.html">performance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../symbolic.html">symbolic</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../symbolicUtils.html">symbolicUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../speechDescriptors.html">speechDescriptors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../speechDescriptorsUtils.html">speechDescriptorsUtils</a></li>
 </ul>
 
         </div>
@@ -83,252 +85,638 @@
 <span class="sd">dataCompilation</span>
 <span class="sd">===============</span>
 
-
-
-
 <span class="sd">.. autosummary::</span>
 <span class="sd">    :toctree: generated/</span>
-<span class="sd">    </span>
+
 <span class="sd">    data_compilation</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">librosa</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">librosa.display</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.ticker</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ticker</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-
 <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">Patch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">signal</span>
+
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyampact.performance</span><span class="w"> </span><span class="kn">import</span> <span class="n">estimate_perceptual_parameters</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyampact.alignmentUtils</span><span class="w"> </span><span class="kn">import</span> <span class="n">f0_est_weighted_sum_spec</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pyampact.symbolic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Score</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyampact.symbolic</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;data_compilation&quot;</span><span class="p">,</span>
     <span class="s2">&quot;export_selected_columns&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;visualise_alignment_from_nmat&quot;</span>                                                 
+    <span class="s2">&quot;visualise_alignment_from_nmat&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;plot_piano_roll&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
 <div class="viewcode-block" id="data_compilation">
 <a class="viewcode-back" href="../../generated/pyampact.dataCompilation.data_compilation.html#pyampact.dataCompilation.data_compilation">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">data_compilation</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">original_sr</span><span class="p">,</span> <span class="n">hop_length</span><span class="p">,</span> <span class="n">winms</span><span class="p">,</span> <span class="n">tsr</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">nmat</span><span class="p">,</span> <span class="n">piece</span><span class="p">,</span> <span class="n">audio_file_path</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="s2">&quot;output&quot;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">data_compilation</span><span class="p">(</span>
+    <span class="n">y</span><span class="p">,</span>
+    <span class="n">original_sr</span><span class="p">,</span>
+    <span class="n">hop_length</span><span class="p">,</span>
+    <span class="n">winms</span><span class="p">,</span>
+    <span class="n">tsr</span><span class="p">,</span>
+    <span class="n">spec</span><span class="p">,</span>
+    <span class="n">nmat</span><span class="p">,</span>
+    <span class="n">piece</span><span class="p">,</span>
+    <span class="n">audio_file_path</span><span class="p">,</span>
+    <span class="n">force_pyin</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    This function takes the results of the alignment and the note matrix and compiles the data into a JSON object</span>
-<span class="sd">    that can be used to insert the audio analysis into the score.</span>
+<span class="sd">    Compile per-note perceptual descriptors from an aligned audio-score pair</span>
+<span class="sd">    and write the results to disk in the appropriate format (.krn, .mei, or .csv).</span>
+
+<span class="sd">    F0 estimation strategy is selected automatically based on the number of</span>
+<span class="sd">    parts in the score: monophonic pieces use pyin directly; polyphonic pieces</span>
+<span class="sd">    attempt pitch-separated F0 estimation via the reassigned spectrogram and</span>
+<span class="sd">    fall back to pyin on failure. Set ``force_pyin=True`` to override and use</span>
+<span class="sd">    pyin for all pieces regardless of polyphony.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    nmat : np.ndarray</span>
-<span class="sd">        The note matrix containing information about notes, including their timing and duration.</span>
-<span class="sd">    </span>
-<span class="sd">    hop_length : int</span>
-<span class="sd">        Hop length</span>
-<span class="sd">    </span>
-<span class="sd">    spec : np.ndarray</span>
-<span class="sd">        Spec (check type and fill out)</span>
+<span class="sd">    y : ndarray</span>
+<span class="sd">        Audio time series at the original sample rate.</span>
 
-<span class="sd">    audio_file : str</span>
-<span class="sd">        The path to the audio file associated with the performance data.</span>
+<span class="sd">    original_sr : int</span>
+<span class="sd">        Sample rate of ``y``.</span>
+
+<span class="sd">    hop_length : int</span>
+<span class="sd">        Hop size in samples at ``tsr`` used during alignment (e.g. 32).</span>
+
+<span class="sd">    winms : float</span>
+<span class="sd">        Analysis window size in milliseconds (e.g. 100).</span>
+
+<span class="sd">    tsr : int</span>
+<span class="sd">        Target sample rate used during alignment (e.g. 4000).</span>
+
+<span class="sd">    spec : ndarray</span>
+<span class="sd">        Magnitude spectrogram produced by alignment, shape (freq x frames).</span>
+
+<span class="sd">    nmat : dict</span>
+<span class="sd">        Note matrix dict returned by ``run_alignment``, keyed by part name.</span>
+<span class="sd">        Each value is a DataFrame with at minimum ONSET_SEC, OFFSET_SEC, and MIDI columns.</span>
 
 <span class="sd">    piece : Score</span>
-<span class="sd">        An instantiation of the original Score object containing the data input for the musical piece.</span>
+<span class="sd">        Score object returned by ``run_alignment`` / ``load_score``.</span>
 
-<span class="sd">    output_path : str, optional</span>
-<span class="sd">        The file path for the output MEI file. Defaults to &#39;./output&#39;.</span>
+<span class="sd">    audio_file_path : str</span>
+<span class="sd">        Path to the source audio file. Used to derive the output folder name</span>
+<span class="sd">        (``output_files/output_&lt;stem&gt;/``) and filename stem.</span>
+
+<span class="sd">    force_pyin : bool, optional</span>
+<span class="sd">        If True, use pyin F0 estimation for all notes regardless of whether</span>
+<span class="sd">        the piece is monophonic or polyphonic. Default is False (auto-detect).</span>
 
 <span class="sd">    Returns</span>
-<span class="sd">    -------            </span>
-<span class="sd">    nmat : The note matrix with performance data appended.</span>
-<span class="sd">    json_data : A JSON object containing the compiled data.</span>
-<span class="sd">    xml_data : XML data representing the MEI output.</span>
+<span class="sd">    -------</span>
+<span class="sd">    nmat : dict</span>
+<span class="sd">        The input note matrix dict with perceptual descriptor columns appended</span>
+<span class="sd">        to each part DataFrame, including: f0Vals, meanf0, ppitch1, ppitch2,</span>
+<span class="sd">        jitter, vibratoDepth, vibratoRate, pwrVals, meanPwr, shimmer,</span>
+<span class="sd">        specCentVals, meanSpecCent, specBandwidthVals, meanSpecBandwidth,</span>
+<span class="sd">        specContrastVals, meanSpecContrast, specFlatnessVals, meanSpecFlatness,</span>
+<span class="sd">        specRolloffVals, meanSpecRolloff.</span>
 
+<span class="sd">    fileOutput : str</span>
+<span class="sd">        Path to the primary output file written to disk:</span>
+<span class="sd">        a .krn file for Humdrum kern scores, a .csv file for Tony CSV scores,</span>
+<span class="sd">        or a .mei file (with companion .csv) for all other formats.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Spectral features (centroid, bandwidth, contrast, flatness, rolloff) are</span>
+<span class="sd">    precomputed once over the full spectrogram and sliced per note to avoid</span>
+<span class="sd">    redundant computation. F0 and RMS power are computed at ``original_sr``</span>
+<span class="sd">    using window and hop sizes derived from the alignment spectrogram dimensions</span>
+<span class="sd">    rather than the caller-supplied ``hop_length``, which ensures consistency</span>
+<span class="sd">    with the DTW alignment grid.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># --- Derive output folder from the audio filename ---</span>
+    <span class="c1"># e.g. &quot;./test_files/B063_00-01.wav&quot;  →  &quot;output_files/output_B063_00-01/&quot;</span>
+    <span class="n">audio_stem</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">audio_file_path</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">output_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;output_files&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;output_</span><span class="si">{</span><span class="n">audio_stem</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># Base path for all output files (no extension — each writer appends its own)</span>
+    <span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">audio_stem</span><span class="p">)</span>
 
     <span class="n">all_note_vals</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">all_note_ids</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">fft_len</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">winms</span><span class="o">/</span><span class="mi">1000</span><span class="o">*</span><span class="n">tsr</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
-    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">df</span> <span class="ow">in</span> <span class="n">nmat</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;MEASURE&#39;</span><span class="p">,</span> <span class="s1">&#39;ONSET&#39;</span><span class="p">,</span> <span class="s1">&#39;DURATION&#39;</span><span class="p">,</span> <span class="s1">&#39;PART&#39;</span><span class="p">,</span> <span class="s1">&#39;MIDI&#39;</span><span class="p">])</span>
 
-        <span class="n">midiList</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">nmat</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;MIDI&#39;</span><span class="p">])</span>
+    <span class="c1"># fft_len at tsr (alignment sample rate)</span>
+    <span class="n">fft_len_tsr</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">winms</span> <span class="o">/</span> <span class="mi">1000</span> <span class="o">*</span> <span class="n">tsr</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+    <span class="n">fft_len_tsr</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="n">fft_len_tsr</span><span class="p">)</span>
+
+    <span class="c1"># Magnitude spectrogram (freq x frames) – produced at tsr by alignment</span>
+    <span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+
+    <span class="c1"># Derive the actual hop used by align_midi_wav from the spec dimensions and</span>
+    <span class="c1"># the audio duration at tsr.  This is robust regardless of what hop_length</span>
+    <span class="c1"># value the caller passes in (which is often the run_alignment default of 32,</span>
+    <span class="c1"># not the true STFT hop of ~100).</span>
+    <span class="n">n_frames</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">n_samples_tsr</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="n">tsr</span> <span class="o">/</span> <span class="n">original_sr</span><span class="p">))</span>
+    <span class="c1"># align_midi_wav uses boundary=None, padded=False:</span>
+    <span class="c1">#   n_frames = 1 + (n_samples - fft_len) // hop_samp  =&gt;  hop_samp = (n_samples - fft_len) // (n_frames - 1)</span>
+    <span class="k">if</span> <span class="n">n_frames</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">hop_samp_tsr</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">n_samples_tsr</span> <span class="o">-</span> <span class="n">fft_len_tsr</span><span class="p">)</span> <span class="o">//</span> <span class="p">(</span><span class="n">n_frames</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">hop_samp_tsr</span> <span class="o">=</span> <span class="n">fft_len_tsr</span>
+
+    <span class="c1"># Frame time grid for spec (derived from actual hop at tsr)</span>
+    <span class="n">frame_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_frames</span><span class="p">)</span> <span class="o">*</span> <span class="n">hop_samp_tsr</span> <span class="o">/</span> <span class="n">tsr</span>
+
+    <span class="c1"># Convert to original_sr samples for librosa pyin / rms analysis</span>
+    <span class="n">hop_length_orig</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">hop_samp_tsr</span> <span class="o">*</span> <span class="n">original_sr</span> <span class="o">/</span> <span class="n">tsr</span><span class="p">)))</span>
+    <span class="n">fft_len_orig</span>    <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">fft_len_tsr</span> <span class="o">*</span> <span class="n">original_sr</span> <span class="o">/</span> <span class="n">tsr</span><span class="p">)))</span>
+
+    <span class="c1"># Global f0 (pyin) at original_sr</span>
+    <span class="n">f0_all</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">pyin</span><span class="p">(</span>
+        <span class="n">y</span><span class="p">,</span>
+        <span class="n">fmin</span><span class="o">=</span><span class="n">librosa</span><span class="o">.</span><span class="n">note_to_hz</span><span class="p">(</span><span class="s2">&quot;C2&quot;</span><span class="p">),</span>
+        <span class="n">fmax</span><span class="o">=</span><span class="n">librosa</span><span class="o">.</span><span class="n">note_to_hz</span><span class="p">(</span><span class="s2">&quot;C7&quot;</span><span class="p">),</span>
+        <span class="n">sr</span><span class="o">=</span><span class="n">original_sr</span><span class="p">,</span>
+        <span class="n">frame_length</span><span class="o">=</span><span class="n">fft_len_orig</span><span class="p">,</span>
+        <span class="n">hop_length</span><span class="o">=</span><span class="n">hop_length_orig</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">f0_times</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">frames_to_time</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">f0_all</span><span class="p">)),</span>
+        <span class="n">sr</span><span class="o">=</span><span class="n">original_sr</span><span class="p">,</span>
+        <span class="n">hop_length</span><span class="o">=</span><span class="n">hop_length_orig</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Global power (rms) at original_sr</span>
+    <span class="n">pwr_all</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">rms</span><span class="p">(</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span>
+        <span class="n">frame_length</span><span class="o">=</span><span class="n">fft_len_orig</span><span class="p">,</span>
+        <span class="n">hop_length</span><span class="o">=</span><span class="n">hop_length_orig</span><span class="p">,</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="n">pwr_times</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">frames_to_time</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pwr_all</span><span class="p">)),</span>
+        <span class="n">sr</span><span class="o">=</span><span class="n">original_sr</span><span class="p">,</span>
+        <span class="n">hop_length</span><span class="o">=</span><span class="n">hop_length_orig</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Precompute spectral features ONCE over the whole piece</span>
+    <span class="c1"># Shapes:</span>
+    <span class="c1">#   centroid/bandwidth/flatness/rolloff: (1, frames)</span>
+    <span class="c1">#   contrast: (bands, frames)</span>
+    <span class="n">spec_centroid_all</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">spectral_centroid</span><span class="p">(</span><span class="n">S</span><span class="o">=</span><span class="n">S</span><span class="p">)</span>
+    <span class="n">spec_bandwidth_all</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">spectral_bandwidth</span><span class="p">(</span><span class="n">S</span><span class="o">=</span><span class="n">S</span><span class="p">)</span>
+    <span class="n">spec_contrast_all</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">spectral_contrast</span><span class="p">(</span><span class="n">S</span><span class="o">=</span><span class="n">S</span><span class="p">)</span>
+    <span class="n">spec_flatness_all</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">spectral_flatness</span><span class="p">(</span><span class="n">S</span><span class="o">=</span><span class="n">S</span><span class="p">)</span>
+    <span class="n">spec_rolloff_all</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">spectral_rolloff</span><span class="p">(</span><span class="n">S</span><span class="o">=</span><span class="n">S</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">slice_indices</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">onset</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+        <span class="n">i0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">onset</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+        <span class="n">i1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">i1</span> <span class="o">&lt;=</span> <span class="n">i0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">i0</span><span class="p">,</span> <span class="n">i1</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">slice_indices_vec</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">onsets</span><span class="p">,</span> <span class="n">offsets</span><span class="p">):</span>
+        <span class="n">i0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">onsets</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+        <span class="n">i1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">offsets</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="n">i1</span> <span class="o">&gt;</span> <span class="n">i0</span>
+        <span class="k">return</span> <span class="n">i0</span><span class="p">,</span> <span class="n">i1</span><span class="p">,</span> <span class="n">ok</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">slice_spec_dict</span><span class="p">(</span><span class="n">i0</span><span class="p">,</span> <span class="n">i1</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;spec_centroid&quot;</span><span class="p">:</span> <span class="n">spec_centroid_all</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">i0</span><span class="p">:</span><span class="n">i1</span><span class="p">],</span>
+            <span class="s2">&quot;spec_bandwidth&quot;</span><span class="p">:</span> <span class="n">spec_bandwidth_all</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">i0</span><span class="p">:</span><span class="n">i1</span><span class="p">],</span>
+            <span class="s2">&quot;spec_contrast&quot;</span><span class="p">:</span> <span class="n">spec_contrast_all</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">i0</span><span class="p">:</span><span class="n">i1</span><span class="p">],</span>
+            <span class="s2">&quot;spec_flatness&quot;</span><span class="p">:</span> <span class="n">spec_flatness_all</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">i0</span><span class="p">:</span><span class="n">i1</span><span class="p">],</span>
+            <span class="s2">&quot;spec_rolloff&quot;</span><span class="p">:</span> <span class="n">spec_rolloff_all</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">i0</span><span class="p">:</span><span class="n">i1</span><span class="p">],</span>
+        <span class="p">}</span>
+
+    <span class="c1"># is_single_part: true when there is only one instrument/voice part</span>
+    <span class="n">is_monophonic</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nmat</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+
+    <span class="n">freqs_rs</span> <span class="o">=</span> <span class="n">times_rs</span> <span class="o">=</span> <span class="n">D_rs</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_monophonic</span><span class="p">:</span>
+        <span class="n">freqs_rs</span><span class="p">,</span> <span class="n">times_rs</span><span class="p">,</span> <span class="n">D_rs</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">reassigned_spectrogram</span><span class="p">(</span>
+            <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span>
+            <span class="n">sr</span><span class="o">=</span><span class="n">original_sr</span><span class="p">,</span>
+            <span class="n">hop_length</span><span class="o">=</span><span class="n">hop_length_orig</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">df</span> <span class="ow">in</span> <span class="n">nmat</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">onsets</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ONSET_SEC&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">offsets</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;OFFSET_SEC&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">midis</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;MIDI&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">ids</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+
         <span class="n">note_vals</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">note_ids</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">is_monophonic</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nmat</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>  <span class="c1"># Only one part = monophonic or speech</span>
+
+        <span class="c1"># Vectorized index lookup (cuts python overhead)</span>
+        <span class="n">f0_i0</span><span class="p">,</span> <span class="n">f0_i1</span><span class="p">,</span> <span class="n">f0_ok</span> <span class="o">=</span> <span class="n">slice_indices_vec</span><span class="p">(</span><span class="n">f0_times</span><span class="p">,</span> <span class="n">onsets</span><span class="p">,</span> <span class="n">offsets</span><span class="p">)</span>
+        <span class="n">pwr_i0</span><span class="p">,</span> <span class="n">pwr_i1</span><span class="p">,</span> <span class="n">pwr_ok</span> <span class="o">=</span> <span class="n">slice_indices_vec</span><span class="p">(</span><span class="n">pwr_times</span><span class="p">,</span> <span class="n">onsets</span><span class="p">,</span> <span class="n">offsets</span><span class="p">)</span>
+        <span class="n">spec_i0</span><span class="p">,</span> <span class="n">spec_i1</span><span class="p">,</span> <span class="n">spec_ok</span> <span class="o">=</span> <span class="n">slice_indices_vec</span><span class="p">(</span><span class="n">frame_times</span><span class="p">,</span> <span class="n">onsets</span><span class="p">,</span> <span class="n">offsets</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)):</span>
-            <span class="n">onset</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;ONSET_SEC&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-            <span class="n">offset</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;OFFSET_SEC&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-            <span class="n">midi</span> <span class="o">=</span> <span class="n">midiList</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>            
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">f0_ok</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="n">pwr_ok</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="n">spec_ok</span><span class="p">[</span><span class="n">i</span><span class="p">]):</span>
+                <span class="n">note_vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_nan_note</span><span class="p">())</span>
+                <span class="n">note_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ids</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                <span class="k">continue</span>
 
-            <span class="k">if</span> <span class="n">is_monophonic</span><span class="p">:</span>
-                <span class="k">try</span><span class="p">:</span>          
-                                                  
-                    <span class="c1"># Slice audio</span>
-                    <span class="n">y_seg</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">onset</span> <span class="o">*</span> <span class="n">original_sr</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="n">offset</span> <span class="o">*</span> <span class="n">original_sr</span><span class="p">)]</span>
+            <span class="n">onset</span> <span class="o">=</span> <span class="n">onsets</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">offset</span> <span class="o">=</span> <span class="n">offsets</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">midi</span> <span class="o">=</span> <span class="n">midis</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 
-                    <span class="c1"># Estimate f0 and RMS</span>
-                    <span class="n">f0</span><span class="p">,</span> <span class="n">voiced_flag</span><span class="p">,</span> <span class="n">voiced_probs</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">pyin</span><span class="p">(</span>
-                        <span class="n">y_seg</span><span class="p">,</span>
-                        <span class="n">fmin</span><span class="o">=</span><span class="n">librosa</span><span class="o">.</span><span class="n">note_to_hz</span><span class="p">(</span><span class="s1">&#39;C2&#39;</span><span class="p">),</span>
-                        <span class="n">fmax</span><span class="o">=</span><span class="n">librosa</span><span class="o">.</span><span class="n">note_to_hz</span><span class="p">(</span><span class="s1">&#39;C7&#39;</span><span class="p">),</span>
-                        <span class="n">sr</span><span class="o">=</span><span class="n">original_sr</span>
+            <span class="n">f0_seg</span> <span class="o">=</span> <span class="n">f0_all</span><span class="p">[</span><span class="n">f0_i0</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">:</span> <span class="n">f0_i1</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+            <span class="n">pwr_seg</span> <span class="o">=</span> <span class="n">pwr_all</span><span class="p">[</span><span class="n">pwr_i0</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">:</span> <span class="n">pwr_i1</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+            <span class="n">M_dict</span> <span class="o">=</span> <span class="n">slice_spec_dict</span><span class="p">(</span><span class="n">spec_i0</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">spec_i1</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+            <span class="k">if</span> <span class="n">is_monophonic</span> <span class="ow">or</span> <span class="n">force_pyin</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">note_vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">estimate_perceptual_parameters</span><span class="p">(</span>
+                        <span class="n">f0_seg</span><span class="p">,</span>
+                        <span class="n">pwr_seg</span><span class="p">,</span>
+                        <span class="n">M_dict</span><span class="p">,</span>
+                        <span class="n">original_sr</span><span class="p">,</span>
+                        <span class="n">hop_length_orig</span><span class="p">,</span>
+                        <span class="mi">1</span><span class="p">,</span>
                     <span class="p">)</span>
-                    <span class="n">pwr</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">rms</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y_seg</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
-                    
-                    <span class="c1"># time and frequency axes</span>
-                    <span class="n">t</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">times_like</span><span class="p">(</span><span class="n">pwr</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">original_sr</span><span class="p">)</span>
-                    <span class="n">xf</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">fft_frequencies</span><span class="p">(</span><span class="n">sr</span><span class="o">=</span><span class="n">original_sr</span><span class="p">,</span> <span class="n">n_fft</span><span class="o">=</span><span class="n">fft_len</span><span class="p">)</span>
-                    
-                    <span class="n">M</span> <span class="o">=</span> <span class="n">spec</span>
-
-                    <span class="c1"># Estimate parameters</span>
-                    <span class="n">note_vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">estimate_perceptual_parameters</span><span class="p">(</span>
-                        <span class="n">f0</span><span class="p">,</span> <span class="n">pwr</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">original_sr</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">1</span>
-                    <span class="p">))</span>
-
-                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>                    
-                    <span class="n">note_vals</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-                        <span class="s1">&#39;f0_vals&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
-                        <span class="s1">&#39;ppitch&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">),</span>
-                        <span class="s1">&#39;jitter&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
-                        <span class="s1">&#39;vibrato_depth&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
-                        <span class="s1">&#39;vibrato_rate&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
-                        <span class="s1">&#39;pwr_vals&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
-                        <span class="s1">&#39;shimmer&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
-                        <span class="s1">&#39;spec_centroid&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
-                        <span class="s1">&#39;spec_bandwidth&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
-                        <span class="s1">&#39;spec_contrast&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
-                        <span class="s1">&#39;spec_flatness&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
-                        <span class="s1">&#39;spec_rolloff&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-                    <span class="p">})</span>
-
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">freqs</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">reassigned_spectrogram</span><span class="p">(</span>
-                    <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">original_sr</span><span class="p">,</span> <span class="n">hop_length</span><span class="o">=</span><span class="n">hop_length</span><span class="p">)</span>
-                <span class="n">f0</span><span class="p">,</span> <span class="n">pwr</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">M_seg</span><span class="p">,</span> <span class="n">xf</span> <span class="o">=</span> <span class="n">f0_est_weighted_sum_spec</span><span class="p">(</span>
-                    <span class="n">onset</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">midi</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">original_sr</span>
                 <span class="p">)</span>
-                <span class="n">note_vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">estimate_perceptual_parameters</span><span class="p">(</span>
-                    <span class="n">f0</span><span class="p">,</span> <span class="n">pwr</span><span class="p">,</span> <span class="n">M_seg</span><span class="p">,</span> <span class="n">original_sr</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">1</span>
-                <span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Try the pitch-separated path first; fall back to the global</span>
+                <span class="c1"># pyin f0/rms segments when f0_est_weighted_sum_spec fails</span>
+                <span class="c1"># (it throws on most notes, leaving descriptors all-NaN).</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">f0</span><span class="p">,</span> <span class="n">pwr</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">_M_unused</span><span class="p">,</span> <span class="n">xf</span> <span class="o">=</span> <span class="n">f0_est_weighted_sum_spec</span><span class="p">(</span>
+                        <span class="n">onset</span><span class="p">,</span>
+                        <span class="n">offset</span><span class="p">,</span>
+                        <span class="n">midi</span><span class="p">,</span>
+                        <span class="n">freqs_rs</span><span class="p">,</span>
+                        <span class="n">D_rs</span><span class="p">,</span>
+                        <span class="n">original_sr</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="n">note_vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">estimate_perceptual_parameters</span><span class="p">(</span>
+                            <span class="n">f0</span><span class="p">,</span>
+                            <span class="n">pwr</span><span class="p">,</span>
+                            <span class="n">M_dict</span><span class="p">,</span>
+                            <span class="n">original_sr</span><span class="p">,</span>
+                            <span class="n">hop_length_orig</span><span class="p">,</span>
+                            <span class="mi">1</span><span class="p">,</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="c1"># Fall back to global pyin f0 + rms power for this note</span>
+                    <span class="n">note_vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">estimate_perceptual_parameters</span><span class="p">(</span>
+                            <span class="n">f0_seg</span><span class="p">,</span>
+                            <span class="n">pwr_seg</span><span class="p">,</span>
+                            <span class="n">M_dict</span><span class="p">,</span>
+                            <span class="n">original_sr</span><span class="p">,</span>
+                            <span class="n">hop_length_orig</span><span class="p">,</span>
+                            <span class="mi">1</span><span class="p">,</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
 
-            <span class="n">note_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">note_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ids</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
 
         <span class="n">all_note_vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">note_vals</span><span class="p">)</span>
         <span class="n">all_note_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">note_ids</span><span class="p">)</span>
 
-    <span class="n">loc</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># This stays for post-processing</span>
-
-
+    <span class="n">loc</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">df</span> <span class="ow">in</span> <span class="n">nmat</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;f0Vals&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">all_note_vals</span><span class="p">[</span><span class="n">loc</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;f0_vals&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))]</span>
-        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;meanf0&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span> <span class="k">for</span> <span class="n">vals</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;f0Vals&#39;</span><span class="p">]]</span>
+        <span class="n">vals</span> <span class="o">=</span> <span class="n">all_note_vals</span><span class="p">[</span><span class="n">loc</span><span class="p">]</span>
 
-        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;ppitch1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">all_note_vals</span><span class="p">[</span><span class="n">loc</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;ppitch&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))]</span>
-        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;ppitch2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">all_note_vals</span><span class="p">[</span><span class="n">loc</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;ppitch&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))]</span>
-        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;jitter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">all_note_vals</span><span class="p">[</span><span class="n">loc</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;jitter&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))]</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;f0Vals&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;f0_vals&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">]</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;meanf0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">_safe_nanmean</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;f0Vals&quot;</span><span class="p">]]</span>
 
-        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;vibratoDepth&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">all_note_vals</span><span class="p">[</span><span class="n">loc</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;vibrato_depth&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))]</span>
-        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;vibratoRate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">all_note_vals</span><span class="p">[</span><span class="n">loc</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;vibrato_rate&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))]</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ppitch1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;ppitch&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">]</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ppitch2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;ppitch&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">]</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;jitter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;jitter&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">]</span>
 
-        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;pwrVals&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">all_note_vals</span><span class="p">[</span><span class="n">loc</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;pwr_vals&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))]</span>
-        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;meanPwr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span> <span class="k">for</span> <span class="n">vals</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;pwrVals&#39;</span><span class="p">]]</span>
-        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;shimmer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">all_note_vals</span><span class="p">[</span><span class="n">loc</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;shimmer&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))]</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;vibratoDepth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;vibrato_depth&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">]</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;vibratoRate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;vibrato_rate&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">]</span>
 
-        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;specCentVals&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">all_note_vals</span><span class="p">[</span><span class="n">loc</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;spec_centroid&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))]</span>
-        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;meanSpecCent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span> <span class="k">for</span> <span class="n">vals</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;specCentVals&#39;</span><span class="p">]]</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;pwrVals&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;pwr_vals&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">]</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;meanPwr&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">_safe_nanmean</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;pwrVals&quot;</span><span class="p">]]</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;shimmer&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;shimmer&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">]</span>
 
-        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;specBandwidthVals&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">all_note_vals</span><span class="p">[</span><span class="n">loc</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;spec_bandwidth&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))]</span>
-        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;meanSpecBandwidth&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span> <span class="k">for</span> <span class="n">vals</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;specBandwidthVals&#39;</span><span class="p">]]</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;specCentVals&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;spec_centroid&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">]</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;meanSpecCent&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">_safe_nanmean</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;specCentVals&quot;</span><span class="p">]]</span>
 
-        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;specContrastVals&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">all_note_vals</span><span class="p">[</span><span class="n">loc</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;spec_contrast&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))]</span>
-        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;meanSpecContrast&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span> <span class="k">for</span> <span class="n">vals</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;specContrastVals&#39;</span><span class="p">]]</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;specBandwidthVals&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;spec_bandwidth&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">]</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;meanSpecBandwidth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">_safe_nanmean</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;specBandwidthVals&quot;</span><span class="p">]]</span>
 
-        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;specFlatnessVals&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">all_note_vals</span><span class="p">[</span><span class="n">loc</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;spec_flatness&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))]</span>
-        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;meanSpecFlatness&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span> <span class="k">for</span> <span class="n">vals</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;specFlatnessVals&#39;</span><span class="p">]]</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;specContrastVals&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;spec_contrast&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">]</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;meanSpecContrast&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">_safe_nanmean</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;specContrastVals&quot;</span><span class="p">]]</span>
 
-        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;specRolloffVals&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">all_note_vals</span><span class="p">[</span><span class="n">loc</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;spec_rolloff&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))]</span>
-        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;meanSpecRolloff&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span> <span class="k">for</span> <span class="n">vals</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;specRolloffVals&#39;</span><span class="p">]]</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;specFlatnessVals&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;spec_flatness&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">]</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;meanSpecFlatness&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">_safe_nanmean</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;specFlatnessVals&quot;</span><span class="p">]]</span>
+
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;specRolloffVals&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;spec_rolloff&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">]</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;meanSpecRolloff&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">_safe_nanmean</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;specRolloffVals&quot;</span><span class="p">]]</span>
 
         <span class="n">loc</span> <span class="o">+=</span> <span class="mi">1</span>
-        
-    
-    <span class="k">def</span><span class="w"> </span><span class="nf">convert_nmat_for_export</span><span class="p">(</span><span class="n">nmat</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Converts columns with list values into stringified versions for export (e.g., MEI, CSV, JSON).</span>
 
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        nmat : dict of DataFrames</span>
-<span class="sd">            The processed note matrix with internal Python lists.</span>
+    <span class="n">nmat_export</span> <span class="o">=</span> <span class="n">_convert_nmat_for_export</span><span class="p">(</span><span class="n">nmat</span><span class="p">)</span>
+    <span class="n">ext</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">piece</span><span class="p">,</span> <span class="s2">&quot;fileExtension&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        export_nmat : dict of DataFrames</span>
-<span class="sd">            A new dictionary where list-valued columns are stringified.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">list_columns</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s1">&#39;f0Vals&#39;</span><span class="p">,</span> <span class="s1">&#39;pwrVals&#39;</span><span class="p">,</span> <span class="s1">&#39;specCentVals&#39;</span><span class="p">,</span> <span class="s1">&#39;specBandwidthVals&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;specContrastVals&#39;</span><span class="p">,</span> <span class="s1">&#39;specFlatnessVals&#39;</span><span class="p">,</span> <span class="s1">&#39;specRolloffVals&#39;</span>
+    <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span> <span class="s2">&quot;krn&quot;</span><span class="p">:</span>
+        <span class="c1"># Scalar descriptor columns to export as kern analysis spines.</span>
+        <span class="c1"># ONSET_SEC / OFFSET_SEC give each note its audio-aligned timing.</span>
+        <span class="n">ANALYSIS_COLS</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">&#39;ONSET_SEC&#39;</span><span class="p">,</span> <span class="s1">&#39;OFFSET_SEC&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;meanf0&#39;</span><span class="p">,</span> <span class="s1">&#39;ppitch1&#39;</span><span class="p">,</span> <span class="s1">&#39;ppitch2&#39;</span><span class="p">,</span> <span class="s1">&#39;jitter&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;vibratoDepth&#39;</span><span class="p">,</span> <span class="s1">&#39;vibratoRate&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;meanPwr&#39;</span><span class="p">,</span> <span class="s1">&#39;shimmer&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;meanSpecCent&#39;</span><span class="p">,</span> <span class="s1">&#39;meanSpecBandwidth&#39;</span><span class="p">,</span> <span class="s1">&#39;meanSpecContrast&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;meanSpecFlatness&#39;</span><span class="p">,</span> <span class="s1">&#39;meanSpecRolloff&#39;</span><span class="p">,</span>
         <span class="p">]</span>
-        
-        <span class="n">export_nmat</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">part</span><span class="p">,</span> <span class="n">df</span> <span class="ow">in</span> <span class="n">nmat</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">df_copy</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-            <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">list_columns</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df_copy</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-                    <span class="n">df_copy</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_copy</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-            <span class="n">export_nmat</span><span class="p">[</span><span class="n">part</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_copy</span>
 
-        <span class="k">return</span> <span class="n">export_nmat</span>
+        <span class="c1"># Check for a **harte spine imported from the source kern file.</span>
+        <span class="n">harte_raw</span> <span class="o">=</span> <span class="n">piece</span><span class="o">.</span><span class="n">_analyses</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;harte&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">harte_raw</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">harte_raw</span><span class="p">):</span>
+            <span class="n">harte_raw</span> <span class="o">=</span> <span class="n">harte_raw</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">has_harte</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">harte_raw</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">harte_raw</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="n">harte_raw</span><span class="o">.</span><span class="n">empty</span>
+        <span class="p">)</span>
 
+        <span class="c1"># Build a forward-filled harte lookup dict once (beat_offset → label).</span>
+        <span class="k">if</span> <span class="n">has_harte</span><span class="p">:</span>
+            <span class="n">harte_clean</span> <span class="o">=</span> <span class="n">harte_raw</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+            <span class="n">harte_clean</span> <span class="o">=</span> <span class="n">harte_clean</span><span class="p">[</span><span class="o">~</span><span class="n">harte_clean</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">duplicated</span><span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="s1">&#39;last&#39;</span><span class="p">)]</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span>
 
-    <span class="n">nmat_export</span> <span class="o">=</span> <span class="n">convert_nmat_for_export</span><span class="p">(</span><span class="n">nmat</span><span class="p">)</span>
+        <span class="c1"># Check for a **harm spine (roman numeral analysis) in the source kern file.</span>
+        <span class="n">harm_raw</span> <span class="o">=</span> <span class="n">piece</span><span class="o">.</span><span class="n">_analyses</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;harm&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">harm_raw</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">harm_raw</span><span class="p">):</span>
+            <span class="n">harm_raw</span> <span class="o">=</span> <span class="n">harm_raw</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">has_harm</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">harm_raw</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">harm_raw</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="n">harm_raw</span><span class="o">.</span><span class="n">empty</span>
+        <span class="p">)</span>
 
-    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">piece</span><span class="p">,</span> <span class="s1">&#39;fileExtension&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;csv&#39;</span><span class="p">:</span>                
-        <span class="n">fileOutput</span> <span class="o">=</span> <span class="n">piece</span><span class="o">.</span><span class="n">insertAudioAnalysis</span><span class="p">(</span>
-            <span class="n">output_path</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">.mei&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">nmat_export</span><span class="p">,</span> <span class="n">mimetype</span><span class="o">=</span><span class="s1">&#39;audio/aiff&#39;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">audio_file_path</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saved: </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">.mei&quot;</span><span class="p">)</span>
+        <span class="c1"># Build a forward-filled harm lookup dict once (beat_offset → label).</span>
+        <span class="k">if</span> <span class="n">has_harm</span><span class="p">:</span>
+            <span class="n">harm_clean</span> <span class="o">=</span> <span class="n">harm_raw</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+            <span class="n">harm_clean</span> <span class="o">=</span> <span class="n">harm_clean</span><span class="p">[</span><span class="o">~</span><span class="n">harm_clean</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">duplicated</span><span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="s1">&#39;last&#39;</span><span class="p">)]</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span>
+
+        <span class="n">part_dfs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">part</span><span class="p">,</span> <span class="n">df_part</span> <span class="ow">in</span> <span class="n">nmat</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">available</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">ANALYSIS_COLS</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df_part</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+            <span class="n">dfc</span> <span class="o">=</span> <span class="n">df_part</span><span class="p">[</span><span class="n">available</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+            <span class="c1"># Attach harm (roman numeral) labels by beat offset — prepend so</span>
+            <span class="c1"># it appears as the first analysis spine in the output kern file.</span>
+            <span class="k">if</span> <span class="n">has_harm</span> <span class="ow">and</span> <span class="s1">&#39;ONSET&#39;</span> <span class="ow">in</span> <span class="n">df_part</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+                <span class="n">unique_onsets</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">(</span><span class="n">df_part</span><span class="p">[</span><span class="s1">&#39;ONSET&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+                <span class="n">combined_idx</span> <span class="o">=</span> <span class="n">harm_clean</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">unique_onsets</span><span class="p">)</span>
+                <span class="n">harm_lookup</span> <span class="o">=</span> <span class="n">harm_clean</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">combined_idx</span><span class="p">)</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span>
+                <span class="n">onset_to_harm</span> <span class="o">=</span> <span class="n">harm_lookup</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+                <span class="n">dfc</span><span class="p">[</span><span class="s1">&#39;harm&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_part</span><span class="p">[</span><span class="s1">&#39;ONSET&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">onset_to_harm</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+                <span class="n">dfc</span> <span class="o">=</span> <span class="n">dfc</span><span class="p">[[</span><span class="s1">&#39;harm&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">dfc</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">c</span> <span class="o">!=</span> <span class="s1">&#39;harm&#39;</span><span class="p">]]</span>
+
+            <span class="c1"># Attach harte labels by beat offset</span>
+            <span class="k">if</span> <span class="n">has_harte</span> <span class="ow">and</span> <span class="s1">&#39;ONSET&#39;</span> <span class="ow">in</span> <span class="n">df_part</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+                <span class="n">unique_onsets</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">(</span><span class="n">df_part</span><span class="p">[</span><span class="s1">&#39;ONSET&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+                <span class="n">combined_idx</span> <span class="o">=</span> <span class="n">harte_clean</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">unique_onsets</span><span class="p">)</span>
+                <span class="n">harte_lookup</span> <span class="o">=</span> <span class="n">harte_clean</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">combined_idx</span><span class="p">)</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span>
+                <span class="n">onset_to_harte</span> <span class="o">=</span> <span class="n">harte_lookup</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+                <span class="n">dfc</span><span class="p">[</span><span class="s1">&#39;harte&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_part</span><span class="p">[</span><span class="s1">&#39;ONSET&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">onset_to_harte</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+                <span class="c1"># Keep harm first if both spines are present</span>
+                <span class="n">front_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;harm&#39;</span><span class="p">,</span> <span class="s1">&#39;harte&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">dfc</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+                <span class="n">dfc</span> <span class="o">=</span> <span class="n">dfc</span><span class="p">[</span><span class="n">front_cols</span> <span class="o">+</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">dfc</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">front_cols</span><span class="p">]]</span>
+
+            <span class="c1"># Re-index from XML_ID → global beat-offset</span>
+            <span class="k">if</span> <span class="s1">&#39;ONSET&#39;</span> <span class="ow">in</span> <span class="n">df_part</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+                <span class="n">dfc</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">df_part</span><span class="p">[</span><span class="s1">&#39;ONSET&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+            <span class="c1"># Chord notes share an onset; keep last (highest MIDI = melody note)</span>
+            <span class="n">dfc</span> <span class="o">=</span> <span class="n">dfc</span><span class="p">[</span><span class="o">~</span><span class="n">dfc</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">duplicated</span><span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="s1">&#39;last&#39;</span><span class="p">)]</span>
+            <span class="n">part_dfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dfc</span><span class="p">)</span>
+
+        <span class="c1"># Merge all parts: union of all beat offsets, first non-NaN wins per cell</span>
+        <span class="k">if</span> <span class="n">part_dfs</span><span class="p">:</span>
+            <span class="n">combined</span> <span class="o">=</span> <span class="n">part_dfs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">other</span> <span class="ow">in</span> <span class="n">part_dfs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+                <span class="n">combined</span> <span class="o">=</span> <span class="n">combined</span><span class="o">.</span><span class="n">combine_first</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+            <span class="n">combined</span> <span class="o">=</span> <span class="n">combined</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">combined</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+
+        <span class="n">toKern</span><span class="p">(</span>
+            <span class="n">piece</span><span class="p">,</span>
+            <span class="n">path_name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">.krn&quot;</span><span class="p">,</span>
+            <span class="n">include_lyrics</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">include_dynamics</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">analysis_dfs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;analysis&#39;</span><span class="p">:</span> <span class="n">combined</span><span class="p">}</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">combined</span><span class="o">.</span><span class="n">empty</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">fileOutput</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">.krn&quot;</span>
+    <span class="k">elif</span> <span class="n">ext</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;csv&quot;</span><span class="p">,</span> <span class="s2">&quot;txt&quot;</span><span class="p">):</span>
+        <span class="c1"># CSV scores (speech/music Tony CSV) — skip MEI entirely, write nmat directly</span>
+        <span class="n">csv_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">.csv&quot;</span>
+        <span class="n">frames</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">part_name</span><span class="p">,</span> <span class="n">df_part</span> <span class="ow">in</span> <span class="n">nmat</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df_part</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">frames</span><span class="p">:</span>
+            <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames</span><span class="p">)</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">csv_path</span><span class="p">)</span>
+        <span class="n">fileOutput</span> <span class="o">=</span> <span class="n">csv_path</span>
+
     <span class="k">else</span><span class="p">:</span>
-        <span class="c1"># Save each part of nmat to a CSV file</span>
-        <span class="k">for</span> <span class="n">part</span><span class="p">,</span> <span class="n">df</span> <span class="ow">in</span> <span class="n">nmat_export</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="c1"># Construct the filename using the filepath, label, and part</span>
-            
-            <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">.csv&quot;</span>
+        <span class="n">mei_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">.mei&quot;</span>
+        <span class="n">insertAudioAnalysis</span><span class="p">(</span>
+            <span class="n">piece</span><span class="p">,</span>
+            <span class="n">mei_path</span><span class="p">,</span>
+            <span class="n">nmat_export</span><span class="p">,</span>
+            <span class="n">mimetype</span><span class="o">=</span><span class="s2">&quot;audio/aiff&quot;</span><span class="p">,</span>
+            <span class="n">target</span><span class="o">=</span><span class="n">audio_file_path</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">fileOutput</span> <span class="o">=</span> <span class="n">mei_path</span>
 
-            <span class="c1"># Save the DataFrame to CSV</span>
-            <span class="n">fileOutput</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saved </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>    
-    <span class="k">return</span> <span class="n">nmat</span><span class="p">,</span> <span class="n">fileOutput</span></div>
+        <span class="c1"># Write a CSV alongside MEI output for non-krn, non-csv formats</span>
+        <span class="n">csv_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">.csv&quot;</span>
+        <span class="n">_mei_to_csv</span><span class="p">(</span><span class="n">mei_path</span><span class="p">,</span> <span class="n">csv_path</span><span class="p">)</span>
 
+    <span class="k">return</span> <span class="n">nmat</span><span class="p">,</span> <span class="n">fileOutput</span>    </div>
+
+
+<span class="c1"># Utility functions for data processing, no documentation</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_safe_nanmean</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="c1"># Empty array</span>
+    <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+    <span class="c1"># All values are NaN</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_nan_note</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;f0_vals&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+        <span class="s2">&quot;ppitch&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">),</span>
+        <span class="s2">&quot;jitter&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+        <span class="s2">&quot;vibrato_depth&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+        <span class="s2">&quot;vibrato_rate&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+        <span class="s2">&quot;pwr_vals&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+        <span class="s2">&quot;shimmer&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+        <span class="s2">&quot;spec_centroid&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+        <span class="s2">&quot;spec_bandwidth&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+        <span class="s2">&quot;spec_contrast&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+        <span class="s2">&quot;spec_flatness&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+        <span class="s2">&quot;spec_rolloff&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+    <span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_convert_nmat_for_export</span><span class="p">(</span><span class="n">nmat</span><span class="p">):</span>
+    <span class="n">list_columns</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;f0Vals&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;pwrVals&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;specCentVals&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;specBandwidthVals&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;specContrastVals&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;specFlatnessVals&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;specRolloffVals&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">part</span><span class="p">,</span> <span class="n">df_part</span> <span class="ow">in</span> <span class="n">nmat</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">dfc</span> <span class="o">=</span> <span class="n">df_part</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">list_columns</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">dfc</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+                <span class="n">dfc</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">dfc</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">out</span><span class="p">[</span><span class="n">part</span><span class="p">]</span> <span class="o">=</span> <span class="n">dfc</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+
+<span class="c1"># ---------- MEI → CSV helpers ----------</span>
+
+<span class="n">_MEI_NS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;mei&quot;</span><span class="p">:</span> <span class="s2">&quot;http://www.music-encoding.org/ns/mei&quot;</span><span class="p">}</span>
+
+<span class="n">_PITCH_NAMES</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;C#&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;Eb&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="s1">&#39;F#&#39;</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">,</span> <span class="s1">&#39;Ab&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;Bb&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">]</span>
+
+<span class="n">_CSV_EXPORT_COLS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;xmlid&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MIDI&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pitch_from_midi&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ONSET_SEC&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;OFFSET_SEC&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;meanf0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ppitch1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ppitch2&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;jitter&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;vibratoDepth&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;vibratoRate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;meanPwr&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;shimmer&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;meanSpecCent&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;meanSpecBandwidth&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;meanSpecContrast&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;meanSpecFlatness&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;meanSpecRolloff&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_midi_to_pitch</span><span class="p">(</span><span class="n">midi</span><span class="p">):</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+    <span class="k">if</span> <span class="n">midi</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">midi</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">and</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">midi</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">midi</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">midi</span><span class="p">))</span>
+    <span class="n">octave</span> <span class="o">=</span> <span class="n">midi</span> <span class="o">//</span> <span class="mi">12</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_PITCH_NAMES</span><span class="p">[</span><span class="n">midi</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">12</span><span class="p">]</span><span class="si">}{</span><span class="n">octave</span><span class="si">}</span><span class="s2">&quot;</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_extract_notes_from_mei</span><span class="p">(</span><span class="n">mei_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;pd.DataFrame&quot;</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">xml.etree.ElementTree</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ET</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">mei_path</span><span class="p">)</span>
+    <span class="n">root</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">when</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;.//mei:performance//mei:when&quot;</span><span class="p">,</span> <span class="n">_MEI_NS</span><span class="p">):</span>
+        <span class="n">ext</span> <span class="o">=</span> <span class="n">when</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;mei:extData&quot;</span><span class="p">,</span> <span class="n">_MEI_NS</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ext</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">ext</span><span class="o">.</span><span class="n">text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">ext</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;&lt;![CDATA[&quot;</span><span class="p">):</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;![CDATA[&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;]]&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;xmlid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">when</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;{http://www.w3.org/XML/1998/namespace}id&quot;</span><span class="p">)</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">rows</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_mei_to_csv</span><span class="p">(</span><span class="n">mei_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">csv_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract note-level descriptors from a pyAMPACT MEI file and write a CSV.&quot;&quot;&quot;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">_extract_notes_from_mei</span><span class="p">(</span><span class="n">mei_path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  mei_to_csv: no extData found in </span><span class="si">{</span><span class="n">mei_path</span><span class="si">}</span><span class="s2">, CSV not written.&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="c1"># Ensure all expected columns exist (fill missing with NA)</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">_CSV_EXPORT_COLS</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;pitch_from_midi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;MIDI&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">_midi_to_pitch</span><span class="p">)</span>
+
+    <span class="n">df_out</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">_CSV_EXPORT_COLS</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">df_out</span> <span class="o">=</span> <span class="n">df_out</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
+    <span class="n">df_out</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">csv_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="export_selected_columns">
 <a class="viewcode-back" href="../../dataCompilation.html#pyampact.dataCompilation.export_selected_columns">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">export_selected_columns</span><span class="p">(</span><span class="n">nmat</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="s2">&quot;./output_selected_data.csv&quot;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">export_selected_columns</span><span class="p">(</span><span class="n">nmat</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">audio_file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Export specified columns from a dictionary of DataFrames, a single DataFrame,</span>
-<span class="sd">        or a NumPy array of DataFrames to a CSV. Missing columns are added as NaN.        </span>
+<span class="sd">    Export a user-defined subset of descriptor columns from a note matrix to CSV.</span>
 
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        nmat : dict of DataFrames</span>
-<span class="sd">            The dictionary of nmat with all relevant onset, offset, duration, and pitch information,</span>
-<span class="sd">        columns : array of strings</span>
-<span class="sd">            List of column names and order in which they are exported        </span>
-<span class="sd">        output_path : str, optional</span>
-<span class="sd">            The file path for the output CSV file. Defaults to &#39;./output_selected_data&#39;.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    nmat : pd.DataFrame</span>
+<span class="sd">        Note matrix containing selected olumns.</span>
 
+<span class="sd">    columns : list of str</span>
+<span class="sd">        Column names to include in the exported CSV. </span>
 
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        plt : png file</span>
-<span class="sd">            A PNG image of the spectrogram, overlay, and information</span>
-<span class="sd">    &quot;&quot;&quot;</span>   
-    <span class="n">save_dir</span> <span class="o">=</span> <span class="s2">&quot;./&quot;</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="sd">    audio_file_path : str, optional</span>
+<span class="sd">        Path to the source audio file. When provided, the output is written to</span>
+<span class="sd">        ``output_files/output_&lt;stem&gt;/&lt;stem&gt;_selected.csv`` alongside the other</span>
+<span class="sd">        pyAMPACT output files for that recording.</span>
+
+<span class="sd">    output_path : str, optional</span>
+<span class="sd">        Explicit destination path for the CSV file. Takes precedence over the</span>
+<span class="sd">        auto-derived path when both ``audio_file_path`` and ``output_path`` are</span>
+<span class="sd">        given. If neither is provided, defaults to ``./output_selected_data.csv``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">audio_file_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">audio_stem</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">audio_file_path</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">output_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;output_files&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;output_</span><span class="si">{</span><span class="n">audio_stem</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">output_path</span> <span class="o">=</span> <span class="n">output_path</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">audio_stem</span><span class="si">}</span><span class="s2">_selected.csv&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">output_path</span> <span class="o">=</span> <span class="n">output_path</span> <span class="ow">or</span> <span class="s2">&quot;./output_selected_data.csv&quot;</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">selected</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">nmat</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
@@ -348,101 +736,256 @@
         <span class="n">selected</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">columns</span><span class="p">])</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">selected</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No data to export.&quot;</span><span class="p">)</span>
         <span class="k">return</span>
 
     <span class="n">combined</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">selected</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">combined</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Exported selected columns to: </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+    <span class="n">combined</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
 
 
-<span class="c1"># Internal utility function, no documentation</span>
-<span class="c1"># Visualization component</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">midi_to_freq</span><span class="p">(</span><span class="n">midi</span><span class="p">):</span>
     <span class="k">return</span> <span class="mf">440.0</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="p">((</span><span class="n">midi</span> <span class="o">-</span> <span class="mi">69</span><span class="p">)</span> <span class="o">/</span> <span class="mi">12</span><span class="p">))</span>
 
-<span class="c1"># Enharmonic flat conversion</span>
+
 <span class="n">enharmonic_map</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;A#&quot;</span><span class="p">:</span> <span class="s2">&quot;Bb&quot;</span><span class="p">,</span> <span class="s2">&quot;C#&quot;</span><span class="p">:</span> <span class="s2">&quot;Db&quot;</span><span class="p">,</span> <span class="s2">&quot;D#&quot;</span><span class="p">:</span> <span class="s2">&quot;Eb&quot;</span><span class="p">,</span> <span class="s2">&quot;F#&quot;</span><span class="p">:</span> <span class="s2">&quot;Gb&quot;</span><span class="p">,</span> <span class="s2">&quot;G#&quot;</span><span class="p">:</span> <span class="s2">&quot;Ab&quot;</span>
+    <span class="s2">&quot;A#&quot;</span><span class="p">:</span> <span class="s2">&quot;Bb&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;C#&quot;</span><span class="p">:</span> <span class="s2">&quot;Db&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;D#&quot;</span><span class="p">:</span> <span class="s2">&quot;Eb&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;F#&quot;</span><span class="p">:</span> <span class="s2">&quot;Gb&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;G#&quot;</span><span class="p">:</span> <span class="s2">&quot;Ab&quot;</span><span class="p">,</span>
 <span class="p">}</span>
 
-<span class="c1"># Internal utility function, no documentation</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">midi_to_flat_note</span><span class="p">(</span><span class="n">midi</span><span class="p">):</span>
-    <span class="n">note</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">midi_to_note</span><span class="p">(</span><span class="n">midi</span><span class="p">,</span> <span class="n">unicode</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">sharp</span><span class="p">,</span> <span class="n">flat</span> <span class="ow">in</span> <span class="n">enharmonic_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="k">if</span> <span class="n">sharp</span> <span class="ow">in</span> <span class="n">note</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">note</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">sharp</span><span class="p">,</span> <span class="n">flat</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">note</span>
 
-<span class="c1"># Change output_path to output_path like dataCompilation has</span>
-<div class="viewcode-block" id="visualise_alignment_from_nmat">
-<a class="viewcode-back" href="../../dataCompilation.html#pyampact.dataCompilation.visualise_alignment_from_nmat">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">visualise_alignment_from_nmat</span><span class="p">(</span><span class="n">nmat_dict</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sr</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="s2">&quot;output_visual&quot;</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates a spectrogram with pitch, voice, and duration information overlaid.</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">visualise_alignment_from_nmat</span><span class="p">(</span>
+    <span class="n">nmat_dict</span><span class="p">,</span>
+    <span class="n">y</span><span class="p">,</span>
+    <span class="n">original_sr</span><span class="p">,</span>
+    <span class="n">target_sr</span><span class="p">,</span>
+    <span class="n">hop_length</span><span class="p">,</span>
+    <span class="n">winms</span><span class="p">,</span>
+    <span class="n">audio_file_path</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="c1"># --- Derive output folder from the audio filename ---</span>
+    <span class="n">audio_stem</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">audio_file_path</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">output_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;output_files&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;output_</span><span class="si">{</span><span class="n">audio_stem</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">audio_stem</span><span class="p">)</span>
 
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        nmat_dict : dict of DataFrames</span>
-<span class="sd">            The dictionary of nmat with all relevant onset, offset, duration, and pitch information,</span>
-<span class="sd">        y : ndarray</span>
-<span class="sd">            Audio time series of the file.</span>
-<span class="sd">        sr : int</span>
-<span class="sd">            Original sample rate of the audio file.</span>
-<span class="sd">        output_path : str, optional</span>
-<span class="sd">            The file path for the output MEI file. Defaults to &#39;./output_visual&#39;.</span>
+    <span class="c1"># --- FFT length computed at ORIGINAL sample rate ---</span>
+    <span class="n">win_sec</span> <span class="o">=</span> <span class="n">winms</span> <span class="o">/</span> <span class="mf">1000.0</span>
+    <span class="n">fft_len</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">win_sec</span> <span class="o">*</span> <span class="n">original_sr</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+    <span class="n">fft_len</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="n">fft_len</span><span class="p">)</span>
 
+    <span class="c1"># --- hop is already in samples at original_sr ---</span>
+    <span class="n">hop_sec</span> <span class="o">=</span> <span class="n">hop_length</span> <span class="o">/</span> <span class="n">target_sr</span>
+    <span class="n">hop_samp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">hop_sec</span> <span class="o">*</span> <span class="n">original_sr</span><span class="p">)</span>
 
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        plt : png file</span>
-<span class="sd">            A PNG image of the spectrogram, overlay, and information</span>
-<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">noverlap</span> <span class="o">=</span> <span class="n">fft_len</span> <span class="o">-</span> <span class="n">hop_samp</span>
 
-    <span class="n">S</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">amplitude_to_db</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">librosa</span><span class="o">.</span><span class="n">stft</span><span class="p">(</span><span class="n">y</span><span class="p">)),</span> <span class="n">ref</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">)</span>
+    <span class="n">freqs</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">Zxx</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">stft</span><span class="p">(</span>
+        <span class="n">y</span><span class="p">,</span>
+        <span class="n">fs</span><span class="o">=</span><span class="n">original_sr</span><span class="p">,</span>
+        <span class="n">window</span><span class="o">=</span><span class="s2">&quot;hamming&quot;</span><span class="p">,</span>
+        <span class="n">nperseg</span><span class="o">=</span><span class="n">fft_len</span><span class="p">,</span>
+        <span class="n">noverlap</span><span class="o">=</span><span class="n">noverlap</span><span class="p">,</span>
+        <span class="n">nfft</span><span class="o">=</span><span class="n">fft_len</span><span class="p">,</span>
+        <span class="n">boundary</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">padded</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Zxx</span><span class="p">)</span>
+    <span class="n">D</span> <span class="o">/=</span> <span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="k">if</span> <span class="n">D</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">1.0</span><span class="p">)</span>
+
+    <span class="n">S</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">amplitude_to_db</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">)</span>
+
     <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-    <span class="n">librosa</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">specshow</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">,</span> <span class="n">x_axis</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="n">y_axis</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray_r&#39;</span><span class="p">)</span>
+    <span class="n">librosa</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">specshow</span><span class="p">(</span>
+        <span class="n">S</span><span class="p">,</span>
+        <span class="n">x_coords</span><span class="o">=</span><span class="n">times</span><span class="p">,</span>
+        <span class="n">y_coords</span><span class="o">=</span><span class="n">freqs</span><span class="p">,</span>
+        <span class="n">x_axis</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">,</span>
+        <span class="n">y_axis</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">,</span>
+        <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;gray_r&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
     <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Spectrogram + Notes: </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-    <span class="c1"># Generate consistent color palette</span>
-    <span class="n">base_colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="s1">&#39;purple&#39;</span><span class="p">,</span> <span class="s1">&#39;cyan&#39;</span><span class="p">,</span> <span class="s1">&#39;magenta&#39;</span><span class="p">,</span> <span class="s1">&#39;yellow&#39;</span><span class="p">]</span>
+    <span class="n">base_colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;red&quot;</span><span class="p">,</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span><span class="s2">&quot;green&quot;</span><span class="p">,</span><span class="s2">&quot;orange&quot;</span><span class="p">,</span><span class="s2">&quot;purple&quot;</span><span class="p">,</span><span class="s2">&quot;cyan&quot;</span><span class="p">,</span><span class="s2">&quot;magenta&quot;</span><span class="p">,</span><span class="s2">&quot;yellow&quot;</span><span class="p">]</span>
     <span class="n">color_cycle</span> <span class="o">=</span> <span class="p">(</span><span class="n">base_colors</span> <span class="o">*</span> <span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">nmat_dict</span><span class="p">)</span> <span class="o">//</span> <span class="nb">len</span><span class="p">(</span><span class="n">base_colors</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))[:</span><span class="nb">len</span><span class="p">(</span><span class="n">nmat_dict</span><span class="p">)]</span>
-
-    <span class="n">part_name_map</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">legend_elements</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">original_name</span><span class="p">,</span> <span class="n">notes</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">nmat_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">notes</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">nmat_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
         <span class="k">if</span> <span class="n">notes</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
             <span class="k">continue</span>
-
-        <span class="n">new_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Part-</span><span class="si">{</span><span class="n">idx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="n">part_name_map</span><span class="p">[</span><span class="n">original_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_name</span>
-        <span class="n">current_color</span> <span class="o">=</span> <span class="n">color_cycle</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-        <span class="n">legend_elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Patch</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">current_color</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">new_name</span><span class="p">))</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">color_cycle</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="n">legend_elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Patch</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Part-</span><span class="si">{</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))</span>
 
         <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">notes</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">k</span> <span class="ow">in</span> <span class="n">row</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;MIDI&quot;</span><span class="p">,</span> <span class="s2">&quot;ONSET_SEC&quot;</span><span class="p">,</span> <span class="s2">&quot;OFFSET_SEC&quot;</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">row</span><span class="o">.</span><span class="n">index</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;MIDI&quot;</span><span class="p">,</span><span class="s2">&quot;ONSET_SEC&quot;</span><span class="p">,</span><span class="s2">&quot;OFFSET_SEC&quot;</span><span class="p">)):</span>
                 <span class="k">continue</span>
-            <span class="n">midi</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;MIDI&quot;</span><span class="p">]</span>
+            <span class="n">freq</span> <span class="o">=</span> <span class="n">midi_to_freq</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;MIDI&quot;</span><span class="p">])</span>
             <span class="n">start</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;ONSET_SEC&quot;</span><span class="p">]</span>
             <span class="n">end</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;OFFSET_SEC&quot;</span><span class="p">]</span>
-            <span class="n">freq</span> <span class="o">=</span> <span class="n">midi_to_freq</span><span class="p">(</span><span class="n">midi</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">([</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">],</span> <span class="n">freq</span> <span class="o">-</span> <span class="mi">15</span><span class="p">,</span> <span class="n">freq</span> <span class="o">+</span> <span class="mi">15</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
 
-            <span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">([</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">],</span> <span class="n">freq</span> <span class="o">-</span> <span class="mi">15</span><span class="p">,</span> <span class="n">freq</span> <span class="o">+</span> <span class="mi">15</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">current_color</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
-
-            <span class="n">note_name</span> <span class="o">=</span> <span class="n">midi_to_flat_note</span><span class="p">(</span><span class="n">midi</span><span class="p">)</span>
-            <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">((</span><span class="n">start</span> <span class="o">+</span> <span class="n">end</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">freq</span> <span class="o">+</span> <span class="mi">18</span><span class="p">,</span> <span class="n">note_name</span><span class="p">,</span>
-                     <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">current_color</span><span class="p">)</span>
-
-    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">2000</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%+2.0f</span><span class="s1"> dB&#39;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">legend_elements</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
-
-    <span class="n">save_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">.png&quot;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">original_sr</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">times</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%+2.0f</span><span class="s2"> dB&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">legend_elements</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">.png&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saved: </span><span class="si">{</span><span class="n">save_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="plot_piano_roll">
+<a class="viewcode-back" href="../../dataCompilation.html#pyampact.dataCompilation.plot_piano_roll">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_piano_roll</span><span class="p">(</span>
+    <span class="n">piece</span><span class="p">,</span>
+    <span class="n">nmat</span><span class="p">,</span>
+    <span class="n">audio_file_path</span><span class="p">,</span>
+    <span class="n">target_sr</span><span class="p">,</span>
+    <span class="n">hop_length</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Build a piano-roll image from aligned note data and save it alongside the</span>
+<span class="sd">    other output files for this audio file.</span>
+
+<span class="sd">    The piano roll is painted in audio-seconds (x-axis) vs MIDI pitch (y-axis).</span>
+<span class="sd">    Spine annotations present in the score (keys, harm, chord/harte, function)</span>
+<span class="sd">    are extracted, remapped from quarter-note offsets to audio seconds, and</span>
+<span class="sd">    printed to stdout for inspection — exactly as the original exampleScript did.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    piece : Score</span>
+<span class="sd">        The Score object returned by run_alignment / load_score.</span>
+<span class="sd">    nmat : dict</span>
+<span class="sd">        The aligned note-matrix dict returned by data_compilation.</span>
+<span class="sd">    audio_file_path : str</span>
+<span class="sd">        Path to the original audio file — used to derive the output folder name.</span>
+<span class="sd">    target_sr : int</span>
+<span class="sd">        Target sample rate used during alignment (e.g. 4000).</span>
+<span class="sd">    hop_length : int</span>
+<span class="sd">        Hop size in samples at target_sr used during alignment (e.g. 32).</span>
+<span class="sd">    verbose : boolean</span>
+<span class="sd">        If true then print the piano roll specs</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pr : ndarray  (128 × n_cols, float32)</span>
+<span class="sd">        The raw piano-roll matrix, in case the caller wants to post-process it.</span>
+<span class="sd">    audio_axis : pd.Index</span>
+<span class="sd">        The time axis (seconds) corresponding to the columns of pr.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># ── Derive output folder ──────────────────────────────────────────────────</span>
+    <span class="n">audio_stem</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">audio_file_path</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">output_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;output_files&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;output_</span><span class="si">{</span><span class="n">audio_stem</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># ── Flatten all parts of nmat into one DataFrame ──────────────────────────</span>
+    <span class="n">nmat_symbolic</span> <span class="o">=</span> <span class="n">nmats</span><span class="p">(</span><span class="n">piece</span><span class="p">)</span>
+    <span class="n">all_notes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">nmat_symbolic</span><span class="o">.</span><span class="n">values</span><span class="p">())</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">all_notes</span> <span class="o">=</span> <span class="n">all_notes</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;MIDI&quot;</span><span class="p">,</span> <span class="s2">&quot;ONSET_SEC&quot;</span><span class="p">,</span> <span class="s2">&quot;OFFSET_SEC&quot;</span><span class="p">])</span>
+    <span class="n">all_notes</span> <span class="o">=</span> <span class="n">all_notes</span><span class="p">[</span><span class="n">all_notes</span><span class="p">[</span><span class="s2">&quot;MIDI&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">all_notes</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;plot_piano_roll: no valid notes found, skipping.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
+    <span class="c1"># ── Audio time axis ───────────────────────────────────────────────────────</span>
+    <span class="n">audio_start</span> <span class="o">=</span> <span class="n">all_notes</span><span class="p">[</span><span class="s2">&quot;ONSET_SEC&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+    <span class="n">audio_end</span>   <span class="o">=</span> <span class="n">all_notes</span><span class="p">[</span><span class="s2">&quot;OFFSET_SEC&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    <span class="n">n_cols</span>      <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">audio_end</span> <span class="o">-</span> <span class="n">audio_start</span><span class="p">)</span> <span class="o">*</span> <span class="n">target_sr</span> <span class="o">/</span> <span class="n">hop_length</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">col_times</span>   <span class="o">=</span> <span class="n">audio_start</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_cols</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">hop_length</span> <span class="o">/</span> <span class="n">target_sr</span><span class="p">)</span>
+    <span class="n">audio_axis</span>  <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">(</span><span class="n">col_times</span><span class="p">)</span>
+
+    <span class="c1"># ── QN → audio-seconds mapping (from aligned nmat) ───────────────────────</span>
+    <span class="n">qn_sec</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">all_notes</span><span class="p">[[</span><span class="s2">&quot;ONSET&quot;</span><span class="p">,</span> <span class="s2">&quot;ONSET_SEC&quot;</span><span class="p">]]</span>
+        <span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+        <span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="s2">&quot;ONSET&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;ONSET&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">qn_pts</span>  <span class="o">=</span> <span class="n">qn_sec</span><span class="p">[</span><span class="s2">&quot;ONSET&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">sec_pts</span> <span class="o">=</span> <span class="n">qn_sec</span><span class="p">[</span><span class="s2">&quot;ONSET_SEC&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">qn_to_sec</span><span class="p">(</span><span class="n">qn_arr</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">qn_arr</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">),</span> <span class="n">qn_pts</span><span class="p">,</span> <span class="n">sec_pts</span><span class="p">)</span>
+
+    <span class="c1"># ── Piano roll matrix (128 × n_cols) ─────────────────────────────────────</span>
+    <span class="n">pr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">128</span><span class="p">,</span> <span class="n">n_cols</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">all_notes</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="n">midi</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;MIDI&quot;</span><span class="p">])</span>
+        <span class="n">i0</span>   <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">col_times</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;ONSET_SEC&quot;</span><span class="p">])))</span>
+        <span class="n">i1</span>   <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">col_times</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;OFFSET_SEC&quot;</span><span class="p">])))</span>
+        <span class="n">i1</span>   <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">i1</span><span class="p">,</span> <span class="n">i0</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">pr</span><span class="p">[</span><span class="n">midi</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">i0</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span><span class="nb">min</span><span class="p">(</span><span class="n">i1</span><span class="p">,</span> <span class="n">n_cols</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+    <span class="c1"># ── Convert spine annotations: QN offsets → audio seconds → audio_axis ───</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">spine_to_audio</span><span class="p">(</span><span class="n">raw</span><span class="p">):</span>
+        <span class="n">ser</span> <span class="o">=</span> <span class="n">raw</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="n">raw</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">ser</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">audio_axis</span><span class="p">)</span>
+        <span class="c1"># Strip humdrum dot continuation tokens</span>
+        <span class="n">ser</span> <span class="o">=</span> <span class="n">ser</span><span class="p">[</span><span class="n">ser</span> <span class="o">!=</span> <span class="s2">&quot;.&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">ser</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">audio_axis</span><span class="p">)</span>
+        <span class="c1"># Remap QN index to audio seconds</span>
+        <span class="n">ser</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">(</span><span class="n">qn_to_sec</span><span class="p">(</span><span class="n">ser</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)))</span>
+        <span class="n">ser</span> <span class="o">=</span> <span class="n">ser</span><span class="p">[</span><span class="o">~</span><span class="n">ser</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">duplicated</span><span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="s2">&quot;last&quot;</span><span class="p">)]</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+        <span class="c1"># Insert into NaN series covering full audio_axis, then ffill</span>
+        <span class="n">target</span>   <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">audio_axis</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+        <span class="n">combined</span> <span class="o">=</span> <span class="n">ser</span><span class="o">.</span><span class="n">combine_first</span><span class="p">(</span><span class="n">target</span><span class="p">)</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">combined</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">audio_axis</span><span class="p">)</span>
+
+    <span class="n">keys_audio</span>      <span class="o">=</span> <span class="n">spine_to_audio</span><span class="p">(</span><span class="n">piece</span><span class="o">.</span><span class="n">_analyses</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;keys&quot;</span><span class="p">,</span>     <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)))</span>
+    <span class="n">harm_audio</span>      <span class="o">=</span> <span class="n">spine_to_audio</span><span class="p">(</span><span class="n">piece</span><span class="o">.</span><span class="n">_analyses</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;harm&quot;</span><span class="p">,</span>     <span class="p">[]))</span>
+    <span class="n">chords_audio</span>    <span class="o">=</span> <span class="n">spine_to_audio</span><span class="p">(</span><span class="n">piece</span><span class="o">.</span><span class="n">_analyses</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;chord&quot;</span><span class="p">,</span>    <span class="n">piece</span><span class="o">.</span><span class="n">_analyses</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;harte&quot;</span><span class="p">,</span> <span class="p">[])))</span>
+    <span class="n">functions_audio</span> <span class="o">=</span> <span class="n">spine_to_audio</span><span class="p">(</span><span class="n">piece</span><span class="o">.</span><span class="n">_analyses</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;function&quot;</span><span class="p">,</span> <span class="p">[]))</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;keys:&quot;</span><span class="p">);</span>        <span class="nb">print</span><span class="p">(</span><span class="n">keys_audio</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">harm:&quot;</span><span class="p">);</span>      <span class="nb">print</span><span class="p">(</span><span class="n">harm_audio</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">chords:&quot;</span><span class="p">);</span>    <span class="nb">print</span><span class="p">(</span><span class="n">chords_audio</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">functions:&quot;</span><span class="p">);</span> <span class="nb">print</span><span class="p">(</span><span class="n">functions_audio</span><span class="p">)</span>
+
+    <span class="c1"># ── Plot ──────────────────────────────────────────────────────────────────</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">piece</span><span class="p">,</span> <span class="s2">&quot;fileName&quot;</span><span class="p">,</span> <span class="n">audio_stem</span><span class="p">)</span>
+    <span class="n">t_min</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">audio_axis</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">t_max</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">audio_axis</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;#fafaf7&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span>
+        <span class="n">pr</span><span class="p">,</span>
+        <span class="n">aspect</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+        <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">,</span>
+        <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="n">t_min</span><span class="p">,</span> <span class="n">t_max</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">128</span><span class="p">],</span>
+        <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Blues&quot;</span><span class="p">,</span>
+        <span class="n">interpolation</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+        <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">t_min</span><span class="p">,</span> <span class="n">t_max</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">ticker</span><span class="o">.</span><span class="n">MaxNLocator</span><span class="p">(</span><span class="n">nbins</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">ticker</span><span class="o">.</span><span class="n">FormatStrFormatter</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.1f</span><span class="s2">&quot;</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Audio time  (seconds)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#555&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;MIDI pitch&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#555&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;pyAMPACT  </span><span class="se">\u2014</span><span class="s2">  </span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#1a1a1a&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">labelsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#aaa&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">sp</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="n">sp</span><span class="o">.</span><span class="n">set_edgecolor</span><span class="p">(</span><span class="s2">&quot;#ddd&quot;</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+    <span class="n">out_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">audio_stem</span><span class="si">}</span><span class="s2">_piano_roll.png&quot;</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">out_path</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pr</span><span class="p">,</span> <span class="n">audio_axis</span></div>
+
 
 </pre></div>
 

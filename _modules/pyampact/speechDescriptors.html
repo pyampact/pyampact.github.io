@@ -1,0 +1,498 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyampact.speechDescriptors &mdash; pyAMPACT 0.0.6 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+    <link rel="canonical" href="https://pyampact.github.io/_modules/pyampact/speechDescriptors.html" />
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=1fd71caa"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            pyAMPACT
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../alignment.html">alignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../alignmentUtils.html">alignmentUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dataCompilation.html">dataCompilation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../performance.html">performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../symbolic.html">symbolic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../symbolicUtils.html">symbolicUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../speechDescriptors.html">speechDescriptors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../speechDescriptorsUtils.html">speechDescriptorsUtils</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pyAMPACT</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyampact.speechDescriptors</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyampact.speechDescriptors</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">speechDescriptors</span>
+<span class="sd">==============</span>
+
+<span class="sd">.. autosummary::</span>
+<span class="sd">    :toctree: generated/</span>
+
+<span class="sd">    get_speech_descriptors</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">parselmouth</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">librosa</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyampact.speechDescriptorsUtils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">compute_correlation_dimension</span><span class="p">,</span>
+    <span class="n">compute_dfa</span><span class="p">,</span>
+    <span class="n">compute_emd_features</span><span class="p">,</span>
+    <span class="n">compute_mfcc</span><span class="p">,</span>
+    <span class="n">compute_ppe</span><span class="p">,</span>
+    <span class="n">compute_recurrence_period_and_rpde</span><span class="p">,</span>
+    <span class="n">compute_spectral_spread</span><span class="p">,</span>
+    <span class="n">compute_tqwt_features</span><span class="p">,</span>
+    <span class="n">compute_wt_features</span><span class="p">,</span>
+    <span class="n">feature_spectral_flux</span><span class="p">,</span>
+    <span class="n">compute_vot</span><span class="p">,</span>
+    <span class="n">compute_bark_band_energies</span><span class="p">,</span>
+    <span class="n">compute_dpi</span><span class="p">,</span>
+    <span class="n">compute_avqi</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;get_speech_descriptors&quot;</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">createDataframe</span><span class="p">(</span><span class="n">speech_file</span><span class="p">):</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">speech_file</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;onset_sec&quot;</span><span class="p">,</span> <span class="s2">&quot;pitch_est&quot;</span><span class="p">,</span> <span class="s2">&quot;duration&quot;</span><span class="p">,</span> <span class="s2">&quot;word&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">df</span>
+
+
+<div class="viewcode-block" id="get_speech_descriptors">
+<a class="viewcode-back" href="../../speechDescriptors.html#pyampact.speechDescriptors.get_speech_descriptors">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_speech_descriptors</span><span class="p">(</span><span class="n">audio</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">speaker_type</span><span class="o">=</span><span class="s2">&quot;female&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates list of speech descriptors with audio file and CSV provided by the force-align notebook</span>
+<span class="sd">    https://github.com/pyampact/pyAMPACTtutorials/blob/main/Tutorial_05_pyAMPACT_ForceAlign.ipynb</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    audio : ndarray</span>
+<span class="sd">        Audio time series of the speech file        </span>
+
+<span class="sd">    df : DataFrame</span>
+<span class="sd">        df of onset, pitch_est(Hz), duration, and word of each word in passage, output by force align</span>
+
+<span class="sd">    speaker_type : str</span>
+<span class="sd">        Determine the resonance ceiling for formant and CPPS calculation:</span>
+<span class="sd">            - male = 5000</span>
+<span class="sd">            - female = 5500</span>
+<span class="sd">            - child = 8000            </span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    globals_df : Pandas DataFrame</span>
+<span class="sd">        The global inputs and values of the whole audio sample</span>
+<span class="sd">    df : Pandas Dataframe</span>
+<span class="sd">        All speech descriptors analyzed and output in the process</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># df is a dict of DataFrames — get first part</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;ONSET_SEC&quot;</span><span class="p">,</span> <span class="s2">&quot;OFFSET_SEC&quot;</span><span class="p">,</span> <span class="s2">&quot;AVG PITCH IN HZ&quot;</span><span class="p">,</span> <span class="s2">&quot;DURATION&quot;</span><span class="p">,</span> <span class="s2">&quot;WORD&quot;</span><span class="p">]]</span>
+
+    <span class="n">snd</span> <span class="o">=</span> <span class="n">parselmouth</span><span class="o">.</span><span class="n">Sound</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span>
+
+    <span class="c1"># Analysis parameters (must match Praat script for primitives)</span>
+    <span class="n">time_step</span> <span class="o">=</span> <span class="mf">0.01</span>
+    <span class="n">pitch_floor</span> <span class="o">=</span> <span class="mi">120</span>
+    <span class="n">pitch_ceiling</span> <span class="o">=</span> <span class="mi">600</span>
+    <span class="n">octave_cost</span> <span class="o">=</span> <span class="mf">0.01</span>
+    <span class="n">octave_jump_cost</span> <span class="o">=</span> <span class="mf">0.35</span>
+    <span class="n">voicing_threshold</span> <span class="o">=</span> <span class="mf">0.45</span>
+    <span class="n">silence_threshold</span> <span class="o">=</span> <span class="mf">0.03</span>
+
+    <span class="c1"># resonance ceiling (Praat script uses 5500 for DB/female)</span>
+    <span class="n">resonance_ceiling</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;male&quot;</span><span class="p">:</span> <span class="mi">5000</span><span class="p">,</span> <span class="s2">&quot;female&quot;</span><span class="p">:</span> <span class="mi">5500</span><span class="p">,</span> <span class="s2">&quot;child&quot;</span><span class="p">:</span> <span class="mi">8000</span><span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="n">speaker_type</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="mi">5500</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Global pitch metrics (metadata only)</span>
+    <span class="n">pitch_cc_global</span> <span class="o">=</span> <span class="n">parselmouth</span><span class="o">.</span><span class="n">praat</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">snd</span><span class="p">,</span> <span class="s2">&quot;To Pitch...&quot;</span><span class="p">,</span> <span class="n">time_step</span><span class="p">,</span> <span class="n">pitch_floor</span><span class="p">,</span> <span class="n">pitch_ceiling</span><span class="p">)</span>
+    <span class="n">min_pitch_global</span> <span class="o">=</span> <span class="n">parselmouth</span><span class="o">.</span><span class="n">praat</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">pitch_cc_global</span><span class="p">,</span> <span class="s2">&quot;Get minimum&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Hertz&quot;</span><span class="p">,</span> <span class="s2">&quot;Parabolic&quot;</span><span class="p">)</span>
+    <span class="n">max_pitch_global</span> <span class="o">=</span> <span class="n">parselmouth</span><span class="o">.</span><span class="n">praat</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">pitch_cc_global</span><span class="p">,</span> <span class="s2">&quot;Get maximum&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Hertz&quot;</span><span class="p">,</span> <span class="s2">&quot;Parabolic&quot;</span><span class="p">)</span>
+    <span class="n">voiced_global</span> <span class="o">=</span> <span class="n">pitch_cc_global</span><span class="o">.</span><span class="n">selected_array</span><span class="p">[</span><span class="s2">&quot;frequency&quot;</span><span class="p">]</span>
+    <span class="n">voiced_global</span> <span class="o">=</span> <span class="n">voiced_global</span><span class="p">[</span><span class="n">voiced_global</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">pitch_range</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">voiced_global</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">voiced_global</span><span class="o">.</span><span class="n">min</span><span class="p">())</span> <span class="k">if</span> <span class="n">voiced_global</span><span class="o">.</span><span class="n">size</span> <span class="k">else</span> <span class="mf">0.0</span>
+
+    <span class="c1"># Output columns (keep your existing schema)</span>
+    <span class="n">out_cols</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;mean_pitch&quot;</span><span class="p">,</span> <span class="s2">&quot;pitch_min&quot;</span><span class="p">,</span> <span class="s2">&quot;pitch_max&quot;</span><span class="p">,</span> <span class="s2">&quot;mean_intensity&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;mean_f1&quot;</span><span class="p">,</span> <span class="s2">&quot;mean_f2&quot;</span><span class="p">,</span> <span class="s2">&quot;mean_f3&quot;</span><span class="p">,</span> <span class="s2">&quot;mean_f4&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;jitter_local&quot;</span><span class="p">,</span> <span class="s2">&quot;jitter_percent&quot;</span><span class="p">,</span> <span class="s2">&quot;shimmer_local&quot;</span><span class="p">,</span> <span class="s2">&quot;shimmer_percent&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;pulse_energy&quot;</span><span class="p">,</span> <span class="s2">&quot;cpps&quot;</span><span class="p">,</span> <span class="s2">&quot;cpp&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;mean_spec_centroid&quot;</span><span class="p">,</span> <span class="s2">&quot;mean_spec_flux&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;gne_mean&quot;</span><span class="p">,</span> <span class="s2">&quot;gne_max&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;hnr_mean_db&quot;</span><span class="p">,</span> <span class="s2">&quot;nhr_mean_db&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;noise_intensity_db&quot;</span><span class="p">,</span> <span class="s2">&quot;vfer&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;ppe&quot;</span><span class="p">,</span> <span class="s2">&quot;vot_ms&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;ac_strength&quot;</span><span class="p">,</span> <span class="s2">&quot;voicing&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;mean_bark&quot;</span><span class="p">,</span> <span class="s2">&quot;d2&quot;</span><span class="p">,</span> <span class="s2">&quot;dfa_alpha&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;pause_durations&quot;</span><span class="p">,</span> <span class="s2">&quot;mean_dpi&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;emd_n_imfs&quot;</span><span class="p">,</span> <span class="s2">&quot;emd_energy_ratio&quot;</span><span class="p">,</span> <span class="s2">&quot;emd_entropy&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;energy&quot;</span><span class="p">,</span> <span class="s2">&quot;mfcc&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;rp&quot;</span><span class="p">,</span> <span class="s2">&quot;rpde&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;mean_spec_spread&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;tqwt_e1&quot;</span><span class="p">,</span> <span class="s2">&quot;tqwt_e2&quot;</span><span class="p">,</span> <span class="s2">&quot;tqwt_e3&quot;</span><span class="p">,</span> <span class="s2">&quot;tqwt_e4&quot;</span><span class="p">,</span> <span class="s2">&quot;tqwt_e5&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;tqwt_entropy&quot;</span><span class="p">,</span> <span class="s2">&quot;tqwt_centroid&quot;</span><span class="p">,</span> <span class="s2">&quot;tqwt_low_high_ratio&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;wt_entropy&quot;</span><span class="p">,</span> <span class="s2">&quot;wt_low_high_ratio&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">min_required</span> <span class="o">=</span> <span class="mf">6.4</span> <span class="o">/</span> <span class="n">pitch_floor</span>  <span class="c1"># 0.053333...</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+        <span class="n">onset</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s2">&quot;ONSET_SEC&quot;</span><span class="p">])</span>
+        <span class="n">offset</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s2">&quot;OFFSET_SEC&quot;</span><span class="p">])</span>
+        <span class="n">dur</span> <span class="o">=</span> <span class="n">offset</span> <span class="o">-</span> <span class="n">onset</span>
+
+        <span class="c1"># default undefined (Praat uses undefined)</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">out_cols</span><span class="p">}</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;pause_durations&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;mfcc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">dur</span><span class="p">)</span> <span class="ow">or</span> <span class="n">dur</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">dur</span> <span class="o">&lt;</span> <span class="n">min_required</span><span class="p">:</span>
+            <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+            <span class="k">continue</span>
+
+        <span class="c1"># segment with LOCAL time axis [0..dur]</span>
+        <span class="n">seg</span> <span class="o">=</span> <span class="n">snd</span><span class="o">.</span><span class="n">extract_part</span><span class="p">(</span><span class="n">from_time</span><span class="o">=</span><span class="n">onset</span><span class="p">,</span> <span class="n">to_time</span><span class="o">=</span><span class="n">offset</span><span class="p">,</span> <span class="n">preserve_times</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">sr</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">seg</span><span class="o">.</span><span class="n">sampling_frequency</span><span class="p">)</span>
+        <span class="n">mid</span> <span class="o">=</span> <span class="n">dur</span> <span class="o">/</span> <span class="mf">2.0</span>
+
+        <span class="c1"># ========= PRIMITIVES (MATCH PRAAT SCRIPT) =========</span>
+
+        <span class="c1"># Pitch (cc)</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">parselmouth</span><span class="o">.</span><span class="n">praat</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">seg</span><span class="p">,</span> <span class="s2">&quot;To Pitch...&quot;</span><span class="p">,</span> <span class="n">time_step</span><span class="p">,</span> <span class="n">pitch_floor</span><span class="p">,</span> <span class="n">pitch_ceiling</span><span class="p">)</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;pitch_min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parselmouth</span><span class="o">.</span><span class="n">praat</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="s2">&quot;Get minimum&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Hertz&quot;</span><span class="p">,</span> <span class="s2">&quot;Parabolic&quot;</span><span class="p">)</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;pitch_max&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parselmouth</span><span class="o">.</span><span class="n">praat</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="s2">&quot;Get maximum&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Hertz&quot;</span><span class="p">,</span> <span class="s2">&quot;Parabolic&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Mean pitch (not in Praat output table, but keep your column)</span>
+        <span class="n">f0</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">selected_array</span><span class="p">[</span><span class="s2">&quot;frequency&quot;</span><span class="p">]</span>
+        <span class="n">f0v</span> <span class="o">=</span> <span class="n">f0</span><span class="p">[</span><span class="n">f0</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;mean_pitch&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">f0v</span><span class="p">))</span> <span class="k">if</span> <span class="n">f0v</span><span class="o">.</span><span class="n">size</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+        <span class="c1"># Intensity</span>
+        <span class="n">w_int</span> <span class="o">=</span> <span class="n">parselmouth</span><span class="o">.</span><span class="n">praat</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">seg</span><span class="p">,</span> <span class="s2">&quot;To Intensity...&quot;</span><span class="p">,</span> <span class="n">pitch_floor</span><span class="p">,</span> <span class="n">time_step</span><span class="p">,</span> <span class="s2">&quot;no&quot;</span><span class="p">)</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;mean_intensity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parselmouth</span><span class="o">.</span><span class="n">praat</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">w_int</span><span class="p">,</span> <span class="s2">&quot;Get mean&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;dB&quot;</span><span class="p">)</span>
+
+        <span class="c1"># PointProcess + jitter/shimmer/pulse energy</span>
+        <span class="n">w_pp</span> <span class="o">=</span> <span class="n">parselmouth</span><span class="o">.</span><span class="n">praat</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">seg</span><span class="p">,</span> <span class="s2">&quot;To PointProcess (periodic, cc)&quot;</span><span class="p">,</span> <span class="n">pitch_floor</span><span class="p">,</span> <span class="n">pitch_ceiling</span><span class="p">)</span>
+        <span class="n">minPeriod</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">pitch_ceiling</span>
+        <span class="n">maxPeriod</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">pitch_floor</span>
+
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;jitter_local&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parselmouth</span><span class="o">.</span><span class="n">praat</span><span class="o">.</span><span class="n">call</span><span class="p">(</span>
+            <span class="n">w_pp</span><span class="p">,</span> <span class="s2">&quot;Get jitter (local)&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">minPeriod</span><span class="p">,</span> <span class="n">maxPeriod</span><span class="p">,</span> <span class="mf">1.3</span>
+        <span class="p">)</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;jitter_percent&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;jitter_local&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">100.0</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;jitter_local&quot;</span><span class="p">])</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;shimmer_local&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parselmouth</span><span class="o">.</span><span class="n">praat</span><span class="o">.</span><span class="n">call</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">seg</span><span class="p">,</span> <span class="n">w_pp</span><span class="p">],</span> <span class="s2">&quot;Get shimmer (local)&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">minPeriod</span><span class="p">,</span> <span class="n">maxPeriod</span><span class="p">,</span> <span class="mf">1.3</span><span class="p">,</span> <span class="mf">1.6</span>
+        <span class="p">)</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;shimmer_percent&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;shimmer_local&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">100.0</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;shimmer_local&quot;</span><span class="p">])</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+        <span class="n">pulse</span> <span class="o">=</span> <span class="n">parselmouth</span><span class="o">.</span><span class="n">praat</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">w_pp</span><span class="p">,</span> <span class="s2">&quot;To Sound (pulse train)&quot;</span><span class="p">,</span> <span class="mi">44100</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mi">2000</span><span class="p">)</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;pulse_energy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parselmouth</span><span class="o">.</span><span class="n">praat</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">pulse</span><span class="p">,</span> <span class="s2">&quot;Get energy&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># Formants (midpoint sample, burg params must match)</span>
+        <span class="n">w_form</span> <span class="o">=</span> <span class="n">parselmouth</span><span class="o">.</span><span class="n">praat</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">seg</span><span class="p">,</span> <span class="s2">&quot;To Formant (burg)...&quot;</span><span class="p">,</span> <span class="n">time_step</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">resonance_ceiling</span><span class="p">,</span> <span class="mf">0.025</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+        <span class="c1"># Keep your mean_f* column names, but fill with Praat midpoint semantics</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;mean_f1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parselmouth</span><span class="o">.</span><span class="n">praat</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">w_form</span><span class="p">,</span> <span class="s2">&quot;Get value at time&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mid</span><span class="p">,</span> <span class="s2">&quot;Hertz&quot;</span><span class="p">,</span> <span class="s2">&quot;Linear&quot;</span><span class="p">)</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;mean_f2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parselmouth</span><span class="o">.</span><span class="n">praat</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">w_form</span><span class="p">,</span> <span class="s2">&quot;Get value at time&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">mid</span><span class="p">,</span> <span class="s2">&quot;Hertz&quot;</span><span class="p">,</span> <span class="s2">&quot;Linear&quot;</span><span class="p">)</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;mean_f3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parselmouth</span><span class="o">.</span><span class="n">praat</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">w_form</span><span class="p">,</span> <span class="s2">&quot;Get value at time&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">mid</span><span class="p">,</span> <span class="s2">&quot;Hertz&quot;</span><span class="p">,</span> <span class="s2">&quot;Linear&quot;</span><span class="p">)</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;mean_f4&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parselmouth</span><span class="o">.</span><span class="n">praat</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">w_form</span><span class="p">,</span> <span class="s2">&quot;Get value at time&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">mid</span><span class="p">,</span> <span class="s2">&quot;Hertz&quot;</span><span class="p">,</span> <span class="s2">&quot;Linear&quot;</span><span class="p">)</span>
+
+        <span class="c1"># CPPS (only if dur &gt;= 0.1)</span>
+        <span class="k">if</span> <span class="n">dur</span> <span class="o">&gt;=</span> <span class="mf">0.1</span><span class="p">:</span>
+            <span class="n">pcg</span> <span class="o">=</span> <span class="n">parselmouth</span><span class="o">.</span><span class="n">praat</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">seg</span><span class="p">,</span> <span class="s2">&quot;To PowerCepstrogram...&quot;</span><span class="p">,</span> <span class="n">pitch_floor</span><span class="p">,</span> <span class="n">time_step</span><span class="p">,</span> <span class="n">resonance_ceiling</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+            <span class="n">minQ</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">pitch_ceiling</span>
+            <span class="n">maxQ</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">pitch_floor</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;cpps&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parselmouth</span><span class="o">.</span><span class="n">praat</span><span class="o">.</span><span class="n">call</span><span class="p">(</span>
+                <span class="n">pcg</span><span class="p">,</span> <span class="s2">&quot;Get CPPS&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;yes&quot;</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.0005</span><span class="p">,</span>
+                <span class="n">pitch_floor</span><span class="p">,</span> <span class="n">pitch_ceiling</span><span class="p">,</span>
+                <span class="mf">0.05</span><span class="p">,</span> <span class="s2">&quot;parabolic&quot;</span><span class="p">,</span>
+                <span class="n">minQ</span><span class="p">,</span> <span class="n">maxQ</span><span class="p">,</span>
+                <span class="s2">&quot;Straight&quot;</span><span class="p">,</span> <span class="s2">&quot;Robust&quot;</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pcg</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># GNE (only if dur &gt;= 0.1 in Praat script)</span>
+        <span class="k">if</span> <span class="n">dur</span> <span class="o">&gt;=</span> <span class="mf">0.1</span><span class="p">:</span>
+            <span class="n">gneObj</span> <span class="o">=</span> <span class="n">parselmouth</span><span class="o">.</span><span class="n">praat</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">seg</span><span class="p">,</span> <span class="s2">&quot;To Harmonicity (gne)...&quot;</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">4500</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">80</span><span class="p">)</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;gne_max&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parselmouth</span><span class="o">.</span><span class="n">praat</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">gneObj</span><span class="p">,</span> <span class="s2">&quot;Get maximum&quot;</span><span class="p">)</span>
+            <span class="n">gneVals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">gneObj</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;gne_mean&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">gneVals</span><span class="p">))</span> <span class="k">if</span> <span class="n">gneVals</span><span class="o">.</span><span class="n">size</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">gneVals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+        <span class="c1"># HNR / NHR (segment, cc)</span>
+        <span class="n">harm</span> <span class="o">=</span> <span class="n">parselmouth</span><span class="o">.</span><span class="n">praat</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">seg</span><span class="p">,</span> <span class="s2">&quot;To Harmonicity (cc)...&quot;</span><span class="p">,</span> <span class="n">time_step</span><span class="p">,</span> <span class="n">pitch_floor</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;hnr_mean_db&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parselmouth</span><span class="o">.</span><span class="n">praat</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">harm</span><span class="p">,</span> <span class="s2">&quot;Get mean&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;nhr_mean_db&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;hnr_mean_db&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;hnr_mean_db&quot;</span><span class="p">])</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+        <span class="c1"># Voicing (AC pitch mean) — exact Praat params</span>
+        <span class="n">p_ac</span> <span class="o">=</span> <span class="n">parselmouth</span><span class="o">.</span><span class="n">praat</span><span class="o">.</span><span class="n">call</span><span class="p">(</span>
+            <span class="n">seg</span><span class="p">,</span> <span class="s2">&quot;To Pitch (ac)&quot;</span><span class="p">,</span>
+            <span class="n">time_step</span><span class="p">,</span> <span class="n">pitch_floor</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="s2">&quot;off&quot;</span><span class="p">,</span>
+            <span class="n">silence_threshold</span><span class="p">,</span> <span class="n">voicing_threshold</span><span class="p">,</span>
+            <span class="n">octave_cost</span><span class="p">,</span> <span class="n">octave_jump_cost</span><span class="p">,</span>
+            <span class="mf">0.14</span><span class="p">,</span> <span class="n">pitch_ceiling</span>
+        <span class="p">)</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;voicing&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parselmouth</span><span class="o">.</span><span class="n">praat</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">p_ac</span><span class="p">,</span> <span class="s2">&quot;Get mean&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Hertz&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Energy (segment)</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;energy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parselmouth</span><span class="o">.</span><span class="n">praat</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">seg</span><span class="p">,</span> <span class="s2">&quot;Get energy&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+
+        <span class="c1"># CPP (custom calc) only if you built pcg</span>
+        <span class="k">if</span> <span class="n">pcg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">pcg_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">parselmouth</span><span class="o">.</span><span class="n">praat</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">pcg</span><span class="p">,</span> <span class="s2">&quot;To Matrix&quot;</span><span class="p">))</span>
+            <span class="n">mean_ceps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">pcg_mat</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">mean_ceps_db</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">mean_ceps</span><span class="p">,</span> <span class="mf">1e-12</span><span class="p">))</span>
+            <span class="n">n_quef</span> <span class="o">=</span> <span class="n">mean_ceps_db</span><span class="o">.</span><span class="n">size</span>
+            <span class="n">quef</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">pitch_floor</span><span class="p">,</span> <span class="n">n_quef</span><span class="p">)</span>
+            <span class="n">mask_peak</span> <span class="o">=</span> <span class="p">(</span><span class="n">quef</span> <span class="o">&gt;=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">pitch_ceiling</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">quef</span> <span class="o">&lt;=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">pitch_floor</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">mask_peak</span><span class="p">):</span>
+                <span class="n">peak_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">mean_ceps_db</span><span class="p">[</span><span class="n">mask_peak</span><span class="p">]))</span>
+                <span class="n">peak_q</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">quef</span><span class="p">[</span><span class="n">mask_peak</span><span class="p">][</span><span class="n">peak_idx</span><span class="p">])</span>
+                <span class="n">peak_val</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">mean_ceps_db</span><span class="p">[</span><span class="n">mask_peak</span><span class="p">][</span><span class="n">peak_idx</span><span class="p">])</span>
+                <span class="n">mask_trend</span> <span class="o">=</span> <span class="p">(</span><span class="n">quef</span> <span class="o">&gt;=</span> <span class="mf">0.001</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">quef</span> <span class="o">&lt;=</span> <span class="mf">0.02</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">mask_trend</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="n">slope</span><span class="p">,</span> <span class="n">intercept</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">quef</span><span class="p">[</span><span class="n">mask_trend</span><span class="p">],</span> <span class="n">mean_ceps_db</span><span class="p">[</span><span class="n">mask_trend</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="n">row</span><span class="p">[</span><span class="s2">&quot;cpp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">peak_val</span> <span class="o">-</span> <span class="p">(</span><span class="n">slope</span> <span class="o">*</span> <span class="n">peak_q</span> <span class="o">+</span> <span class="n">intercept</span><span class="p">)</span>
+
+        <span class="c1"># Spectral features (librosa) on seg</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">seg</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">y</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+            <span class="n">spec_centroid</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">spectral_centroid</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;mean_spec_centroid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">spec_centroid</span><span class="p">))</span> <span class="k">if</span> <span class="n">spec_centroid</span><span class="o">.</span><span class="n">size</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+            <span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">librosa</span><span class="o">.</span><span class="n">stft</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">n_fft</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span> <span class="n">hop_length</span><span class="o">=</span><span class="mi">512</span><span class="p">))</span>
+            <span class="n">spec_flux</span> <span class="o">=</span> <span class="n">feature_spectral_flux</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">sr</span><span class="p">)</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;mean_spec_flux&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">spec_flux</span><span class="p">))</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">spec_flux</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;mean_bark&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">compute_bark_band_energies</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">sr</span><span class="p">,</span> <span class="n">n_bands</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
+
+            <span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sr</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">S</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;mean_spec_spread&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">compute_spectral_spread</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">freqs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">S</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Noise intensity + VFER from HNR (keep your definitions)</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;hnr_mean_db&quot;</span><span class="p">])</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;mean_intensity&quot;</span><span class="p">]):</span>
+            <span class="n">hnr_lin</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;hnr_mean_db&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">10.0</span><span class="p">)</span>
+            <span class="n">noise_fraction</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">hnr_lin</span><span class="p">)</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;noise_intensity_db&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;mean_intensity&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">noise_fraction</span><span class="p">)</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;vfer&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hnr_lin</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">hnr_lin</span><span class="p">)</span>
+
+        <span class="c1"># PPE (use segment pitch object p on local grid)</span>
+        <span class="n">t_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">dur</span><span class="p">,</span> <span class="n">time_step</span><span class="p">)</span>
+        <span class="n">pitch_segment</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">p</span><span class="o">.</span><span class="n">get_value_at_time</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">t_values</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;ppe&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">compute_ppe</span><span class="p">(</span><span class="n">pitch_segment</span><span class="p">)</span>
+
+        <span class="c1"># VOT (use seg + p)</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;vot_ms&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">compute_vot</span><span class="p">(</span><span class="n">seg</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">sr</span><span class="p">)</span>
+
+        <span class="c1"># AC strength (Praat Pitch (ac) confidence)</span>
+        <span class="k">if</span> <span class="s2">&quot;strength&quot;</span> <span class="ow">in</span> <span class="n">p_ac</span><span class="o">.</span><span class="n">selected_array</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">names</span><span class="p">:</span>
+            <span class="n">strength</span> <span class="o">=</span> <span class="n">p_ac</span><span class="o">.</span><span class="n">selected_array</span><span class="p">[</span><span class="s2">&quot;strength&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">strength</span> <span class="o">=</span> <span class="n">strength</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">strength</span><span class="p">)]</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;ac_strength&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">strength</span><span class="p">))</span> <span class="k">if</span> <span class="n">strength</span><span class="o">.</span><span class="n">size</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;ac_strength&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+
+        <span class="c1"># Correlation dimension / DFA / EMD on gneVals (as you had)</span>
+        <span class="k">if</span> <span class="n">gneVals</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;d2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">compute_correlation_dimension</span><span class="p">(</span><span class="n">gneVals</span><span class="p">)</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;dfa_alpha&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">compute_dfa</span><span class="p">(</span><span class="n">gneVals</span><span class="p">)</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;emd_n_imfs&quot;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;emd_energy_ratio&quot;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;emd_entropy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">compute_emd_features</span><span class="p">(</span><span class="n">gneVals</span><span class="p">)</span>
+
+        <span class="c1"># DPI (use seg + seg intensity + segment pitch p)</span>
+        <span class="k">if</span> <span class="n">dur</span> <span class="o">&gt;=</span> <span class="n">min_required</span><span class="p">:</span>
+            <span class="n">seg_intensity</span> <span class="o">=</span> <span class="n">seg</span><span class="o">.</span><span class="n">to_intensity</span><span class="p">(</span><span class="n">minimum_pitch</span><span class="o">=</span><span class="n">pitch_floor</span><span class="p">,</span> <span class="n">time_step</span><span class="o">=</span><span class="n">time_step</span><span class="p">,</span> <span class="n">subtract_mean</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">pause_durations</span><span class="p">,</span> <span class="n">mean_dpi</span> <span class="o">=</span> <span class="n">compute_dpi</span><span class="p">(</span>
+                <span class="n">seg</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">seg_intensity</span><span class="p">,</span> <span class="n">intensity_thresh</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;mean_intensity&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">10</span>
+            <span class="p">)</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;pause_durations&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pause_durations</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;mean_dpi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mean_dpi</span>
+
+        <span class="c1"># RP / RPDE (use segment point process w_pp, local times)</span>
+        <span class="n">rp</span><span class="p">,</span> <span class="n">rpde</span> <span class="o">=</span> <span class="n">compute_recurrence_period_and_rpde</span><span class="p">(</span><span class="n">w_pp</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">dur</span><span class="p">)</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;rp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rp</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;rpde&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rpde</span>
+
+        <span class="c1"># TQWT / WT (keep)</span>
+        <span class="k">if</span> <span class="n">y</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+            <span class="p">(</span>
+                <span class="n">row</span><span class="p">[</span><span class="s2">&quot;tqwt_e1&quot;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;tqwt_e2&quot;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;tqwt_e3&quot;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;tqwt_e4&quot;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;tqwt_e5&quot;</span><span class="p">],</span>
+                <span class="n">row</span><span class="p">[</span><span class="s2">&quot;tqwt_entropy&quot;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;tqwt_centroid&quot;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;tqwt_low_high_ratio&quot;</span><span class="p">],</span>
+            <span class="p">)</span> <span class="o">=</span> <span class="n">compute_tqwt_features</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">,</span> <span class="n">Q</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">J</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">n_keep</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;wt_entropy&quot;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;wt_low_high_ratio&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">compute_wt_features</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+        <span class="c1"># MFCC optional</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;mfcc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># keep as you had (disabled)</span>
+
+        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+
+    <span class="c1"># attach results</span>
+    <span class="n">out_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="n">out_cols</span><span class="p">]</span> <span class="o">=</span> <span class="n">out_df</span><span class="p">[</span><span class="n">out_cols</span><span class="p">]</span>
+
+    <span class="c1"># ---------- REORDER COLUMNS FOR CSV OUTPUT ONLY ----------</span>
+
+    <span class="n">COLUMN_ORDER</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="c1"># identity / segmentation</span>
+        <span class="s2">&quot;WORD&quot;</span><span class="p">,</span> <span class="s2">&quot;ONSET_SEC&quot;</span><span class="p">,</span> <span class="s2">&quot;OFFSET_SEC&quot;</span><span class="p">,</span> <span class="s2">&quot;DURATION&quot;</span><span class="p">,</span>
+
+        <span class="c1"># pitch &amp; voicing</span>
+        <span class="s2">&quot;mean_pitch&quot;</span><span class="p">,</span> <span class="s2">&quot;pitch_min&quot;</span><span class="p">,</span> <span class="s2">&quot;pitch_max&quot;</span><span class="p">,</span> <span class="s2">&quot;voicing&quot;</span><span class="p">,</span> <span class="s2">&quot;ac_strength&quot;</span><span class="p">,</span> <span class="s2">&quot;ppe&quot;</span><span class="p">,</span> <span class="s2">&quot;vot_ms&quot;</span><span class="p">,</span>
+
+        <span class="c1"># intensity &amp; energy</span>
+        <span class="s2">&quot;mean_intensity&quot;</span><span class="p">,</span> <span class="s2">&quot;pulse_energy&quot;</span><span class="p">,</span> <span class="s2">&quot;energy&quot;</span><span class="p">,</span> <span class="s2">&quot;noise_intensity_db&quot;</span><span class="p">,</span> <span class="s2">&quot;vfer&quot;</span><span class="p">,</span>
+
+        <span class="c1"># perturbation</span>
+        <span class="s2">&quot;jitter_local&quot;</span><span class="p">,</span> <span class="s2">&quot;jitter_percent&quot;</span><span class="p">,</span> <span class="s2">&quot;shimmer_local&quot;</span><span class="p">,</span> <span class="s2">&quot;shimmer_percent&quot;</span><span class="p">,</span>
+
+        <span class="c1"># formants</span>
+        <span class="s2">&quot;mean_f1&quot;</span><span class="p">,</span> <span class="s2">&quot;mean_f2&quot;</span><span class="p">,</span> <span class="s2">&quot;mean_f3&quot;</span><span class="p">,</span> <span class="s2">&quot;mean_f4&quot;</span><span class="p">,</span>
+
+        <span class="c1"># cepstral / harmonic</span>
+        <span class="s2">&quot;cpps&quot;</span><span class="p">,</span> <span class="s2">&quot;cpp&quot;</span><span class="p">,</span> <span class="s2">&quot;gne_max&quot;</span><span class="p">,</span> <span class="s2">&quot;gne_mean&quot;</span><span class="p">,</span> <span class="s2">&quot;hnr_mean_db&quot;</span><span class="p">,</span> <span class="s2">&quot;nhr_mean_db&quot;</span><span class="p">,</span>
+
+        <span class="c1"># spectral</span>
+        <span class="s2">&quot;mean_spec_centroid&quot;</span><span class="p">,</span> <span class="s2">&quot;mean_spec_flux&quot;</span><span class="p">,</span> <span class="s2">&quot;mean_spec_spread&quot;</span><span class="p">,</span> <span class="s2">&quot;mean_bark&quot;</span><span class="p">,</span>
+
+        <span class="c1"># temporal / nonlinear</span>
+        <span class="s2">&quot;rp&quot;</span><span class="p">,</span> <span class="s2">&quot;rpde&quot;</span><span class="p">,</span> <span class="s2">&quot;d2&quot;</span><span class="p">,</span> <span class="s2">&quot;dfa_alpha&quot;</span><span class="p">,</span> <span class="s2">&quot;pause_durations&quot;</span><span class="p">,</span> <span class="s2">&quot;mean_dpi&quot;</span><span class="p">,</span>
+
+        <span class="c1"># decomposition</span>
+        <span class="s2">&quot;emd_n_imfs&quot;</span><span class="p">,</span> <span class="s2">&quot;emd_energy_ratio&quot;</span><span class="p">,</span> <span class="s2">&quot;emd_entropy&quot;</span><span class="p">,</span>
+
+        <span class="c1"># transforms</span>
+        <span class="s2">&quot;tqwt_e1&quot;</span><span class="p">,</span> <span class="s2">&quot;tqwt_e2&quot;</span><span class="p">,</span> <span class="s2">&quot;tqwt_e3&quot;</span><span class="p">,</span> <span class="s2">&quot;tqwt_e4&quot;</span><span class="p">,</span> <span class="s2">&quot;tqwt_e5&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;tqwt_entropy&quot;</span><span class="p">,</span> <span class="s2">&quot;tqwt_centroid&quot;</span><span class="p">,</span> <span class="s2">&quot;tqwt_low_high_ratio&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;wt_entropy&quot;</span><span class="p">,</span> <span class="s2">&quot;wt_low_high_ratio&quot;</span><span class="p">,</span>
+
+        <span class="c1"># heavy payloads</span>
+        <span class="s2">&quot;mfcc&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="c1"># keep only columns that exist (Praat vs Python compatibility)</span>
+    <span class="n">ordered_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">COLUMN_ORDER</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">ordered_cols</span><span class="p">]</span>
+
+
+    <span class="n">globals_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([{</span>
+        <span class="s2">&quot;pitch_floor&quot;</span><span class="p">:</span> <span class="n">pitch_floor</span><span class="p">,</span>
+        <span class="s2">&quot;pitch_ceiling&quot;</span><span class="p">:</span> <span class="n">pitch_ceiling</span><span class="p">,</span>
+        <span class="s2">&quot;pitch_range&quot;</span><span class="p">:</span> <span class="n">pitch_range</span><span class="p">,</span>
+        <span class="s2">&quot;octave_cost&quot;</span><span class="p">:</span> <span class="n">octave_cost</span><span class="p">,</span>
+        <span class="s2">&quot;octave_jump_cost&quot;</span><span class="p">:</span> <span class="n">octave_jump_cost</span><span class="p">,</span>
+        <span class="s2">&quot;voicing_threshold&quot;</span><span class="p">:</span> <span class="n">voicing_threshold</span><span class="p">,</span>
+        <span class="s2">&quot;silence_threshold&quot;</span><span class="p">:</span> <span class="n">silence_threshold</span><span class="p">,</span>
+        <span class="s2">&quot;formant_ceiling&quot;</span><span class="p">:</span> <span class="n">resonance_ceiling</span><span class="p">,</span>
+        <span class="s2">&quot;time_step&quot;</span><span class="p">:</span> <span class="n">time_step</span><span class="p">,</span>
+        <span class="s2">&quot;speaker_type&quot;</span><span class="p">:</span> <span class="n">speaker_type</span><span class="p">,</span>
+        <span class="s2">&quot;global_pitch_min&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">min_pitch_global</span><span class="p">)</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">min_pitch_global</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+        <span class="s2">&quot;global_pitch_max&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">max_pitch_global</span><span class="p">)</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">max_pitch_global</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+    <span class="p">}])</span>
+
+    <span class="k">return</span> <span class="n">globals_df</span><span class="p">,</span> <span class="n">df</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, AMPACT Research Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

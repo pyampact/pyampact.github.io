@@ -6,17 +6,17 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyampact.dataCompilation.data_compilation &mdash; pyAMPACT 0.0.5 documentation</title>
+  <title>pyampact.dataCompilation.data_compilation &mdash; pyAMPACT 0.0.6 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
 
   
     <link rel="canonical" href="https://pyampact.github.io/generated/pyampact.dataCompilation.data_compilation.html" />
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=282f96c0"></script>
-      <script src="../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/documentation_options.js?v=1fd71caa"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -64,6 +64,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../performance.html">performance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../symbolic.html">symbolic</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../symbolicUtils.html">symbolicUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../speechDescriptors.html">speechDescriptors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../speechDescriptorsUtils.html">speechDescriptorsUtils</a></li>
 </ul>
 
         </div>
@@ -95,29 +97,54 @@
 <h1>pyampact.dataCompilation.data_compilation<a class="headerlink" href="#pyampact-datacompilation-data-compilation" title="Link to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyampact.dataCompilation.data_compilation">
-<span class="sig-prename descclassname"><span class="pre">pyampact.dataCompilation.</span></span><span class="sig-name descname"><span class="pre">data_compilation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">original_sr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop_length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">winms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tsr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nmat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio_file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'output'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyampact/dataCompilation.html#data_compilation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.dataCompilation.data_compilation" title="Link to this definition"></a></dt>
-<dd><p>This function takes the results of the alignment and the note matrix and compiles the data into a JSON object
-that can be used to insert the audio analysis into the score.</p>
+<span class="sig-prename descclassname"><span class="pre">pyampact.dataCompilation.</span></span><span class="sig-name descname"><span class="pre">data_compilation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">original_sr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop_length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">winms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tsr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nmat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio_file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_pyin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyampact/dataCompilation.html#data_compilation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.dataCompilation.data_compilation" title="Link to this definition"></a></dt>
+<dd><p>Compile per-note perceptual descriptors from an aligned audio-score pair
+and write the results to disk in the appropriate format (.krn, .mei, or .csv).</p>
+<p>F0 estimation strategy is selected automatically based on the number of
+parts in the score: monophonic pieces use pyin directly; polyphonic pieces
+attempt pitch-separated F0 estimation via the reassigned spectrogram and
+fall back to pyin on failure. Set <code class="docutils literal notranslate"><span class="pre">force_pyin=True</span></code> to override and use
+pyin for all pieces regardless of polyphony.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>nmat</strong> (<em>np.ndarray</em>) – The note matrix containing information about notes, including their timing and duration.</p></li>
-<li><p><strong>hop_length</strong> (<em>int</em>) – Hop length</p></li>
-<li><p><strong>spec</strong> (<em>np.ndarray</em>) – Spec (check type and fill out)</p></li>
-<li><p><strong>audio_file</strong> (<em>str</em>) – The path to the audio file associated with the performance data.</p></li>
-<li><p><strong>piece</strong> (<a class="reference internal" href="pyampact.symbolic.Score.html#pyampact.symbolic.Score" title="pyampact.symbolic.Score"><em>Score</em></a>) – An instantiation of the original Score object containing the data input for the musical piece.</p></li>
-<li><p><strong>output_path</strong> (<em>str</em><em>, </em><em>optional</em>) – The file path for the output MEI file. Defaults to ‘./output’.</p></li>
+<li><p><strong>y</strong> (<em>ndarray</em>) – Audio time series at the original sample rate.</p></li>
+<li><p><strong>original_sr</strong> (<em>int</em>) – Sample rate of <code class="docutils literal notranslate"><span class="pre">y</span></code>.</p></li>
+<li><p><strong>hop_length</strong> (<em>int</em>) – Hop size in samples at <code class="docutils literal notranslate"><span class="pre">tsr</span></code> used during alignment (e.g. 32).</p></li>
+<li><p><strong>winms</strong> (<em>float</em>) – Analysis window size in milliseconds (e.g. 100).</p></li>
+<li><p><strong>tsr</strong> (<em>int</em>) – Target sample rate used during alignment (e.g. 4000).</p></li>
+<li><p><strong>spec</strong> (<em>ndarray</em>) – Magnitude spectrogram produced by alignment, shape (freq x frames).</p></li>
+<li><p><strong>nmat</strong> (<em>dict</em>) – Note matrix dict returned by <code class="docutils literal notranslate"><span class="pre">run_alignment</span></code>, keyed by part name.
+Each value is a DataFrame with at minimum ONSET_SEC, OFFSET_SEC, and MIDI columns.</p></li>
+<li><p><strong>piece</strong> (<em>Score</em>) – Score object returned by <code class="docutils literal notranslate"><span class="pre">run_alignment</span></code> / <code class="docutils literal notranslate"><span class="pre">load_score</span></code>.</p></li>
+<li><p><strong>audio_file_path</strong> (<em>str</em>) – Path to the source audio file. Used to derive the output folder name
+(<code class="docutils literal notranslate"><span class="pre">output_files/output_&lt;stem&gt;/</span></code>) and filename stem.</p></li>
+<li><p><strong>force_pyin</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, use pyin F0 estimation for all notes regardless of whether
+the piece is monophonic or polyphonic. Default is False (auto-detect).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><strong>nmat</strong> (<em>The note matrix with performance data appended.</em>)</p></li>
-<li><p><strong>json_data</strong> (<em>A JSON object containing the compiled data.</em>)</p></li>
-<li><p><strong>xml_data</strong> (<em>XML data representing the MEI output.</em>)</p></li>
+<li><p><strong>nmat</strong> (<em>dict</em>) – The input note matrix dict with perceptual descriptor columns appended
+to each part DataFrame, including: f0Vals, meanf0, ppitch1, ppitch2,
+jitter, vibratoDepth, vibratoRate, pwrVals, meanPwr, shimmer,
+specCentVals, meanSpecCent, specBandwidthVals, meanSpecBandwidth,
+specContrastVals, meanSpecContrast, specFlatnessVals, meanSpecFlatness,
+specRolloffVals, meanSpecRolloff.</p></li>
+<li><p><strong>fileOutput</strong> (<em>str</em>) – Path to the primary output file written to disk:
+a .krn file for Humdrum kern scores, a .csv file for Tony CSV scores,
+or a .mei file (with companion .csv) for all other formats.</p></li>
 </ul>
 </p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>Spectral features (centroid, bandwidth, contrast, flatness, rolloff) are
+precomputed once over the full spectrogram and sliced per note to avoid
+redundant computation. F0 and RMS power are computed at <code class="docutils literal notranslate"><span class="pre">original_sr</span></code>
+using window and hop sizes derived from the alignment spectrogram dimensions
+rather than the caller-supplied <code class="docutils literal notranslate"><span class="pre">hop_length</span></code>, which ensures consistency
+with the DTW alignment grid.</p>
 </dd></dl>
 
 </section>

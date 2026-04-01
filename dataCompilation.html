@@ -6,17 +6,17 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dataCompilation &mdash; pyAMPACT 0.0.5 documentation</title>
+  <title>dataCompilation &mdash; pyAMPACT 0.0.6 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
   
     <link rel="canonical" href="https://pyampact.github.io/dataCompilation.html" />
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=282f96c0"></script>
-      <script src="_static/doctools.js?v=9bcbadda"></script>
-      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/documentation_options.js?v=1fd71caa"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -61,6 +61,8 @@
 <li class="toctree-l1"><a class="reference internal" href="performance.html">performance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="symbolic.html">symbolic</a></li>
 <li class="toctree-l1"><a class="reference internal" href="symbolicUtils.html">symbolicUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speechDescriptors.html">speechDescriptors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speechDescriptorsUtils.html">speechDescriptorsUtils</a></li>
 </ul>
 
         </div>
@@ -94,78 +96,112 @@
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/pyampact.dataCompilation.data_compilation.html#pyampact.dataCompilation.data_compilation" title="pyampact.dataCompilation.data_compilation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">data_compilation</span></code></a>(y, original_sr, hop_length, ...)</p></td>
-<td><p>This function takes the results of the alignment and the note matrix and compiles the data into a JSON object that can be used to insert the audio analysis into the score.</p></td>
+<td><p>Compile per-note perceptual descriptors from an aligned audio-score pair and write the results to disk in the appropriate format (.krn, .mei, or .csv).</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">pyampact.dataCompilation.</span></span><span class="sig-name descname"><span class="pre">data_compilation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">original_sr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop_length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">winms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tsr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nmat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio_file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'output'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/dataCompilation.html#data_compilation"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>This function takes the results of the alignment and the note matrix and compiles the data into a JSON object
-that can be used to insert the audio analysis into the score.</p>
+<span class="sig-prename descclassname"><span class="pre">pyampact.dataCompilation.</span></span><span class="sig-name descname"><span class="pre">data_compilation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">original_sr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop_length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">winms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tsr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nmat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio_file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_pyin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/dataCompilation.html#data_compilation"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Compile per-note perceptual descriptors from an aligned audio-score pair
+and write the results to disk in the appropriate format (.krn, .mei, or .csv).</p>
+<p>F0 estimation strategy is selected automatically based on the number of
+parts in the score: monophonic pieces use pyin directly; polyphonic pieces
+attempt pitch-separated F0 estimation via the reassigned spectrogram and
+fall back to pyin on failure. Set <code class="docutils literal notranslate"><span class="pre">force_pyin=True</span></code> to override and use
+pyin for all pieces regardless of polyphony.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>nmat</strong> (<em>np.ndarray</em>) – The note matrix containing information about notes, including their timing and duration.</p></li>
-<li><p><strong>hop_length</strong> (<em>int</em>) – Hop length</p></li>
-<li><p><strong>spec</strong> (<em>np.ndarray</em>) – Spec (check type and fill out)</p></li>
-<li><p><strong>audio_file</strong> (<em>str</em>) – The path to the audio file associated with the performance data.</p></li>
-<li><p><strong>piece</strong> (<a class="reference internal" href="generated/pyampact.symbolic.Score.html#pyampact.symbolic.Score" title="pyampact.symbolic.Score"><em>Score</em></a>) – An instantiation of the original Score object containing the data input for the musical piece.</p></li>
-<li><p><strong>output_path</strong> (<em>str</em><em>, </em><em>optional</em>) – The file path for the output MEI file. Defaults to ‘./output’.</p></li>
+<li><p><strong>y</strong> (<em>ndarray</em>) – Audio time series at the original sample rate.</p></li>
+<li><p><strong>original_sr</strong> (<em>int</em>) – Sample rate of <code class="docutils literal notranslate"><span class="pre">y</span></code>.</p></li>
+<li><p><strong>hop_length</strong> (<em>int</em>) – Hop size in samples at <code class="docutils literal notranslate"><span class="pre">tsr</span></code> used during alignment (e.g. 32).</p></li>
+<li><p><strong>winms</strong> (<em>float</em>) – Analysis window size in milliseconds (e.g. 100).</p></li>
+<li><p><strong>tsr</strong> (<em>int</em>) – Target sample rate used during alignment (e.g. 4000).</p></li>
+<li><p><strong>spec</strong> (<em>ndarray</em>) – Magnitude spectrogram produced by alignment, shape (freq x frames).</p></li>
+<li><p><strong>nmat</strong> (<em>dict</em>) – Note matrix dict returned by <code class="docutils literal notranslate"><span class="pre">run_alignment</span></code>, keyed by part name.
+Each value is a DataFrame with at minimum ONSET_SEC, OFFSET_SEC, and MIDI columns.</p></li>
+<li><p><strong>piece</strong> (<em>Score</em>) – Score object returned by <code class="docutils literal notranslate"><span class="pre">run_alignment</span></code> / <code class="docutils literal notranslate"><span class="pre">load_score</span></code>.</p></li>
+<li><p><strong>audio_file_path</strong> (<em>str</em>) – Path to the source audio file. Used to derive the output folder name
+(<code class="docutils literal notranslate"><span class="pre">output_files/output_&lt;stem&gt;/</span></code>) and filename stem.</p></li>
+<li><p><strong>force_pyin</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, use pyin F0 estimation for all notes regardless of whether
+the piece is monophonic or polyphonic. Default is False (auto-detect).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><strong>nmat</strong> (<em>The note matrix with performance data appended.</em>)</p></li>
-<li><p><strong>json_data</strong> (<em>A JSON object containing the compiled data.</em>)</p></li>
-<li><p><strong>xml_data</strong> (<em>XML data representing the MEI output.</em>)</p></li>
+<li><p><strong>nmat</strong> (<em>dict</em>) – The input note matrix dict with perceptual descriptor columns appended
+to each part DataFrame, including: f0Vals, meanf0, ppitch1, ppitch2,
+jitter, vibratoDepth, vibratoRate, pwrVals, meanPwr, shimmer,
+specCentVals, meanSpecCent, specBandwidthVals, meanSpecBandwidth,
+specContrastVals, meanSpecContrast, specFlatnessVals, meanSpecFlatness,
+specRolloffVals, meanSpecRolloff.</p></li>
+<li><p><strong>fileOutput</strong> (<em>str</em>) – Path to the primary output file written to disk:
+a .krn file for Humdrum kern scores, a .csv file for Tony CSV scores,
+or a .mei file (with companion .csv) for all other formats.</p></li>
 </ul>
 </p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>Spectral features (centroid, bandwidth, contrast, flatness, rolloff) are
+precomputed once over the full spectrogram and sliced per note to avoid
+redundant computation. F0 and RMS power are computed at <code class="docutils literal notranslate"><span class="pre">original_sr</span></code>
+using window and hop sizes derived from the alignment spectrogram dimensions
+rather than the caller-supplied <code class="docutils literal notranslate"><span class="pre">hop_length</span></code>, which ensures consistency
+with the DTW alignment grid.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">pyampact.dataCompilation.</span></span><span class="sig-name descname"><span class="pre">export_selected_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nmat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./output_selected_data.csv'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/dataCompilation.html#export_selected_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Export specified columns from a dictionary of DataFrames, a single DataFrame,
-or a NumPy array of DataFrames to a CSV. Missing columns are added as NaN.</p>
+<span class="sig-prename descclassname"><span class="pre">pyampact.dataCompilation.</span></span><span class="sig-name descname"><span class="pre">export_selected_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nmat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio_file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/dataCompilation.html#export_selected_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Export a user-defined subset of descriptor columns from a note matrix to CSV.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>nmat</strong> (<em>dict</em><em> of </em><em>DataFrames</em>) – The dictionary of nmat with all relevant onset, offset, duration, and pitch information,</p></li>
-<li><p><strong>columns</strong> (<em>array</em><em> of </em><em>strings</em>) – List of column names and order in which they are exported</p></li>
-<li><p><strong>output_path</strong> (<em>str</em><em>, </em><em>optional</em>) – The file path for the output CSV file. Defaults to ‘./output_selected_data’.</p></li>
+<li><p><strong>nmat</strong> (<em>pd.DataFrame</em>) – Note matrix containing selected olumns.</p></li>
+<li><p><strong>columns</strong> (<em>list</em><em> of </em><em>str</em>) – Column names to include in the exported CSV.</p></li>
+<li><p><strong>audio_file_path</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to the source audio file. When provided, the output is written to
+<code class="docutils literal notranslate"><span class="pre">output_files/output_&lt;stem&gt;/&lt;stem&gt;_selected.csv</span></code> alongside the other
+pyAMPACT output files for that recording.</p></li>
+<li><p><strong>output_path</strong> (<em>str</em><em>, </em><em>optional</em>) – Explicit destination path for the CSV file. Takes precedence over the
+auto-derived path when both <code class="docutils literal notranslate"><span class="pre">audio_file_path</span></code> and <code class="docutils literal notranslate"><span class="pre">output_path</span></code> are
+given. If neither is provided, defaults to <code class="docutils literal notranslate"><span class="pre">./output_selected_data.csv</span></code>.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>plt</strong> – A PNG image of the spectrogram, overlay, and information</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>png file</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">pyampact.dataCompilation.</span></span><span class="sig-name descname"><span class="pre">visualise_alignment_from_nmat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nmat_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'output_visual'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/dataCompilation.html#visualise_alignment_from_nmat"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Creates a spectrogram with pitch, voice, and duration information overlaid.</p>
+<span class="sig-prename descclassname"><span class="pre">pyampact.dataCompilation.</span></span><span class="sig-name descname"><span class="pre">plot_piano_roll</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">piece</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nmat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio_file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_sr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop_length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyampact/dataCompilation.html#plot_piano_roll"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Build a piano-roll image from aligned note data and save it alongside the
+other output files for this audio file.</p>
+<p>The piano roll is painted in audio-seconds (x-axis) vs MIDI pitch (y-axis).
+Spine annotations present in the score (keys, harm, chord/harte, function)
+are extracted, remapped from quarter-note offsets to audio seconds, and
+printed to stdout for inspection — exactly as the original exampleScript did.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>nmat_dict</strong> (<em>dict</em><em> of </em><em>DataFrames</em>) – The dictionary of nmat with all relevant onset, offset, duration, and pitch information,</p></li>
-<li><p><strong>y</strong> (<em>ndarray</em>) – Audio time series of the file.</p></li>
-<li><p><strong>sr</strong> (<em>int</em>) – Original sample rate of the audio file.</p></li>
-<li><p><strong>output_path</strong> (<em>str</em><em>, </em><em>optional</em>) – The file path for the output MEI file. Defaults to ‘./output_visual’.</p></li>
+<li><p><strong>piece</strong> (<em>Score</em>) – The Score object returned by run_alignment / load_score.</p></li>
+<li><p><strong>nmat</strong> (<em>dict</em>) – The aligned note-matrix dict returned by data_compilation.</p></li>
+<li><p><strong>audio_file_path</strong> (<em>str</em>) – Path to the original audio file — used to derive the output folder name.</p></li>
+<li><p><strong>target_sr</strong> (<em>int</em>) – Target sample rate used during alignment (e.g. 4000).</p></li>
+<li><p><strong>hop_length</strong> (<em>int</em>) – Hop size in samples at target_sr used during alignment (e.g. 32).</p></li>
+<li><p><strong>verbose</strong> (<em>boolean</em>) – If true then print the piano roll specs</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>plt</strong> – A PNG image of the spectrogram, overlay, and information</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>png file</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>pr</strong> (<em>ndarray  (128 × n_cols, float32)</em>) – The raw piano-roll matrix, in case the caller wants to post-process it.</p></li>
+<li><p><strong>audio_axis</strong> (<em>pd.Index</em>) – The time axis (seconds) corresponding to the columns of pr.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>

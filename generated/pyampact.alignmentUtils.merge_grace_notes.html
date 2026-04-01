@@ -6,17 +6,17 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyampact.alignmentUtils.merge_grace_notes &mdash; pyAMPACT 0.0.5 documentation</title>
+  <title>pyampact.alignmentUtils.merge_grace_notes &mdash; pyAMPACT 0.0.6 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
 
   
     <link rel="canonical" href="https://pyampact.github.io/generated/pyampact.alignmentUtils.merge_grace_notes.html" />
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=282f96c0"></script>
-      <script src="../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/documentation_options.js?v=1fd71caa"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -52,7 +52,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../alignment.html">alignment</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../alignmentUtils.html">alignmentUtils</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../alignmentUtils.html#id1">alignmentUtils</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="pyampact.alignmentUtils.dpcore.html">pyampact.alignmentUtils.dpcore</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pyampact.alignmentUtils.dp.html">pyampact.alignmentUtils.dp</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pyampact.alignmentUtils.gh.html">pyampact.alignmentUtils.gh</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pyampact.alignmentUtils.g.html">pyampact.alignmentUtils.g</a></li>
@@ -60,8 +59,6 @@
 <li class="toctree-l3"><a class="reference internal" href="pyampact.alignmentUtils.maptimes.html">pyampact.alignmentUtils.maptimes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pyampact.alignmentUtils.f0_est_weighted_sum.html">pyampact.alignmentUtils.f0_est_weighted_sum</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pyampact.alignmentUtils.f0_est_weighted_sum_spec.html">pyampact.alignmentUtils.f0_est_weighted_sum_spec</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pyampact.alignmentUtils.durations_from_midi_ticks.html">pyampact.alignmentUtils.durations_from_midi_ticks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pyampact.alignmentUtils.load_audiofile.html">pyampact.alignmentUtils.load_audiofile</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pyampact.alignmentUtils.trim_silences.html">pyampact.alignmentUtils.trim_silences</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">pyampact.alignmentUtils.merge_grace_notes</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#pyampact.alignmentUtils.merge_grace_notes"><code class="docutils literal notranslate"><span class="pre">merge_grace_notes()</span></code></a></li>
@@ -75,6 +72,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../performance.html">performance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../symbolic.html">symbolic</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../symbolicUtils.html">symbolicUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../speechDescriptors.html">speechDescriptors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../speechDescriptorsUtils.html">speechDescriptorsUtils</a></li>
 </ul>
 
         </div>
@@ -107,7 +106,25 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyampact.alignmentUtils.merge_grace_notes">
 <span class="sig-prename descclassname"><span class="pre">pyampact.alignmentUtils.</span></span><span class="sig-name descname"><span class="pre">merge_grace_notes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nmat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.025</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyampact/alignmentUtils.html#merge_grace_notes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignmentUtils.merge_grace_notes" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Merge grace-note sub-parts back into their parent voice and resolve any
+resulting onset overlaps.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nmat</strong> (<em>pd.DataFrame</em>) – Note matrix dictionary keyed by part name.</p></li>
+<li><p><strong>offset</strong> (<em>float</em><em>, </em><em>optional</em>) – Time in seconds added to the <code class="docutils literal notranslate"><span class="pre">ONSET_SEC</span></code> and <code class="docutils literal notranslate"><span class="pre">OFFSET_SEC</span></code> of every
+grace-note sub-part before merging. Default is <code class="docutils literal notranslate"><span class="pre">0.025</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>nmat</strong> – The updated note matrix with all grace-note sub-parts folded into their
+respective base parts and removed as separate keys.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict of str → pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 

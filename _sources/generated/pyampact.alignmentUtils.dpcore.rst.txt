@@ -1,6 +1,0 @@
-﻿pyampact.alignmentUtils.dpcore
-==============================
-
-.. currentmodule:: pyampact.alignmentUtils
-
-.. autofunction:: dpcore

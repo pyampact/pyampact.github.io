@@ -1,0 +1,1128 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyampact.speechDescriptorsUtils &mdash; pyAMPACT 0.0.6 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+    <link rel="canonical" href="https://pyampact.github.io/_modules/pyampact/speechDescriptorsUtils.html" />
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=1fd71caa"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            pyAMPACT
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../alignment.html">alignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../alignmentUtils.html">alignmentUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dataCompilation.html">dataCompilation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../performance.html">performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../symbolic.html">symbolic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../symbolicUtils.html">symbolicUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../speechDescriptors.html">speechDescriptors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../speechDescriptorsUtils.html">speechDescriptorsUtils</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pyAMPACT</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyampact.speechDescriptorsUtils</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyampact.speechDescriptorsUtils</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">speechDescriptorsUtils</span>
+<span class="sd">==============</span>
+
+
+<span class="sd">.. autosummary::</span>
+<span class="sd">    :toctree: generated/</span>
+
+<span class="sd">    compute_correlation_dimension,</span>
+<span class="sd">    compute_dfa,</span>
+<span class="sd">    compute_emd_features,</span>
+<span class="sd">    compute_mfcc,</span>
+<span class="sd">    compute_ppe,</span>
+<span class="sd">    compute_recurrence_period_and_rpde,</span>
+<span class="sd">    compute_spectral_spread,</span>
+<span class="sd">    compute_tqwt_features,</span>
+<span class="sd">    compute_wt_features,</span>
+<span class="sd">    feature_spectral_flux,</span>
+<span class="sd">    compute_vot,</span>
+<span class="sd">    compute_bark_band_energies,</span>
+<span class="sd">    compute_dpi,</span>
+<span class="sd">    compute_avqi        </span>
+<span class="sd">        </span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">parselmouth</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">librosa</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pywt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.fft</span><span class="w"> </span><span class="kn">import</span> <span class="n">fft</span><span class="p">,</span> <span class="n">ifft</span><span class="p">,</span> <span class="n">fftshift</span><span class="p">,</span> <span class="n">ifftshift</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.signal</span><span class="w"> </span><span class="kn">import</span> <span class="n">find_peaks</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;compute_correlation_dimension&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;compute_dfa&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;compute_emd_features&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;compute_mfcc&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;compute_ppe&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;compute_recurrence_period_and_rpde&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;compute_spectral_spread&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;compute_tqwt_features&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;compute_wt_features&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;feature_spectral_flux&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;compute_vot&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;compute_bark_band_energies&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;compute_dpi&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;compute_avqi&quot;</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="feature_spectral_flux">
+<a class="viewcode-back" href="../../speechDescriptorsUtils.html#pyampact.speechDescriptorsUtils.feature_spectral_flux">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">feature_spectral_flux</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">f_s</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates spectral flux</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    X : ndarray</span>
+<span class="sd">        spectrogram</span>
+
+<span class="sd">    f_s : float</span>
+<span class="sd">        sample rate of audio data    </span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    vsf : float</span>
+<span class="sd">        spectral_flux</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">isSpectrum</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">isSpectrum</span><span class="p">:</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># difference spectrum (set first diff to zero)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">]</span>
+
+    <span class="n">afDeltaX</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># flux</span>
+    <span class="n">vsf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">afDeltaX</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">vsf</span><span class="p">)</span> <span class="k">if</span> <span class="n">isSpectrum</span> <span class="k">else</span> <span class="n">vsf</span></div>
+
+
+
+<div class="viewcode-block" id="compute_ppe">
+<a class="viewcode-back" href="../../speechDescriptorsUtils.html#pyampact.speechDescriptorsUtils.compute_ppe">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_ppe</span><span class="p">(</span><span class="n">pitch_values_hz</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute Pitch Period Entropy (PPE) from a 1D array of pitch values in Hz.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pitch_values_hz : ndarray</span>
+<span class="sd">        array of pitch values</span>
+
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    entropy : float</span>
+<span class="sd">        Pitch Period Entropy (PPE)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">voiced</span> <span class="o">=</span> <span class="n">pitch_values_hz</span><span class="p">[</span><span class="n">pitch_values_hz</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">voiced</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    
+    <span class="c1"># Convert to semitones relative to median</span>
+    <span class="n">f0_median</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">voiced</span><span class="p">)</span>
+    <span class="n">semitones</span> <span class="o">=</span> <span class="mi">12</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">voiced</span> <span class="o">/</span> <span class="n">f0_median</span><span class="p">)</span>
+    
+    <span class="c1"># Kernel density estimate over semitone deviations</span>
+    <span class="n">hist</span><span class="p">,</span> <span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">semitones</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">probs</span> <span class="o">=</span> <span class="n">hist</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">hist</span><span class="p">)</span>
+    <span class="n">probs</span> <span class="o">=</span> <span class="n">probs</span><span class="p">[</span><span class="n">probs</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+    
+    <span class="c1"># Shannon entropy</span>
+    <span class="n">entropy</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">probs</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">probs</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">entropy</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="compute_vot">
+<a class="viewcode-back" href="../../speechDescriptorsUtils.html#pyampact.speechDescriptorsUtils.compute_vot">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_vot</span><span class="p">(</span><span class="n">seg</span><span class="p">,</span> <span class="n">pitch</span><span class="p">,</span> <span class="n">sr</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute Voice Onset Time (VOT)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    seg : Praat Sound Object</span>
+<span class="sd">        segment/slice of Snd object between onset and offset</span>
+<span class="sd">    </span>
+<span class="sd">    pitch : Pitch (CC) object</span>
+<span class="sd">        pitch object from Praat</span>
+<span class="sd">    </span>
+<span class="sd">    sr : float</span>
+<span class="sd">        sample rate of audio</span>
+
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    entropy : float</span>
+<span class="sd">        voice onset time (in ms)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    
+    <span class="n">y</span> <span class="o">=</span> <span class="n">seg</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">frame_length</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.02</span> <span class="o">*</span> <span class="n">sr</span><span class="p">)</span>  <span class="c1"># 20 ms window</span>
+    <span class="n">hop</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.005</span> <span class="o">*</span> <span class="n">sr</span><span class="p">)</span>          <span class="c1"># 5 ms hop</span>
+    <span class="n">energy</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">rms</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">frame_length</span><span class="o">=</span><span class="n">frame_length</span><span class="p">,</span> <span class="n">hop_length</span><span class="o">=</span><span class="n">hop</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">times</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">frames_to_time</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">energy</span><span class="p">)),</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">,</span> <span class="n">hop_length</span><span class="o">=</span><span class="n">hop</span><span class="p">)</span>
+    
+    <span class="c1"># Release burst = first strong jump in energy</span>
+    <span class="n">release_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">energy</span> <span class="o">&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">energy</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">energy</span><span class="p">))</span>
+    <span class="n">t_release</span> <span class="o">=</span> <span class="n">times</span><span class="p">[</span><span class="n">release_idx</span><span class="p">]</span> <span class="k">if</span> <span class="n">release_idx</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span>
+        
+    <span class="n">t_voicing</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">t_release</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">times</span><span class="p">[</span><span class="n">release_idx</span><span class="p">:]:</span>
+            <span class="n">f0</span> <span class="o">=</span> <span class="n">pitch</span><span class="o">.</span><span class="n">get_value_at_time</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">f0</span> <span class="ow">and</span> <span class="n">f0</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">t_voicing</span> <span class="o">=</span> <span class="n">t</span>
+                <span class="k">break</span>
+    
+    <span class="k">if</span> <span class="n">t_release</span> <span class="ow">and</span> <span class="n">t_voicing</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">t_voicing</span> <span class="o">-</span> <span class="n">t_release</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1000.0</span>  <span class="c1"># ms</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span></div>
+
+
+
+<span class="c1"># Bark band energies</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">bark_scale_freqs</span><span class="p">(</span><span class="n">n_bands</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">fmax</span><span class="o">=</span><span class="mi">16000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return Bark band edges up to fmax.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_bands : int</span>
+<span class="sd">        number of bark bands</span>
+<span class="sd">    </span>
+<span class="sd">    fmax : float</span>
+<span class="sd">        maximum frequency of analysis</span>
+
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    freqs : array</span>
+<span class="sd">        array of bark band frequencies</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">bark_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="n">n_bands</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">freqs</span> <span class="o">=</span> <span class="mi">1960</span> <span class="o">*</span> <span class="p">(</span> <span class="p">(</span><span class="n">bark_edges</span> <span class="o">+</span> <span class="mf">0.53</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">26.28</span> <span class="o">-</span> <span class="n">bark_edges</span><span class="p">)</span> <span class="p">)</span>
+    <span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">fmax</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">freqs</span>
+
+<div class="viewcode-block" id="compute_bark_band_energies">
+<a class="viewcode-back" href="../../speechDescriptorsUtils.html#pyampact.speechDescriptorsUtils.compute_bark_band_energies">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_bark_band_energies</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">sr</span><span class="p">,</span> <span class="n">n_bands</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">mean_energies</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute bark band energies via bark_scale_freqs edges function</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    S : ndraay</span>
+<span class="sd">        magnitude spectrum</span>
+<span class="sd">    </span>
+<span class="sd">    sr : float</span>
+<span class="sd">        sample rate of audio file</span>
+
+<span class="sd">    n_bands : int</span>
+<span class="sd">        number of bark bands; default = 24</span>
+<span class="sd">    </span>
+<span class="sd">    mean_energies : bool</span>
+<span class="sd">        default (True) returns mean of band energies, False returns array of band energies</span>
+
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    band_energies : float</span>
+<span class="sd">        mean of band energies as float, or array of band energies</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># S = magnitude spectrogram (freq_bins x frames)</span>
+    <span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sr</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">S</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">edges</span> <span class="o">=</span> <span class="n">bark_scale_freqs</span><span class="p">(</span><span class="n">n_bands</span><span class="p">,</span> <span class="n">sr</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">band_energies</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_bands</span><span class="p">):</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">freqs</span> <span class="o">&gt;=</span> <span class="n">edges</span><span class="p">[</span><span class="n">b</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">freqs</span> <span class="o">&lt;</span> <span class="n">edges</span><span class="p">[</span><span class="n">b</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">mask</span><span class="p">):</span>
+            <span class="n">band_energies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="k">continue</span>
+        <span class="n">band_energy</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="n">mask</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">band_energies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">band_energy</span><span class="p">)</span>
+    
+    <span class="c1"># Returns scalar of BBEs</span>
+    <span class="c1"># Remove two lines to instead return array</span>
+    <span class="n">band_energies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">band_energies</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># (bands × frames)</span>
+
+    <span class="k">if</span> <span class="n">mean_energies</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">band_energies</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">band_energies</span><span class="p">)</span>  <span class="c1"># shape (n_bands, frames)</span></div>
+
+
+    
+    
+<div class="viewcode-block" id="compute_correlation_dimension">
+<a class="viewcode-back" href="../../speechDescriptorsUtils.html#pyampact.speechDescriptorsUtils.compute_correlation_dimension">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_correlation_dimension</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">tau</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">r_frac</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute Correlation Dimension (CD)</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    y : array</span>
+<span class="sd">        time series values</span>
+<span class="sd">    </span>
+<span class="sd">    m : int</span>
+<span class="sd">        embedding dimension for phase-space reconstruction; default = 3</span>
+<span class="sd">    </span>
+<span class="sd">    tau : int</span>
+<span class="sd">        time delay (in samples); default = 2</span>
+
+<span class="sd">    r_frac : float</span>
+<span class="sd">        fraction of the distance standard deviation used to set the radius threshold; default = 0.1</span>
+<span class="sd">            </span>
+<span class="sd">        </span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cd : float</span>
+<span class="sd">        estimated correlation dimenstion, or np.nan if insufficient data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">y</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="n">y</span><span class="o">.</span><span class="n">size</span> <span class="o">&lt;</span> <span class="mi">200</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+    <span class="n">y</span> <span class="o">-=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+    <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">m</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">tau</span>
+    <span class="k">if</span> <span class="n">N</span> <span class="o">&lt;</span> <span class="mi">50</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">m</span><span class="o">*</span><span class="n">tau</span><span class="p">:</span><span class="n">tau</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)])</span>
+
+    <span class="n">dists</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">-</span> <span class="n">X</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">r_frac</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">dists</span><span class="p">)</span>
+    <span class="n">cd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dists</span> <span class="o">&lt;</span> <span class="n">r</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">cd</span></div>
+
+
+
+
+<span class="c1"># Duration of Pause Intervals (DPI) - NOT WORKING</span>
+<div class="viewcode-block" id="compute_dpi">
+<a class="viewcode-back" href="../../speechDescriptorsUtils.html#pyampact.speechDescriptorsUtils.compute_dpi">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_dpi</span><span class="p">(</span><span class="n">snd</span><span class="p">,</span> <span class="n">pitch</span><span class="p">,</span> <span class="n">intensity</span><span class="p">,</span> <span class="n">intensity_thresh</span><span class="p">,</span> <span class="n">time_step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+                <span class="n">min_pause_dur</span><span class="o">=</span><span class="mf">0.15</span><span class="p">):</span>    
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute Duration of Pause Intervals (DPI).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    snd : Praat Sound Object</span>
+<span class="sd">        Parselmouth/Praat Sound Object</span>
+<span class="sd">    </span>
+<span class="sd">    pitch : Praat Pitch Object</span>
+<span class="sd">        Parselmouth/Praat Pitch Object</span>
+<span class="sd">    </span>
+<span class="sd">    intensity : Praat Intensity Object</span>
+<span class="sd">        time delay (in samples)</span>
+
+<span class="sd">    intensity_thresh : int</span>
+<span class="sd">        dB SPL threshold for silence</span>
+<span class="sd">    </span>
+<span class="sd">    time_step : float</span>
+<span class="sd">        analysis step in seconds; default = 0.01</span>
+<span class="sd">    </span>
+<span class="sd">    min_pause_dur : float</span>
+<span class="sd">        minimum pause duration to count (sec); default = 0.15</span>
+<span class="sd">                    </span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pause_durations : array</span>
+<span class="sd">        list of pause durations (s)</span>
+<span class="sd">    </span>
+<span class="sd">    mean_dpi: float</span>
+<span class="sd">        average pause duration</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Segment bounds (absolute time)</span>
+    <span class="n">t0</span> <span class="o">=</span> <span class="n">snd</span><span class="o">.</span><span class="n">xmin</span>
+    <span class="n">t1</span> <span class="o">=</span> <span class="n">snd</span><span class="o">.</span><span class="n">xmax</span>
+
+    <span class="n">times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">time_step</span><span class="p">)</span>
+
+    <span class="n">silent</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">times</span><span class="p">:</span>
+        <span class="n">f0</span> <span class="o">=</span> <span class="n">pitch</span><span class="o">.</span><span class="n">get_value_at_time</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="n">inten</span> <span class="o">=</span> <span class="n">intensity</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+
+        <span class="n">is_silent</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">f0</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">f0</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span>
+            <span class="p">(</span><span class="n">inten</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">inten</span> <span class="o">&lt;</span> <span class="n">intensity_thresh</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">silent</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">is_silent</span><span class="p">)</span>
+
+    <span class="n">pause_durations</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">in_pause</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">pause_start</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">silent</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">s</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">in_pause</span><span class="p">:</span>
+            <span class="n">in_pause</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">pause_start</span> <span class="o">=</span> <span class="n">t</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">s</span> <span class="ow">and</span> <span class="n">in_pause</span><span class="p">:</span>
+            <span class="n">dur</span> <span class="o">=</span> <span class="n">t</span> <span class="o">-</span> <span class="n">pause_start</span>
+            <span class="k">if</span> <span class="n">dur</span> <span class="o">&gt;=</span> <span class="n">min_pause_dur</span><span class="p">:</span>
+                <span class="n">pause_durations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dur</span><span class="p">)</span>
+            <span class="n">in_pause</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="c1"># Handle trailing pause</span>
+    <span class="k">if</span> <span class="n">in_pause</span> <span class="ow">and</span> <span class="n">pause_start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">dur</span> <span class="o">=</span> <span class="n">t1</span> <span class="o">-</span> <span class="n">pause_start</span>
+        <span class="k">if</span> <span class="n">dur</span> <span class="o">&gt;=</span> <span class="n">min_pause_dur</span><span class="p">:</span>
+            <span class="n">pause_durations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dur</span><span class="p">)</span>
+
+    <span class="n">mean_dpi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">pause_durations</span><span class="p">)</span> <span class="k">if</span> <span class="n">pause_durations</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="k">return</span> <span class="n">pause_durations</span><span class="p">,</span> <span class="n">mean_dpi</span></div>
+
+
+<div class="viewcode-block" id="compute_dfa">
+<a class="viewcode-back" href="../../speechDescriptorsUtils.html#pyampact.speechDescriptorsUtils.compute_dfa">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_dfa</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">min_window</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">max_window</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_windows</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute DFA (Detrended Fluctuation Analysis) scaling component (alpha) for 1D signal y</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    y : array</span>
+<span class="sd">        speech segment waveform</span>
+<span class="sd">    </span>
+<span class="sd">    min_window : int</span>
+<span class="sd">        smallest window size (samples); default = 4</span>
+<span class="sd">    </span>
+<span class="sd">    min_window : max_window</span>
+<span class="sd">        largest window size (samples); default = len(y)//4</span>
+<span class="sd">    </span>
+<span class="sd">    n_windows : int</span>
+<span class="sd">        number of window sizes to test; default = 20</span>
+
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    alpha : float</span>
+<span class="sd">        DFA scaling exponent</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">-=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">N</span> <span class="o">&lt;</span> <span class="n">min_window</span><span class="o">*</span><span class="mi">4</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+    <span class="c1"># Integrated signal</span>
+    <span class="n">y_int</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+    <span class="c1"># Window sizes (log spaced)</span>
+    <span class="k">if</span> <span class="n">max_window</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">max_window</span> <span class="o">=</span> <span class="n">N</span> <span class="o">//</span> <span class="mi">4</span>
+    <span class="n">window_sizes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">min_window</span><span class="p">),</span>
+                                         <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">max_window</span><span class="p">),</span>
+                                         <span class="n">n_windows</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">))</span>
+    <span class="n">flucts</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">window_sizes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">w</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span> 
+            <span class="k">continue</span>
+        <span class="n">n_segments</span> <span class="o">=</span> <span class="n">N</span> <span class="o">//</span> <span class="n">w</span>
+        <span class="k">if</span> <span class="n">n_segments</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">n_segments</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+        <span class="n">segments</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">y_int</span><span class="p">[:</span><span class="n">n_segments</span><span class="o">*</span><span class="n">w</span><span class="p">],</span> <span class="n">shape</span><span class="p">)</span>
+
+        <span class="c1"># detrend each segment</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+        <span class="n">detrended</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="n">segments</span><span class="p">:</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">seg</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">trend</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyval</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+            <span class="n">detrended</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">seg</span> <span class="o">-</span> <span class="n">trend</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)))</span>
+        <span class="n">flucts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">detrended</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">flucts</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">flucts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">flucts</span><span class="p">)</span>
+    <span class="n">slope</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">window_sizes</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">flucts</span><span class="p">)]),</span>
+                          <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">flucts</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">slope</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># Empirical Mode Decomposition (EMD)</span>
+<div class="viewcode-block" id="compute_emd_features">
+<a class="viewcode-back" href="../../speechDescriptorsUtils.html#pyampact.speechDescriptorsUtils.compute_emd_features">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_emd_features</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">max_imfs</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">max_sift</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Empirical Mode Decomposition (EMD) features.</span>
+<span class="sd">    Returns scalar complexity measures, not raw IMFs.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    y : 1D numpy array</span>
+<span class="sd">        input signal (e.g. gneVals or waveform)</span>
+<span class="sd">    max_imfs : int</span>
+<span class="sd">        maximum IMFs to extract; default = 6</span>
+<span class="sd">    max_sift : int</span>
+<span class="sd">        max sifting iterations per IMF; default = 10</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    emd_n_imfs : int</span>
+<span class="sd">        number of imfs</span>
+<span class="sd">    emd_energy_ratio : float</span>
+<span class="sd">        high-frequency IMF energy / total energy</span>
+<span class="sd">    emd_entropy : float</span>
+<span class="sd">        Shannon entropy of IMF energy distribution</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">y</span><span class="p">)]</span>
+
+    <span class="k">if</span> <span class="n">y</span><span class="o">.</span><span class="n">size</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+    <span class="n">y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">residue</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">imfs</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_imfs</span><span class="p">):</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">residue</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_sift</span><span class="p">):</span>
+            <span class="n">peaks</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">find_peaks</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+            <span class="n">troughs</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">find_peaks</span><span class="p">(</span><span class="o">-</span><span class="n">h</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">peaks</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">troughs</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="c1"># Envelope interpolation</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">h</span><span class="p">))</span>
+            <span class="n">upper</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">peaks</span><span class="p">,</span> <span class="n">h</span><span class="p">[</span><span class="n">peaks</span><span class="p">])</span>
+            <span class="n">lower</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">troughs</span><span class="p">,</span> <span class="n">h</span><span class="p">[</span><span class="n">troughs</span><span class="p">])</span>
+            <span class="n">mean_env</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">upper</span> <span class="o">+</span> <span class="n">lower</span><span class="p">)</span>
+
+            <span class="n">h</span> <span class="o">=</span> <span class="n">h</span> <span class="o">-</span> <span class="n">mean_env</span>
+
+        <span class="n">imfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+        <span class="n">residue</span> <span class="o">=</span> <span class="n">residue</span> <span class="o">-</span> <span class="n">h</span>
+
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">residue</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-6</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">imfs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+    <span class="c1"># Energy per IMF</span>
+    <span class="n">energies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">imf</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">imf</span> <span class="ow">in</span> <span class="n">imfs</span><span class="p">])</span>
+    <span class="n">total_energy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">total_energy</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+    <span class="c1"># Metrics</span>
+    <span class="n">emd_n_imfs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">imfs</span><span class="p">)</span>
+
+    <span class="c1"># High-frequency = first half of IMFs</span>
+    <span class="n">hf_energy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">energies</span><span class="p">[:</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">emd_n_imfs</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)])</span>
+    <span class="n">emd_energy_ratio</span> <span class="o">=</span> <span class="n">hf_energy</span> <span class="o">/</span> <span class="n">total_energy</span>
+
+    <span class="n">probs</span> <span class="o">=</span> <span class="n">energies</span> <span class="o">/</span> <span class="n">total_energy</span>
+    <span class="n">emd_entropy</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">probs</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">probs</span> <span class="o">+</span> <span class="mf">1e-12</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">emd_n_imfs</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">emd_energy_ratio</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">emd_entropy</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># Mel Frequency Cepstral Coefficients (MFCCs) — STRING RETURN</span>
+<div class="viewcode-block" id="compute_mfcc">
+<a class="viewcode-back" href="../../speechDescriptorsUtils.html#pyampact.speechDescriptorsUtils.compute_mfcc">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_mfcc</span><span class="p">(</span><span class="n">seg</span><span class="p">,</span> <span class="n">sr</span><span class="p">,</span> <span class="n">n_mfcc</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">n_fft</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span> <span class="n">hop_length</span><span class="o">=</span><span class="mi">512</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute Mel Frequency Cepstral Coefficients (MFCCs)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    seg : Praat Sound Object</span>
+<span class="sd">        segment of Sound cut around onset and offset</span>
+<span class="sd">    n_mfcc : int</span>
+<span class="sd">        number of coefficients to return; default = 13</span>
+<span class="sd">    n_fft : int</span>
+<span class="sd">        FFT window size; default = 2048</span>
+<span class="sd">    hop_length : int</span>
+<span class="sd">        number of samples of analysis advances between consecutive frames; default = 512</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    mfcc : JSON Stringified list</span>
+<span class="sd">        list of MFCCs</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">seg</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="n">mfcc</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">mfcc</span><span class="p">(</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span>
+        <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">,</span>
+        <span class="n">n_mfcc</span><span class="o">=</span><span class="n">n_mfcc</span><span class="p">,</span>
+        <span class="n">n_fft</span><span class="o">=</span><span class="n">n_fft</span><span class="p">,</span>
+        <span class="n">hop_length</span><span class="o">=</span><span class="n">hop_length</span><span class="p">,</span>
+        <span class="n">htk</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">mfcc</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span></div>
+
+
+
+
+<div class="viewcode-block" id="compute_recurrence_period_and_rpde">
+<a class="viewcode-back" href="../../speechDescriptorsUtils.html#pyampact.speechDescriptorsUtils.compute_recurrence_period_and_rpde">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_recurrence_period_and_rpde</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="n">onset</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">n_bins</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute recurrence period (RP) and recurrence period density entropy (RPDE)</span>
+<span class="sd">    </span>
+<span class="sd">    RP is the mean inter-pulse interval within a segment.</span>
+<span class="sd">    RPDE is the normalized entropy of the distribution of recurrence periods.</span>
+
+<span class="sd">    Low = highly periodic/stable signal</span>
+<span class="sd">    High = irregular, noisy, chaotic signal</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pp : Praat Pitch Object</span>
+<span class="sd">        Periodic (cc) of the segment</span>
+<span class="sd">    onset : float        </span>
+<span class="sd">    offset : float</span>
+<span class="sd">        segment boundaries in seconds</span>
+<span class="sd">    n_bins : int</span>
+<span class="sd">        bin count for histogram calculation; default = 50</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    rp_ms : float</span>
+<span class="sd">        recurrence period in ms</span>
+<span class="sd">    </span>
+<span class="sd">    rpde : float</span>
+<span class="sd">        normalized entropy of recurrence-period distribution</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">n</span> <span class="o">=</span> <span class="n">parselmouth</span><span class="o">.</span><span class="n">praat</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="s2">&quot;Get number of points&quot;</span><span class="p">)</span>
+
+    <span class="n">times</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">parselmouth</span><span class="o">.</span><span class="n">praat</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="s2">&quot;Get time from index&quot;</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">onset</span> <span class="o">&lt;=</span> <span class="n">t</span> <span class="o">&lt;=</span> <span class="n">offset</span><span class="p">:</span>
+            <span class="n">times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+
+    <span class="n">times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">times</span><span class="o">.</span><span class="n">size</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+    <span class="c1"># Inter-pulse periods (seconds)</span>
+    <span class="n">periods</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+    <span class="n">periods</span> <span class="o">=</span> <span class="n">periods</span><span class="p">[(</span><span class="n">periods</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">periods</span><span class="p">)]</span>
+
+    <span class="k">if</span> <span class="n">periods</span><span class="o">.</span><span class="n">size</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+    <span class="c1"># RP (mean period)</span>
+    <span class="n">rp_ms</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">periods</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1000.0</span><span class="p">)</span>
+
+    <span class="c1"># RPDE (normalized entropy)</span>
+    <span class="n">hist</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">periods</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">n_bins</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">probs</span> <span class="o">=</span> <span class="n">hist</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">hist</span><span class="p">)</span>
+    <span class="n">probs</span> <span class="o">=</span> <span class="n">probs</span><span class="p">[</span><span class="n">probs</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">rpde</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">probs</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">probs</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">probs</span><span class="p">)))</span>
+
+    <span class="k">return</span> <span class="n">rp_ms</span><span class="p">,</span> <span class="n">rpde</span></div>
+
+
+
+<div class="viewcode-block" id="compute_spectral_spread">
+<a class="viewcode-back" href="../../speechDescriptorsUtils.html#pyampact.speechDescriptorsUtils.compute_spectral_spread">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_spectral_spread</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">freqs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute spectral spread</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    S : ndarray</span>
+<span class="sd">        magnitude spectrum</span>
+<span class="sd">    </span>
+<span class="sd">    freqs : array</span>
+<span class="sd">        frequency axis in Hz (freq_bins,)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    rp_ms : float</span>
+<span class="sd">        recurrence period in ms</span>
+<span class="sd">    </span>
+<span class="sd">    rpde : float</span>
+<span class="sd">        normalized entropy of recurrence-period distribution</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># S: magnitude spectrogram (freq_bins × frames)</span>
+    <span class="c1"># freqs: frequency axis in Hz (freq_bins,)</span>
+
+    <span class="n">S_sum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">valid</span> <span class="o">=</span> <span class="n">S_sum</span> <span class="o">&gt;</span> <span class="mi">0</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">valid</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+    <span class="c1"># Spectral centroid per frame</span>
+    <span class="n">centroid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">freqs</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">S</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">S_sum</span>
+
+    <span class="c1"># Spectral spread per frame</span>
+    <span class="n">spread</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(((</span><span class="n">freqs</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">-</span> <span class="n">centroid</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">S</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">S_sum</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">spread</span><span class="p">[</span><span class="n">valid</span><span class="p">]))</span></div>
+
+
+
+
+<span class="c1"># Tuneable Q-Wavelet Transform (TQWT)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_tqwt_theta</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
+    <span class="c1"># Eq. (17) in Selesnick 2011: theta(ω) = 0.5(1+cos ω)*sqrt(2 - cos ω), |ω|&lt;=π</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">w</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">w</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">))</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_tqwt_analysis_filters</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">):</span>
+    <span class="c1"># Eqs. (11)-(16) in Selesnick 2011; even-symmetric magnitude response on DFT grid</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">k</span> <span class="o">/</span> <span class="n">N</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="p">(</span><span class="n">w</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>  <span class="c1"># [-π, π)</span>
+    <span class="n">aw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+
+    <span class="n">H0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">H1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="n">wP</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">beta</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+    <span class="n">wS</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+    <span class="n">denom</span> <span class="o">=</span> <span class="p">(</span><span class="n">alpha</span> <span class="o">+</span> <span class="n">beta</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span>
+
+    <span class="c1"># Pass/stop</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">aw</span> <span class="o">&lt;=</span> <span class="n">wP</span>
+    <span class="n">S</span> <span class="o">=</span> <span class="n">aw</span> <span class="o">&gt;=</span> <span class="n">wS</span>
+    <span class="n">H0</span><span class="p">[</span><span class="n">P</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">H1</span><span class="p">[</span><span class="n">S</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+    <span class="c1"># Transition: (1-β)π &lt; |ω| &lt; απ</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="p">(</span><span class="o">~</span><span class="n">P</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="o">~</span><span class="n">S</span><span class="p">)</span>
+    <span class="n">wt</span> <span class="o">=</span> <span class="n">aw</span><span class="p">[</span><span class="n">T</span><span class="p">]</span>
+    <span class="n">u0</span> <span class="o">=</span> <span class="p">(</span><span class="n">wt</span> <span class="o">+</span> <span class="p">(</span><span class="n">beta</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">/</span> <span class="n">denom</span>
+    <span class="n">u1</span> <span class="o">=</span> <span class="p">(</span><span class="n">alpha</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">wt</span><span class="p">)</span> <span class="o">/</span> <span class="n">denom</span>
+    <span class="n">H0</span><span class="p">[</span><span class="n">T</span><span class="p">]</span> <span class="o">=</span> <span class="n">_tqwt_theta</span><span class="p">(</span><span class="n">u0</span><span class="p">)</span>
+    <span class="n">H1</span><span class="p">[</span><span class="n">T</span><span class="p">]</span> <span class="o">=</span> <span class="n">_tqwt_theta</span><span class="p">(</span><span class="n">u1</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">H0</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">),</span> <span class="n">H1</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_tqwt_lps</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">alpha</span><span class="p">):</span>
+    <span class="c1"># Low-pass scaling (α&lt;1): keep center αN bins (FFT-domain truncation)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">alpha</span> <span class="o">*</span> <span class="n">N</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">M</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="n">Xs</span> <span class="o">=</span> <span class="n">fftshift</span><span class="p">(</span><span class="n">fft</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="p">(</span><span class="n">N</span> <span class="o">-</span> <span class="n">M</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="n">Ys</span> <span class="o">=</span> <span class="n">Xs</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">start</span> <span class="o">+</span> <span class="n">M</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">ifft</span><span class="p">(</span><span class="n">ifftshift</span><span class="p">(</span><span class="n">Ys</span><span class="p">)))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">y</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_tqwt_hps</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">beta</span><span class="p">):</span>
+    <span class="c1"># High-pass scaling (β&lt;1): keep outer βN bins (FFT-domain) and pack into length βN</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">beta</span> <span class="o">*</span> <span class="n">N</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">M</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="n">Xs</span> <span class="o">=</span> <span class="n">fftshift</span><span class="p">(</span><span class="n">fft</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="n">left_len</span> <span class="o">=</span> <span class="n">M</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="n">right_len</span> <span class="o">=</span> <span class="n">M</span> <span class="o">-</span> <span class="n">left_len</span>
+    <span class="n">left</span> <span class="o">=</span> <span class="n">Xs</span><span class="p">[:</span><span class="n">left_len</span><span class="p">]</span>
+    <span class="n">right</span> <span class="o">=</span> <span class="n">Xs</span><span class="p">[</span><span class="o">-</span><span class="n">right_len</span><span class="p">:]</span> <span class="k">if</span> <span class="n">right_len</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">Xs</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="n">Ys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">])</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">ifft</span><span class="p">(</span><span class="n">ifftshift</span><span class="p">(</span><span class="n">Ys</span><span class="p">)))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">beta</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">y</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">tqwt_forward</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">Q</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">J</span><span class="o">=</span><span class="mi">8</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Forward TQWT (DFT-domain, finite-length).</span>
+<span class="sd">    Returns: coeffs (list of J arrays), residual (array), (alpha, beta)</span>
+
+<span class="sd">    Uses Eq. (26): beta = 2/(Q+1), alpha = 1 - beta/r.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">x</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span> <span class="o">&lt;</span> <span class="mi">16</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">J</span><span class="p">))],</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">),</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+
+    <span class="n">Q</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">Q</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+    <span class="n">J</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">J</span><span class="p">)</span>
+
+    <span class="n">beta</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">Q</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="p">(</span><span class="n">beta</span> <span class="o">/</span> <span class="n">r</span><span class="p">)</span>
+
+    <span class="n">v</span> <span class="o">=</span> <span class="n">x</span>
+    <span class="n">coeffs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">J</span><span class="p">):</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">size</span>
+        <span class="k">if</span> <span class="n">N</span> <span class="o">&lt;</span> <span class="mi">16</span><span class="p">:</span>
+            <span class="n">coeffs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">))</span>
+            <span class="k">continue</span>
+
+        <span class="n">H0</span><span class="p">,</span> <span class="n">H1</span> <span class="o">=</span> <span class="n">_tqwt_analysis_filters</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
+        <span class="n">V</span> <span class="o">=</span> <span class="n">fft</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="n">v0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">ifft</span><span class="p">(</span><span class="n">V</span> <span class="o">*</span> <span class="n">H0</span><span class="p">))</span>
+        <span class="n">v1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">ifft</span><span class="p">(</span><span class="n">V</span> <span class="o">*</span> <span class="n">H1</span><span class="p">))</span>
+
+        <span class="n">w</span> <span class="o">=</span> <span class="n">_tqwt_hps</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">_tqwt_lps</span><span class="p">(</span><span class="n">v0</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span>
+
+        <span class="n">coeffs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">coeffs</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
+
+<div class="viewcode-block" id="compute_tqwt_features">
+<a class="viewcode-back" href="../../speechDescriptorsUtils.html#pyampact.speechDescriptorsUtils.compute_tqwt_features">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_tqwt_features</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">sr</span><span class="p">,</span> <span class="n">Q</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">J</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">n_keep</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute a fixed-width feature vector from the Tunable Q-factor Wavelet Transform (TQWT).</span>
+<span class="sd">    Features are derived from subband energies of the TQWT decomposition of a 1-D signal.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    y : 1D numpy array</span>
+<span class="sd">        input signal</span>
+<span class="sd">    sr : float</span>
+<span class="sd">        sample rate of the signal in Hz. (Currently unused; included for API consistency.)</span>
+<span class="sd">    Q : float</span>
+<span class="sd">        Q-factor controlling oscillatory behavior of the wavelets; default = 1.0</span>
+<span class="sd">    r : float</span>
+<span class="sd">        redundancy factor of the TQWT; default = 3.0</span>
+<span class="sd">    J : int</span>
+<span class="sd">        number of TQWT decomposition levels; default = 8</span>
+<span class="sd">    n_keep : int</span>
+<span class="sd">        number of lowest-index subband log-energies to return; default = 5</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    features : list of float</span>
+<span class="sd">        Feature vector containing, in order:</span>
+
+<span class="sd">        - tqwt_e1 .. tqwt_e{n_keep} : float</span>
+<span class="sd">            Log10 subband energies of the first `n_keep` TQWT bands.</span>
+<span class="sd">        - tqwt_entropy : float</span>
+<span class="sd">            Normalized Shannon entropy of the subband energy distribution.</span>
+<span class="sd">        - tqwt_centroid : float</span>
+<span class="sd">            Energy-weighted centroid of subband indices.</span>
+<span class="sd">        - tqwt_low_high_ratio : float</span>
+<span class="sd">            Ratio of summed low-band energy to high-band energy.</span>
+
+<span class="sd">        If insufficient valid data are available, all features are returned as NaN.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">y</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="n">y</span><span class="o">.</span><span class="n">size</span> <span class="o">&lt;</span> <span class="mi">16</span><span class="p">:</span>
+        <span class="n">feats</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_keep</span> <span class="o">+</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">feats</span>
+
+    <span class="n">coeffs</span><span class="p">,</span> <span class="n">resid</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">tqwt_forward</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">Q</span><span class="o">=</span><span class="n">Q</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="n">r</span><span class="p">,</span> <span class="n">J</span><span class="o">=</span><span class="n">J</span><span class="p">)</span>
+
+    <span class="n">eps</span> <span class="o">=</span> <span class="mf">1e-12</span>
+    <span class="n">energies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">c</span><span class="o">*</span><span class="n">c</span><span class="p">))</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">size</span> <span class="k">else</span> <span class="mf">0.0</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">coeffs</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">energies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+
+    <span class="c1"># log-energies (first n_keep bands)</span>
+    <span class="n">loge</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">energies</span> <span class="o">+</span> <span class="n">eps</span><span class="p">)</span>
+    <span class="n">e_keep</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">loge</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">loge</span><span class="o">.</span><span class="n">size</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_keep</span><span class="p">)]</span>
+
+    <span class="c1"># entropy over subband energy distribution</span>
+    <span class="n">tot</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">energies</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">tot</span> <span class="o">&lt;=</span> <span class="n">eps</span><span class="p">:</span>
+        <span class="n">tqwt_entropy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">tqwt_centroid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">tqwt_low_high_ratio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">energies</span> <span class="o">/</span> <span class="n">tot</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="n">p</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">tqwt_entropy</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">p</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">),</span> <span class="mi">2</span><span class="p">)))</span>
+
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">energies</span><span class="o">.</span><span class="n">size</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">tqwt_centroid</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">idx</span> <span class="o">*</span> <span class="n">energies</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">tot</span> <span class="o">+</span> <span class="n">eps</span><span class="p">))</span>  <span class="c1"># band-index centroid</span>
+
+        <span class="n">low</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">energies</span><span class="p">[:</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">energies</span><span class="o">.</span><span class="n">size</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)]))</span>
+        <span class="n">high</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">energies</span><span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">energies</span><span class="o">.</span><span class="n">size</span> <span class="o">//</span> <span class="mi">2</span><span class="p">):]))</span>
+        <span class="n">tqwt_low_high_ratio</span> <span class="o">=</span> <span class="nb">float</span><span class="p">((</span><span class="n">low</span> <span class="o">+</span> <span class="n">eps</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">high</span> <span class="o">+</span> <span class="n">eps</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">e_keep</span> <span class="o">+</span> <span class="p">[</span><span class="n">tqwt_entropy</span><span class="p">,</span> <span class="n">tqwt_centroid</span><span class="p">,</span> <span class="n">tqwt_low_high_ratio</span><span class="p">]</span></div>
+
+
+
+
+
+<div class="viewcode-block" id="compute_wt_features">
+<a class="viewcode-back" href="../../speechDescriptorsUtils.html#pyampact.speechDescriptorsUtils.compute_wt_features">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_wt_features</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">wavelet</span><span class="o">=</span><span class="s2">&quot;db4&quot;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute wavelet-based features from a 1-D signal using discrete wavelet transform (DWT).</span>
+
+<span class="sd">    Features are derived from the normalized energy distribution of wavelet subbands.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    y : 1D numpy array</span>
+<span class="sd">        input signal</span>
+<span class="sd">    wavelet : str</span>
+<span class="sd">        Wavelet family used for decomposition; default = &quot;db4&quot;</span>
+<span class="sd">    level : int</span>
+<span class="sd">        Decomposition level; default = 5</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    wt_entropy : float</span>
+<span class="sd">        Shannon entropy (base 2) of the normalized wavelet subband energies.</span>
+<span class="sd">    wt_low_high_ratio : float</span>
+<span class="sd">        Ratio of high-frequency subband energy to low-frequency subband energy.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">coeffs</span> <span class="o">=</span> <span class="n">pywt</span><span class="o">.</span><span class="n">wavedec</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">wavelet</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">level</span><span class="p">)</span>
+    
+    <span class="n">energies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">coeffs</span><span class="p">])</span>
+    <span class="n">energies</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span>
+
+    <span class="n">wt_entropy</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">energies</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">energies</span> <span class="o">+</span> <span class="mf">1e-12</span><span class="p">))</span>
+    <span class="n">wt_low_high_ratio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">energies</span><span class="p">[</span><span class="n">level</span><span class="o">//</span><span class="mi">2</span><span class="p">:])</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">energies</span><span class="p">[:</span><span class="n">level</span><span class="o">//</span><span class="mi">2</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">wt_entropy</span><span class="p">,</span> <span class="n">wt_low_high_ratio</span></div>
+
+
+
+
+
+<div class="viewcode-block" id="compute_avqi">
+<a class="viewcode-back" href="../../speechDescriptorsUtils.html#pyampact.speechDescriptorsUtils.compute_avqi">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_avqi</span><span class="p">(</span><span class="n">shimmer_local</span><span class="p">,</span> <span class="n">hnr_mean_db</span><span class="p">,</span><span class="n">cpps_vowel</span><span class="p">,</span> <span class="n">slope_vowel</span><span class="p">,</span><span class="n">cpps_speech</span><span class="p">,</span> <span class="n">slope_speech</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the Acoustic Voice Quality Index (AVQI).&quot;&quot;&quot;</span>
+    <span class="n">avqi</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="mf">3.41</span>
+        <span class="o">+</span> <span class="p">(</span><span class="mf">0.33</span> <span class="o">*</span> <span class="n">shimmer_local</span><span class="p">)</span>
+        <span class="o">-</span> <span class="p">(</span><span class="mf">0.09</span> <span class="o">*</span> <span class="n">hnr_mean_db</span><span class="p">)</span>
+        <span class="o">-</span> <span class="p">(</span><span class="mf">0.88</span> <span class="o">*</span> <span class="n">cpps_vowel</span><span class="p">)</span>
+        <span class="o">+</span> <span class="p">(</span><span class="mf">0.12</span> <span class="o">*</span> <span class="n">slope_vowel</span><span class="p">)</span>
+        <span class="o">-</span> <span class="p">(</span><span class="mf">1.18</span> <span class="o">*</span> <span class="n">cpps_speech</span><span class="p">)</span>
+        <span class="o">+</span> <span class="p">(</span><span class="mf">0.46</span> <span class="o">*</span> <span class="n">slope_speech</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">avqi</span></div>
+
+
+<span class="c1"># This will give the proper 0-10 AVQI score?</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">avqi_v0206</span><span class="p">(</span><span class="n">cpps_vowel</span><span class="p">,</span>
+               <span class="n">hnr_speech</span><span class="p">,</span>
+               <span class="n">shimmer_local_percent</span><span class="p">,</span>
+               <span class="n">shimmer_local_db</span><span class="p">,</span>
+               <span class="n">ltas_slope_speech</span><span class="p">,</span>
+               <span class="n">ltas_tilt_speech</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the REAL Acoustic Voice Quality Index (AVQI) version 02.06</span>
+<span class="sd">    as defined by Maryn, Weenink, Roy, et al.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cpps_vowel : float</span>
+<span class="sd">        Smoothed CPP (dB) from sustained vowel /a/ segment.</span>
+<span class="sd">    hnr_speech : float</span>
+<span class="sd">        Harmonics-to-noise ratio (dB) from connected speech.</span>
+<span class="sd">    shimmer_local_percent : float</span>
+<span class="sd">        Shimmer local (percent) from sustained vowel.</span>
+<span class="sd">    shimmer_local_db : float</span>
+<span class="sd">        Shimmer local (dB) from sustained vowel.</span>
+<span class="sd">    ltas_slope_speech : float</span>
+<span class="sd">        LTAS spectral slope (dB/decade) from connected speech.</span>
+<span class="sd">    ltas_tilt_speech : float</span>
+<span class="sd">        LTAS spectral tilt (dB) from connected speech.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        AVQI (real clinical AVQI v02.06)</span>
+<span class="sd">        Range roughly: 0–10 (normal voices ~1–3, dysphonic ≥4).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Raw regression (unscaled)</span>
+    <span class="n">raw</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="mf">3.295</span>
+        <span class="o">-</span> <span class="mf">0.111</span> <span class="o">*</span> <span class="n">cpps_vowel</span>
+        <span class="o">-</span> <span class="mf">0.073</span> <span class="o">*</span> <span class="n">hnr_speech</span>
+        <span class="o">-</span> <span class="mf">0.213</span> <span class="o">*</span> <span class="n">shimmer_local_percent</span>
+        <span class="o">+</span> <span class="mf">2.789</span> <span class="o">*</span> <span class="n">shimmer_local_db</span>
+        <span class="o">-</span> <span class="mf">0.032</span> <span class="o">*</span> <span class="n">ltas_slope_speech</span>
+        <span class="o">+</span> <span class="mf">0.077</span> <span class="o">*</span> <span class="n">ltas_tilt_speech</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Final scaling and offset (critical!)</span>
+    <span class="n">avqi</span> <span class="o">=</span> <span class="n">raw</span> <span class="o">*</span> <span class="mf">2.208</span> <span class="o">+</span> <span class="mf">1.797</span>
+    <span class="k">return</span> <span class="n">avqi</span>
+
+    
+
+    
+
+
+<span class="c1"># # Johanna&#39;s code...</span>
+<span class="c1"># def vocal_presense(y, sr, nfft=1024, hop_len=256):</span>
+<span class="c1">#     # Features</span>
+<span class="c1">#     rmse = librosa.feature.rms(y=y, frame_length=nfft, hop_length=hop_len, center=False)[0]</span>
+<span class="c1">#     zcr  = librosa.feature.zero_crossing_rate(y=y, frame_length=nfft, hop_length=hop_len, center=False)[0]</span>
+
+<span class="c1">#     # Clip-adaptive thresholds (percentile-based) + sanity clamps</span>
+<span class="c1">#     # Energy (RMS)</span>
+<span class="c1">#     ste_on  = max(np.percentile(rmse, 65), 0.02)   # don&#39;t go below 0.02 on normalized audio</span>
+<span class="c1">#     ste_off = max(np.percentile(rmse, 45), 0.015)</span>
+
+<span class="c1">#     # ZCR (lower is more voiced) – invert logic with hysteresis</span>
+<span class="c1">#     zcr_on  = np.clip(np.percentile(zcr, 35), 0.08, 0.18)</span>
+<span class="c1">#     zcr_off = np.clip(np.percentile(zcr, 65), 0.18, 0.30)</span>
+
+<span class="c1">#     # Hysteresis state machine</span>
+<span class="c1">#     is_vocal = np.zeros_like(rmse, dtype=bool)</span>
+<span class="c1">#     state = False</span>
+<span class="c1">#     for i, (e, z) in enumerate(zip(rmse, zcr)):</span>
+<span class="c1">#         if not state:</span>
+<span class="c1">#             state = (e &gt;= ste_on) and (z &lt;= zcr_on)</span>
+<span class="c1">#         else:</span>
+<span class="c1">#             state = not ((e &lt;= ste_off) or (z &gt;= zcr_off))</span>
+<span class="c1">#         is_vocal[i] = state</span>
+
+<span class="c1">#     # Debounce flicker (median filter ~30–50 ms)</span>
+<span class="c1">#     k = int(round(0.04 * sr / hop_len)) | 1  # odd kernel size, ~40 ms</span>
+<span class="c1">#     is_vocal = sps.medfilt(is_vocal.astype(float), kernel_size=max(k, 3)) &gt; 0.5</span>
+<span class="c1">#     return is_vocal</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, AMPACT Research Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

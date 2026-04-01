@@ -6,17 +6,17 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyampact.symbolicUtils.addTieBreakers &mdash; pyAMPACT 0.0.5 documentation</title>
+  <title>pyampact.symbolicUtils.addTieBreakers &mdash; pyAMPACT 0.0.6 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
 
   
     <link rel="canonical" href="https://pyampact.github.io/generated/pyampact.symbolicUtils.addTieBreakers.html" />
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=282f96c0"></script>
-      <script src="../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/documentation_options.js?v=1fd71caa"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -83,6 +83,8 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../speechDescriptors.html">speechDescriptors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../speechDescriptorsUtils.html">speechDescriptorsUtils</a></li>
 </ul>
 
         </div>
@@ -117,13 +119,6 @@
 <span class="sig-prename descclassname"><span class="pre">pyampact.symbolicUtils.</span></span><span class="sig-name descname"><span class="pre">addTieBreakers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">partList</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyampact/symbolicUtils.html#addTieBreakers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.symbolicUtils.addTieBreakers" title="Link to this definition"></a></dt>
 <dd><p>Add tie-breaker level to index. Changes parts in partList in place and
 returns None.</p>
-<p>This is particularly useful to disambiguate the order of events that
-happen at the same offset, which is an issue most commonly encountered
-with grace notes since they have no duration. This is needed in several
-<cite>Score</cite> methods because you cannot append multiple pandas series (parts)
-if they have non-unique indices. So this method is needed internally to
-be able to use pd.concat to turn a list of series into a single dataframe
-if any of those series has a repeated value in its index.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>partList</strong> – A list of pandas Series, each representing a part in

@@ -6,17 +6,17 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyampact.alignmentUtils.maptimes &mdash; pyAMPACT 0.0.5 documentation</title>
+  <title>pyampact.alignmentUtils.maptimes &mdash; pyAMPACT 0.0.6 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
 
   
     <link rel="canonical" href="https://pyampact.github.io/generated/pyampact.alignmentUtils.maptimes.html" />
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=282f96c0"></script>
-      <script src="../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/documentation_options.js?v=1fd71caa"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -52,7 +52,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../alignment.html">alignment</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../alignmentUtils.html">alignmentUtils</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../alignmentUtils.html#id1">alignmentUtils</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="pyampact.alignmentUtils.dpcore.html">pyampact.alignmentUtils.dpcore</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pyampact.alignmentUtils.dp.html">pyampact.alignmentUtils.dp</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pyampact.alignmentUtils.gh.html">pyampact.alignmentUtils.gh</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pyampact.alignmentUtils.g.html">pyampact.alignmentUtils.g</a></li>
@@ -63,8 +62,6 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pyampact.alignmentUtils.f0_est_weighted_sum.html">pyampact.alignmentUtils.f0_est_weighted_sum</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pyampact.alignmentUtils.f0_est_weighted_sum_spec.html">pyampact.alignmentUtils.f0_est_weighted_sum_spec</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pyampact.alignmentUtils.durations_from_midi_ticks.html">pyampact.alignmentUtils.durations_from_midi_ticks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pyampact.alignmentUtils.load_audiofile.html">pyampact.alignmentUtils.load_audiofile</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pyampact.alignmentUtils.trim_silences.html">pyampact.alignmentUtils.trim_silences</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pyampact.alignmentUtils.merge_grace_notes.html">pyampact.alignmentUtils.merge_grace_notes</a></li>
 </ul>
@@ -75,6 +72,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../performance.html">performance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../symbolic.html">symbolic</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../symbolicUtils.html">symbolicUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../speechDescriptors.html">speechDescriptors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../speechDescriptorsUtils.html">speechDescriptorsUtils</a></li>
 </ul>
 
         </div>
@@ -107,18 +106,8 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pyampact.alignmentUtils.maptimes">
 <span class="sig-prename descclassname"><span class="pre">pyampact.alignmentUtils.</span></span><span class="sig-name descname"><span class="pre">maptimes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outtime</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyampact/alignmentUtils.html#maptimes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyampact.alignmentUtils.maptimes" title="Link to this definition"></a></dt>
-<dd><p>Map onset/offset times using linear interpolation from <cite>intime</cite> to <cite>outtime</cite>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>t</strong> (<em>np.ndarray</em><em> of </em><em>shape</em><em> (</em><em>N</em><em>, </em><em>2</em><em>)</em>) – Each row contains [onset, offset].</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Mapped onset and offset times.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray of shape (N, 2)</p>
-</dd>
-</dl>
+<dd><p>Map onset/offset times using a monotone linear interpolation from <cite>intime</cite> to <cite>outtime</cite>.
+Handles duplicate <cite>intime</cite> entries (DTW path repeats) by averaging their <cite>outtime</cite>.</p>
 </dd></dl>
 
 </section>

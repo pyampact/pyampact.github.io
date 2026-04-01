@@ -1,6 +1,0 @@
-﻿pyampact.alignment.ifgram
-=========================
-
-.. currentmodule:: pyampact.alignment
-
-.. autofunction:: ifgram

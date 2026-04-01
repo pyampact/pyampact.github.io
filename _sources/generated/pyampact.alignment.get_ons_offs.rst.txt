@@ -1,6 +1,0 @@
-﻿pyampact.alignment.get\_ons\_offs
-=================================
-
-.. currentmodule:: pyampact.alignment
-
-.. autofunction:: get_ons_offs
